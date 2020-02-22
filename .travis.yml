@@ -6,5 +6,11 @@ jdk:
 os:
   - linux
 
-script:
-  - mvn clean
+jobs:
+  include:
+    - stage: build
+      script: mvn clean compile
+    - stage: test
+      script: mvn test
+    - stage: package
+      script: mvn package

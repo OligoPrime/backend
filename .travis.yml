@@ -6,6 +6,9 @@ jdk:
 os:
   - linux
 
+notifications:
+  slack: bioprimeworkspace:PeSqLEmvdR8KucSYVLSPBzWU
+
 jobs:
   include:
     - stage: build

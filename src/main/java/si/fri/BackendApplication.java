@@ -7,6 +7,7 @@ import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import si.fri.core.Hello;
 import si.fri.db.HelloDAO;
+import si.fri.health.BasicHealthCheck;
 import si.fri.resources.HelloResource;
 
 public class BackendApplication extends Application<BackendConfiguration> {
@@ -41,6 +42,7 @@ public class BackendApplication extends Application<BackendConfiguration> {
                 configuration.getDefaultName(),
                 dao
         );
+        environment.healthChecks().register("template", new BasicHealthCheck(configuration.getTemplate()));
         environment.jersey().register(resource);
 
     }

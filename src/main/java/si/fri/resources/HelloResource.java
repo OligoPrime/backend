@@ -1,10 +1,14 @@
 package si.fri.resources;
 
 import com.codahale.metrics.annotation.Timed;
+import io.dropwizard.auth.Auth;
 import io.dropwizard.hibernate.UnitOfWork;
 import si.fri.core.Hello;
+import si.fri.core.Roles;
+import si.fri.core.User;
 import si.fri.db.HelloDAO;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
@@ -34,10 +38,10 @@ public class HelloResource {
     }
 
     @GET
-    @Path("/all")
+    @RolesAllowed({Roles.ADMIN})
     @Timed
     @UnitOfWork
-    public List<Hello> getAll() {
+    public List<Hello> getAll(@Auth User user) {
         return helloDAO.findAll();
     }
 }

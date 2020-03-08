@@ -12,13 +12,13 @@ database:
   password: postgres
 
   # the JDBC URL
-  url: jdbc:postgresql://localhost/backend
+  url: jdbc:postgresql://localhost/bioprime
 
   # any properties specific to your JDBC driver:
   properties:
     charSet: UTF-8
     hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
-    hibernate.hbm2ddl.auto: create
+    hibernate.hbm2ddl.auto: create-drop
 
   # the maximum amount of time to wait on an empty pool before throwing an exception
   maxWaitForConnection: 1s

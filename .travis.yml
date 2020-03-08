@@ -22,3 +22,4 @@ jobs:
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
         - docker build -t $DOCKER_USERNAME/backend:latest .
         - docker push $DOCKER_USERNAME/backend:latest
+        - docker push $DOCKER_USERNAME/backend:$TRAVIS_JOB_NUMBER

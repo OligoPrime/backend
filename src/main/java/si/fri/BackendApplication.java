@@ -16,6 +16,7 @@ import si.fri.core.Hello;
 import si.fri.core.User;
 import si.fri.db.HelloDAO;
 import si.fri.db.UserDAO;
+import si.fri.health.BasicHealthCheck;
 import si.fri.resources.HelloResource;
 import si.fri.resources.UserResource;
 
@@ -67,6 +68,7 @@ public class BackendApplication extends Application<BackendConfiguration> {
                 helloDAO
         ));
         environment.jersey().register(new UserResource(userDAO));
+        environment.healthChecks().register("template", new BasicHealthCheck(configuration.getTemplate()));
 
 
     }

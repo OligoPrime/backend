@@ -7,7 +7,7 @@ os:
   - linux
 
 notifications:
-  slack: bioprimeworkspace:PeSqLEmvdR8KucSYVLSPBzWU
+  slack: bioprimeworkspace:$SLACK_TOKEN
 
 jobs:
   include:

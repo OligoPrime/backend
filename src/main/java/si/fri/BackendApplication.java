@@ -16,15 +16,18 @@ import si.fri.auth.SimpleAuthenticator;
 import si.fri.auth.SimpleAuthorizer;
 import si.fri.core.Hello;
 import si.fri.core.User;
+import si.fri.core.Primer;
 import si.fri.db.HelloDAO;
 import si.fri.db.UserDAO;
+import si.fri.db.PrimerDAO;
 import si.fri.health.BasicHealthCheck;
 import si.fri.resources.HelloResource;
 import si.fri.resources.UserResource;
+import si.fri.resources.PrimerResource;
 
 public class BackendApplication extends Application<BackendConfiguration> {
 
-    private final HibernateBundle<BackendConfiguration> hibernate = new HibernateBundle<BackendConfiguration>(Hello.class, User.class) {
+    private final HibernateBundle<BackendConfiguration> hibernate = new HibernateBundle<BackendConfiguration>(Hello.class, User.class, Primer.class) {
         @Override
         public DataSourceFactory getDataSourceFactory(BackendConfiguration configuration) {
             return configuration.getDataSourceFactory();
@@ -52,6 +55,7 @@ public class BackendApplication extends Application<BackendConfiguration> {
                     final Environment environment) {
         final HelloDAO helloDAO = new HelloDAO(hibernate.getSessionFactory());
         final UserDAO userDAO = new UserDAO(hibernate.getSessionFactory());
+        final PrimerDAO primerDAO = new PrimerDAO(hibernate.getSessionFactory());
 
 
         SimpleAuthenticator simpleAuthenticator = new UnitOfWorkAwareProxyFactory(hibernate)
@@ -71,6 +75,7 @@ public class BackendApplication extends Application<BackendConfiguration> {
                 helloDAO
         ));
         environment.jersey().register(new UserResource(userDAO));
+        environment.jersey().register(new PrimerResource(primerDAO));
         environment.healthChecks().register("template", new BasicHealthCheck(configuration.getTemplate()));
 
 

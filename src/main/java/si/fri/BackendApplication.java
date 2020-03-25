@@ -14,9 +14,7 @@ import io.dropwizard.setup.Environment;
 import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 import si.fri.auth.SimpleAuthenticator;
 import si.fri.auth.SimpleAuthorizer;
-import si.fri.core.Hello;
-import si.fri.core.User;
-import si.fri.core.Primer;
+import si.fri.core.*;
 import si.fri.db.HelloDAO;
 import si.fri.db.UserDAO;
 import si.fri.db.PrimerDAO;
@@ -27,7 +25,8 @@ import si.fri.resources.PrimerResource;
 
 public class BackendApplication extends Application<BackendConfiguration> {
 
-    private final HibernateBundle<BackendConfiguration> hibernate = new HibernateBundle<BackendConfiguration>(Hello.class, User.class, Primer.class) {
+    private final HibernateBundle<BackendConfiguration> hibernate = new HibernateBundle<BackendConfiguration>(Hello.class, User.class,
+            Primer.class, PositionInReference.class, PurificationMethod.class) {
         @Override
         public DataSourceFactory getDataSourceFactory(BackendConfiguration configuration) {
             return configuration.getDataSourceFactory();

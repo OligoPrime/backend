@@ -1,14 +1,12 @@
 package si.fri.core;
 
-public enum AmountAvailableUnit {
-    NANOMOL("nmol"),
-    MIKROL("µL"),
-    MIKROM("µM"),
-    NANOM("nM");
+public enum AmountAvailablePackSize {
+    TUBE("tube"),
+    PLATE("plate");
 
     private final String name;
 
-    AmountAvailableUnit(String name) {
+    AmountAvailablePackSize(String name) {
         this.name = name;
     }
 

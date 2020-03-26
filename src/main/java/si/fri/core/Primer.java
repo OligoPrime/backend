@@ -22,22 +22,26 @@ public class Primer {
 
     private String name;
 
-    @Column(nullable = false, length = 50)
+    @Column(length = 50)
     private String sequence;
 
+    // not sure if stays
     @Column(nullable = false)
     private Orientation orientation;
 
     private int length;
 
-    @Column(nullable = false)
-    private String freezer;
+    @ManyToOne(targetEntity = Freezer.class)
+    @JoinColumn(name = "freezer_id", referencedColumnName = "id", nullable = false)
+    private Freezer freezer;
 
-    @Column(nullable = false)
-    private int drawer;
+    @ManyToOne(targetEntity = Drawer.class)
+    @JoinColumn(name = "drawer_id", referencedColumnName = "id", nullable = false)
+    private Drawer drawer;
 
-    @Column(nullable = false)
-    private String box;
+    @ManyToOne(targetEntity = Box.class)
+    @JoinColumn(name = "box_id", referencedColumnName = "id", nullable = false)
+    private Box box;
 
     @ManyToOne(targetEntity = PositionInReference.class)
     @JoinColumn(name = "positionInReference_id", referencedColumnName = "id", nullable = false)
@@ -52,9 +56,11 @@ public class Primer {
     @JoinColumn(name = "purificationMethod_id", referencedColumnName = "id", nullable = false)
     private PurificationMethod purificationMethod;
 
-    private double amountAvailable;
+    private double amountAvailableMikroL;
 
-    private AmountAvailableUnit amountAvailableUnit;
+    private int amountAvailablePacks;
+
+    private AmountAvailablePackSize amountAvailablePackSize;
 
     @Temporal(TemporalType.DATE)
     private Date date;
@@ -63,17 +69,52 @@ public class Primer {
 
     private double storingT;
 
-    @Column(nullable = false)
     private double GCPercent;
+
+    @ManyToOne(targetEntity = Organism.class)
+    @JoinColumn(name = "organism_id", referencedColumnName = "id", nullable = false)
+    private Organism organism;
+
+    @Column(nullable = false)
+    private String gen;
+
+    private String ncbiGenId;
+
+    @ManyToOne(targetEntity = HumanGenomBuild.class)
+    @JoinColumn(name = "humanGenomBuild_id", referencedColumnName = "id")
+    private HumanGenomBuild humanGenomBuild;
+
+    @ManyToOne(targetEntity = Formulation.class)
+    @JoinColumn(name = "formulation_id", referencedColumnName = "id", nullable = false)
+    private Formulation formulation;
+
+    @ManyToOne(targetEntity = TypeOfPrimer.class)
+    @JoinColumn(name = "typeOfPrimer_id", referencedColumnName = "id", nullable = false)
+    private TypeOfPrimer typeOfPrimer;
+
+    @Column(length = 50)
+    private String sondaSequence;
+
+    @Column(length = 50)
+    private String assayId;
+
+    private Size size;
+
+    @ManyToOne(targetEntity = PrimerApplication.class)
+    @JoinColumn(name = "primerApplication_id", referencedColumnName = "id", nullable = false)
+    private PrimerApplication primerApplication;
 
     public Primer() {
         // Jackson deserialization
     }
 
-    public Primer(String name, String sequence, Orientation orientation, int length, String freezer, int drawer,
-                  String box, PositionInReference positionInReference, double Tm, double optimalTOfAnnealing,
-                  PurificationMethod purificationMethod, double amountAvailable, AmountAvailableUnit amountAvailableUnit,
-                  Date date, int lengthOfAmplicone, double storingT, double GCPercent) {
+    public Primer(String name, String sequence, Orientation orientation, int length, Freezer freezer, Drawer drawer,
+                  Box box, PositionInReference positionInReference, double Tm, double optimalTOfAnnealing,
+                  PurificationMethod purificationMethod, double amountAvailableMikroL, int amountAvailablePacks,
+                  AmountAvailablePackSize amountAvailablePackSize, Date date, int lengthOfAmplicone, double storingT,
+                  double GCPercent, Organism organism, String gen, String ncbiGenId, HumanGenomBuild humanGenomBuild,
+                  Formulation formulation, TypeOfPrimer typeOfPrimer, String sondaSequence, String assayId, Size size,
+                  PrimerApplication primerApplication) {
         this.name = name;
         this.sequence = sequence;
         this.orientation = orientation;
@@ -85,12 +126,23 @@ public class Primer {
         this.Tm = Tm;
         this.optimalTOfAnnealing = optimalTOfAnnealing;
         this.purificationMethod = purificationMethod;
-        this.amountAvailable = amountAvailable;
-        this.amountAvailableUnit = amountAvailableUnit;
+        this.amountAvailableMikroL = amountAvailableMikroL;
+        this.amountAvailablePacks = amountAvailablePacks;
+        this.amountAvailablePackSize = amountAvailablePackSize;
         this.date = date;
         this.lengthOfAmplicone = lengthOfAmplicone;
         this.storingT = storingT;
         this.GCPercent = GCPercent;
+        this.organism = organism;
+        this.gen = gen;
+        this.ncbiGenId = ncbiGenId;
+        this.humanGenomBuild = humanGenomBuild;
+        this.formulation = formulation;
+        this.typeOfPrimer = typeOfPrimer;
+        this.sondaSequence = sondaSequence;
+        this.assayId = assayId;
+        this.size = size;
+        this.primerApplication = primerApplication;
     }
 
     @JsonProperty
@@ -116,7 +168,7 @@ public class Primer {
         return sequence;
     }
 
-    public void setSequence() {
+    public void setSequence(String sequence) {
         this.sequence = sequence;
     }
 
@@ -125,7 +177,7 @@ public class Primer {
         return orientation;
     }
 
-    public void setOrientation() {
+    public void setOrientation(Orientation orientation) {
         this.orientation = orientation;
     }
 
@@ -134,34 +186,34 @@ public class Primer {
         return length;
     }
 
-    public void setLength() {
+    public void setLength(int length) {
         this.length = length;
     }
 
     @JsonProperty
-    public String getFreezer() {
+    public Freezer getFreezer() {
         return freezer;
     }
 
-    public void setFreezer() {
+    public void setFreezer(Freezer freezer) {
         this.freezer = freezer;
     }
 
     @JsonProperty
-    public int getDrawer() {
+    public Drawer getDrawer() {
         return drawer;
     }
 
-    public void setDrawer() {
+    public void setDrawer(Drawer drawer) {
         this.drawer = drawer;
     }
 
     @JsonProperty
-    public String getBox() {
+    public Box getBox() {
         return box;
     }
 
-    public void setBox() {
+    public void setBox(Box box) {
         this.box = box;
     }
 
@@ -192,7 +244,7 @@ public class Primer {
         this.optimalTOfAnnealing = optimalTOfAnnealing;
     }
 
-    @JsonProperty
+
     public PurificationMethod getPurificationMethod() {
         return purificationMethod;
     }
@@ -202,21 +254,31 @@ public class Primer {
     }
 
     @JsonProperty
-    public double getAmountAvailable() {
-        return amountAvailable;
+    public double getAmountAvailableMikroL() {
+        return amountAvailableMikroL;
     }
 
-    public void setAmountAvailable(double amountAvailable) {
-        this.amountAvailable = amountAvailable;
+    public void setAmountAvailableMikroL(double amountAvailableMikroL) {
+        this.amountAvailableMikroL = amountAvailableMikroL;
     }
 
     @JsonProperty
-    public AmountAvailableUnit getAmountAvailableUnit() {
-        return amountAvailableUnit;
+    public int getAmountAvailablePacks() {
+        return amountAvailablePacks;
     }
 
-    public void setAmountAvailableUnit(AmountAvailableUnit amountAvailableUnit) {
-        this.amountAvailableUnit = amountAvailableUnit;
+
+    public void setAmountAvailablePacks(int amountAvailablePacks) {
+        this.amountAvailablePacks = amountAvailablePacks;
+    }
+
+    @JsonProperty
+    public AmountAvailablePackSize getAmountAvailablePackSize() {
+        return amountAvailablePackSize;
+    }
+
+    public void setAmountAvailablePackSize(AmountAvailablePackSize amountAvailablePackSize) {
+        this.amountAvailablePackSize = amountAvailablePackSize;
     }
 
     @JsonProperty
@@ -253,6 +315,96 @@ public class Primer {
 
     public void setGCPercent(double GCPercent) {
         this.GCPercent = GCPercent;
+    }
+
+    @JsonProperty
+    public Organism getOrganism() {
+        return organism;
+    }
+
+    public void setOrganism(Organism organism) {
+        this.organism = organism;
+    }
+
+    @JsonProperty
+    public String getGen() {
+        return gen;
+    }
+
+    public void setGen(String gen) {
+        this.gen = gen;
+    }
+
+    @JsonProperty
+    public String getNcbiGenId() {
+        return ncbiGenId;
+    }
+
+    public void setNcbiGenId(String ncbiGenId) {
+        this.ncbiGenId = ncbiGenId;
+    }
+
+    @JsonProperty
+    public HumanGenomBuild getHumanGenomBuild() {
+        return humanGenomBuild;
+    }
+
+    public void setHumanGenomBuild(HumanGenomBuild humanGenomBuild) {
+        this.humanGenomBuild = humanGenomBuild;
+    }
+
+    @JsonProperty
+    public Formulation getFormulation() {
+        return formulation;
+    }
+
+    public void setFormulation(Formulation formulation) {
+        this.formulation = formulation;
+    }
+
+    @JsonProperty
+    public TypeOfPrimer getTypeOfPrimer() {
+        return typeOfPrimer;
+    }
+
+    public void setTypeOfPrimer(TypeOfPrimer typeOfPrimer) {
+        this.typeOfPrimer = typeOfPrimer;
+    }
+
+    @JsonProperty
+    public String getSondaSequence() {
+        return sondaSequence;
+    }
+
+    public void setSondaSequence(String sondaSequence) {
+        this.sondaSequence = sondaSequence;
+    }
+
+    @JsonProperty
+    public String getAssayId() {
+        return assayId;
+    }
+
+    public void setAssayId(String assayId) {
+        this.assayId = assayId;
+    }
+
+    @JsonProperty
+    public Size getSize() {
+        return size;
+    }
+
+    public void setSize(Size size) {
+        this.size = size;
+    }
+
+    @JsonProperty
+    public PrimerApplication getPrimerApplication() {
+        return primerApplication;
+    }
+
+    public void setPrimerApplication(PrimerApplication primerApplication) {
+        this.primerApplication = primerApplication;
     }
 }
 

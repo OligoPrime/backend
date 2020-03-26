@@ -1,7 +1,7 @@
 package si.fri.resources;
 
 import io.dropwizard.hibernate.UnitOfWork;
-import si.fri.core.AmountAvailableUnit;
+import si.fri.core.AmountAvailablePackSize;
 import si.fri.core.Orientation;
 import si.fri.core.PositionInReference;
 import si.fri.core.Primer;

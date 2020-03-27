@@ -7,6 +7,6 @@ services:
   backend:
     image: "bioprime/backend:latest"
     env_file:
-      - ./home/bioprime/env.list
+      - /home/bioprime/env.list
     ports:
       - "8080:8080"

@@ -1,0 +1,12 @@
+version: '3'
+services:
+  frontend:
+    image: "bioprime/frontend:latest"
+    ports:
+      - "80:80"
+  backend:
+    image: "bioprime/backend:latest"
+    env_file:
+      - /home/bioprime/env.list
+    ports:
+      - "8080:8080"

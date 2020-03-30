@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="BackendApplication-LocalEnv" type="Application" factoryName="Application">
+    <option name="MAIN_CLASS_NAME" value="si.fri.BackendApplication" />
+    <module name="backend" />
+    <option name="PROGRAM_PARAMETERS" value="server dev-config.yml" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

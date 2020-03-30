@@ -20,6 +20,9 @@ public class Primer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    private String generatedName;
+
+    @Column(nullable = false)
     private String name;
 
     @Column(length = 50)
@@ -104,6 +107,44 @@ public class Primer {
     @JoinColumn(name = "primerApplication_id", referencedColumnName = "id", nullable = false)
     private PrimerApplication primerApplication;
 
+    @ManyToOne(targetEntity = FiveModification.class)
+    @JoinColumn(name = "fiveModification_id", referencedColumnName = "id", nullable = false)
+    private FiveModification fiveModification;
+
+    @ManyToOne(targetEntity = ThreeModification.class)
+    @JoinColumn(name = "threeModification_id", referencedColumnName = "id", nullable = false)
+    private ThreeModification threeModification;
+
+    private int concentrationOrdered;
+
+    private ConcentrationOrderedUnit concentrationOrderedUnit;
+
+    private boolean checkSpecifityInBlast;
+
+    private String designerName;
+
+    private String designerPublication;
+
+    private String designerDatabase;
+
+    @ManyToOne(targetEntity = Project.class)
+    @JoinColumn(name = "project_id", referencedColumnName = "id")
+    private Project project;
+
+    private String orderedBy;
+
+    @ManyToOne(targetEntity = Supplier.class)
+    @JoinColumn(name = "supplier_id", referencedColumnName = "id")
+    private Supplier supplier;
+
+    @ManyToOne(targetEntity = Manufacturer.class)
+    @JoinColumn(name = "manufacturer_id", referencedColumnName = "id")
+    private Manufacturer manufacturer;
+
+    private String comment;
+
+    private String document;
+
     public Primer() {
         // Jackson deserialization
     }
@@ -114,7 +155,11 @@ public class Primer {
                   AmountAvailablePackSize amountAvailablePackSize, Date date, int lengthOfAmplicone, double storingT,
                   double GCPercent, Organism organism, String gen, String ncbiGenId, HumanGenomBuild humanGenomBuild,
                   Formulation formulation, TypeOfPrimer typeOfPrimer, String sondaSequence, String assayId, Size size,
-                  PrimerApplication primerApplication) {
+                  PrimerApplication primerApplication, String generatedName, FiveModification fiveModification,
+                  ThreeModification threeModification, int concentrationOrdered, ConcentrationOrderedUnit concentrationOrderedUnit,
+                  boolean checkSpecifityInBlast, String designerName, String designerPublication, String designerDatabase,
+                  Project project, String orderedBy, Supplier supplier, Manufacturer manufacturer, String comment,
+                  String document) {
         this.name = name;
         this.sequence = sequence;
         this.orientation = orientation;
@@ -143,6 +188,21 @@ public class Primer {
         this.assayId = assayId;
         this.size = size;
         this.primerApplication = primerApplication;
+        this.generatedName = generatedName;
+        this.fiveModification = fiveModification;
+        this.threeModification = threeModification;
+        this.concentrationOrdered = concentrationOrdered;
+        this.concentrationOrderedUnit = concentrationOrderedUnit;
+        this.checkSpecifityInBlast = checkSpecifityInBlast;
+        this.designerName = designerName;
+        this.designerPublication = designerPublication;
+        this.designerDatabase = designerDatabase;
+        this.project = project;
+        this.orderedBy = orderedBy;
+        this.supplier = supplier;
+        this.manufacturer = manufacturer;
+        this.comment = comment;
+        this.document = document;
     }
 
     @JsonProperty
@@ -152,6 +212,15 @@ public class Primer {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    @JsonProperty
+    public String getGeneratedName() {
+        return generatedName;
+    }
+
+    public void setGeneratedName(String generatedName) {
+        this.generatedName = generatedName;
     }
 
     @JsonProperty
@@ -405,6 +474,132 @@ public class Primer {
 
     public void setPrimerApplication(PrimerApplication primerApplication) {
         this.primerApplication = primerApplication;
+    }
+
+    @JsonProperty
+    public FiveModification getFiveModification() {
+        return fiveModification;
+    }
+
+    public void setFiveModification(FiveModification fiveModification) {
+        this.fiveModification = fiveModification;
+    }
+
+    @JsonProperty
+    public ThreeModification getThreeModification() {
+        return threeModification;
+    }
+
+    public void setThreeModification(ThreeModification threeModification) {
+        this.threeModification = threeModification;
+    }
+
+    @JsonProperty
+    public int getConcentrationOrdered() {
+        return concentrationOrdered;
+    }
+
+    public void setConcentrationOrdered(int concentrationOrdered) {
+        this.concentrationOrdered = concentrationOrdered;
+    }
+
+    @JsonProperty
+    public ConcentrationOrderedUnit getConcentrationOrderedUnit() {
+        return concentrationOrderedUnit;
+    }
+
+    public void setConcentrationOrderedUnit(ConcentrationOrderedUnit concentrationOrderedUnit) {
+        this.concentrationOrderedUnit = concentrationOrderedUnit;
+    }
+
+
+    public boolean isCheckSpecifityInBlast() {
+        return checkSpecifityInBlast;
+    }
+
+    public void setCheckSpecifityInBlast(boolean checkSpecifityInBlast) {
+        this.checkSpecifityInBlast = checkSpecifityInBlast;
+    }
+
+    @JsonProperty
+    public String getDesignerName() {
+        return designerName;
+    }
+
+    public void setDesignerName(String designerName) {
+        this.designerName = designerName;
+    }
+
+    @JsonProperty
+    public String getDesignerPublication() {
+        return designerPublication;
+    }
+
+    public void setDesignerPublication(String designerPublication) {
+        this.designerPublication = designerPublication;
+    }
+
+    @JsonProperty
+    public String getDesignerDatabase() {
+        return designerDatabase;
+    }
+
+    public void setDesignerDatabase(String designerDatabase) {
+        this.designerDatabase = designerDatabase;
+    }
+
+    @JsonProperty
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
+    }
+
+    @JsonProperty
+    public String getOrderedBy() {
+        return orderedBy;
+    }
+
+    public void setOrderedBy(String orderedBy) {
+        this.orderedBy = orderedBy;
+    }
+
+    @JsonProperty
+    public Supplier getSupplier() {
+        return supplier;
+    }
+
+    public void setSupplier(Supplier supplier) {
+        this.supplier = supplier;
+    }
+
+    @JsonProperty
+    public Manufacturer getManufacturer() {
+        return manufacturer;
+    }
+
+    public void setManufacturer(Manufacturer manufacturer) {
+        this.manufacturer = manufacturer;
+    }
+
+    @JsonProperty
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    @JsonProperty
+    public String getDocument() {
+        return document;
+    }
+
+    public void setDocument(String document) {
+        this.document = document;
     }
 }
 

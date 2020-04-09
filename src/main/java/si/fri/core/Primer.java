@@ -22,41 +22,41 @@ public class Primer {
 
     private String generatedName;
 
-    @Column(nullable = false)
+    @Column
     private String name;
 
     @Column(length = 50)
     private String sequence;
 
     // not sure if stays
-    @Column(nullable = false)
+    @Column
     private Orientation orientation;
 
     private int length;
 
     @ManyToOne(targetEntity = Freezer.class)
-    @JoinColumn(name = "freezer_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "freezer_id", referencedColumnName = "id")
     private Freezer freezer;
 
     @ManyToOne(targetEntity = Drawer.class)
-    @JoinColumn(name = "drawer_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "drawer_id", referencedColumnName = "id")
     private Drawer drawer;
 
     @ManyToOne(targetEntity = Box.class)
-    @JoinColumn(name = "box_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "box_id", referencedColumnName = "id")
     private Box box;
 
     @ManyToOne(targetEntity = PositionInReference.class)
-    @JoinColumn(name = "positionInReference_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "positionInReference_id", referencedColumnName = "id")
     private PositionInReference positionInReference;
 
-    @Column(nullable = false)
+    @Column
     private double Tm;
 
     private double optimalTOfAnnealing;
 
     @ManyToOne(targetEntity = PurificationMethod.class)
-    @JoinColumn(name = "purificationMethod_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "purificationMethod_id", referencedColumnName = "id")
     private PurificationMethod purificationMethod;
 
     private double amountAvailableMikroL;
@@ -75,10 +75,10 @@ public class Primer {
     private double GCPercent;
 
     @ManyToOne(targetEntity = Organism.class)
-    @JoinColumn(name = "organism_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "organism_id", referencedColumnName = "id")
     private Organism organism;
 
-    @Column(nullable = false)
+    @Column
     private String gen;
 
     private String ncbiGenId;
@@ -88,11 +88,11 @@ public class Primer {
     private HumanGenomBuild humanGenomBuild;
 
     @ManyToOne(targetEntity = Formulation.class)
-    @JoinColumn(name = "formulation_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "formulation_id", referencedColumnName = "id")
     private Formulation formulation;
 
     @ManyToOne(targetEntity = TypeOfPrimer.class)
-    @JoinColumn(name = "typeOfPrimer_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "typeOfPrimer_id", referencedColumnName = "id")
     private TypeOfPrimer typeOfPrimer;
 
     @Column(length = 50)
@@ -104,15 +104,17 @@ public class Primer {
     private Size size;
 
     @ManyToOne(targetEntity = PrimerApplication.class)
-    @JoinColumn(name = "primerApplication_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "primerApplication_id", referencedColumnName = "id")
     private PrimerApplication primerApplication;
 
+    private String applicationComment;
+
     @ManyToOne(targetEntity = FiveModification.class)
-    @JoinColumn(name = "fiveModification_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "fiveModification_id", referencedColumnName = "id")
     private FiveModification fiveModification;
 
     @ManyToOne(targetEntity = ThreeModification.class)
-    @JoinColumn(name = "threeModification_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "threeModification_id", referencedColumnName = "id")
     private ThreeModification threeModification;
 
     private int concentrationOrdered;
@@ -145,6 +147,12 @@ public class Primer {
 
     private String document;
 
+    private String analysis;
+
+    @ManyToOne(targetEntity = User.class)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
+
     public Primer() {
         // Jackson deserialization
     }
@@ -155,11 +163,11 @@ public class Primer {
                   AmountAvailablePackSize amountAvailablePackSize, Date date, int lengthOfAmplicone, double storingT,
                   double GCPercent, Organism organism, String gen, String ncbiGenId, HumanGenomBuild humanGenomBuild,
                   Formulation formulation, TypeOfPrimer typeOfPrimer, String sondaSequence, String assayId, Size size,
-                  PrimerApplication primerApplication, String generatedName, FiveModification fiveModification,
+                  PrimerApplication primerApplication, String applicationComment, String generatedName, FiveModification fiveModification,
                   ThreeModification threeModification, int concentrationOrdered, ConcentrationOrderedUnit concentrationOrderedUnit,
                   boolean checkSpecifityInBlast, String designerName, String designerPublication, String designerDatabase,
                   Project project, String orderedBy, Supplier supplier, Manufacturer manufacturer, String comment,
-                  String document) {
+                  String document, String analysis, User user) {
         this.name = name;
         this.sequence = sequence;
         this.orientation = orientation;
@@ -188,6 +196,7 @@ public class Primer {
         this.assayId = assayId;
         this.size = size;
         this.primerApplication = primerApplication;
+        this.applicationComment = applicationComment;
         this.generatedName = generatedName;
         this.fiveModification = fiveModification;
         this.threeModification = threeModification;
@@ -203,6 +212,8 @@ public class Primer {
         this.manufacturer = manufacturer;
         this.comment = comment;
         this.document = document;
+        this.user = user;
+        this.analysis = analysis;
     }
 
     @JsonProperty
@@ -477,6 +488,15 @@ public class Primer {
     }
 
     @JsonProperty
+    public String getApplicationComment() {
+        return applicationComment;
+    }
+
+    public void setApplicationComment(String applicationComment) {
+        this.applicationComment = applicationComment;
+    }
+
+    @JsonProperty
     public FiveModification getFiveModification() {
         return fiveModification;
     }
@@ -600,6 +620,24 @@ public class Primer {
 
     public void setDocument(String document) {
         this.document = document;
+    }
+
+    @JsonProperty
+    public String getAnalysis() {
+        return analysis;
+    }
+
+    public void setAnalysis(String analysis) {
+        this.analysis = analysis;
+    }
+
+    @JsonProperty
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
 

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import java.security.Principal;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -25,6 +26,10 @@ public class User implements Principal {
     private String password;
 
     private String role;
+
+    @OneToMany
+    @JoinColumn(name = "user_id")
+    private Set<Primer> primers;
 
     public User() {
     }

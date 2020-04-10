@@ -2,7 +2,6 @@ package si.fri.resources;
 
 import io.dropwizard.hibernate.UnitOfWork;
 import si.fri.core.*;
-import si.fri.db.FreezerDAO;
 import si.fri.db.PrimerDAO;
 
 import javax.ws.rs.GET;
@@ -76,19 +75,19 @@ public class PrimerResource {
         generatedName += delimiter;
 
         String organismName = organism.getOrganism();
-        if (organismName == "Escherichia coli TG1") {
+        if (organismName.equals("Escherichia coli TG1")) {
             generatedName += "G1";
         }
-        else if (organismName == "Escherichia coli WK6") {
+        else if (organismName.equals("Escherichia coli WK6")) {
             generatedName += "K6";
         }
-        else if (organismName == "Homo sapiens") {
+        else if (organismName.equals("Homo sapiens")) {
             generatedName += "HS";
         }
-        else if (organismName == "Mus musculus") {
+        else if (organismName.equals("Mus musculus")) {
             generatedName += "MM";
         }
-        else if (organismName == "Rattus norvegicus domestica") {
+        else if (organismName.equals("Rattus norvegicus domestica")) {
             generatedName += "RN";
         }
         else {

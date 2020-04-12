@@ -22,7 +22,7 @@ public class Primer {
 
     private String generatedName;
 
-    @Column
+    @Column(nullable = false)
     private String name;
 
     @Column(length = 50)
@@ -35,19 +35,19 @@ public class Primer {
     private int length;
 
     @ManyToOne(targetEntity = Freezer.class)
-    @JoinColumn(name = "freezer_id", referencedColumnName = "id")
+    @JoinColumn(name = "freezer_id", referencedColumnName = "id", nullable = false)
     private Freezer freezer;
 
     @ManyToOne(targetEntity = Drawer.class)
-    @JoinColumn(name = "drawer_id", referencedColumnName = "id")
+    @JoinColumn(name = "drawer_id", referencedColumnName = "id", nullable = false)
     private Drawer drawer;
 
     @ManyToOne(targetEntity = Box.class)
-    @JoinColumn(name = "box_id", referencedColumnName = "id")
+    @JoinColumn(name = "box_id", referencedColumnName = "id", nullable = false)
     private Box box;
 
     @ManyToOne(targetEntity = PositionInReference.class)
-    @JoinColumn(name = "positionInReference_id", referencedColumnName = "id")
+    @JoinColumn(name = "positionInReference_id", referencedColumnName = "id", nullable = false)
     private PositionInReference positionInReference;
 
     @Column
@@ -56,7 +56,7 @@ public class Primer {
     private double optimalTOfAnnealing;
 
     @ManyToOne(targetEntity = PurificationMethod.class)
-    @JoinColumn(name = "purificationMethod_id", referencedColumnName = "id")
+    @JoinColumn(name = "purificationMethod_id", referencedColumnName = "id", nullable = false)
     private PurificationMethod purificationMethod;
 
     private double amountAvailableMikroL;
@@ -75,10 +75,10 @@ public class Primer {
     private double GCPercent;
 
     @ManyToOne(targetEntity = Organism.class)
-    @JoinColumn(name = "organism_id", referencedColumnName = "id")
+    @JoinColumn(name = "organism_id", referencedColumnName = "id", nullable = false)
     private Organism organism;
 
-    @Column
+    @Column(nullable = false)
     private String gen;
 
     private String ncbiGenId;
@@ -88,11 +88,11 @@ public class Primer {
     private HumanGenomBuild humanGenomBuild;
 
     @ManyToOne(targetEntity = Formulation.class)
-    @JoinColumn(name = "formulation_id", referencedColumnName = "id")
+    @JoinColumn(name = "formulation_id", referencedColumnName = "id", nullable = false)
     private Formulation formulation;
 
     @ManyToOne(targetEntity = TypeOfPrimer.class)
-    @JoinColumn(name = "typeOfPrimer_id", referencedColumnName = "id")
+    @JoinColumn(name = "typeOfPrimer_id", referencedColumnName = "id", nullable = false)
     private TypeOfPrimer typeOfPrimer;
 
     @Column(length = 50)
@@ -104,17 +104,17 @@ public class Primer {
     private Size size;
 
     @ManyToOne(targetEntity = PrimerApplication.class)
-    @JoinColumn(name = "primerApplication_id", referencedColumnName = "id")
+    @JoinColumn(name = "primerApplication_id", referencedColumnName = "id", nullable = false)
     private PrimerApplication primerApplication;
 
     private String applicationComment;
 
     @ManyToOne(targetEntity = FiveModification.class)
-    @JoinColumn(name = "fiveModification_id", referencedColumnName = "id")
+    @JoinColumn(name = "fiveModification_id", referencedColumnName = "id", nullable = false)
     private FiveModification fiveModification;
 
     @ManyToOne(targetEntity = ThreeModification.class)
-    @JoinColumn(name = "threeModification_id", referencedColumnName = "id")
+    @JoinColumn(name = "threeModification_id", referencedColumnName = "id", nullable = false)
     private ThreeModification threeModification;
 
     private int concentrationOrdered;
@@ -149,6 +149,8 @@ public class Primer {
 
     private String analysis;
 
+    private OrderStatus orderStatus;
+
     @ManyToOne(targetEntity = User.class)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
@@ -157,21 +159,40 @@ public class Primer {
         // Jackson deserialization
     }
 
-    public Primer(String name, String sequence, Orientation orientation, int length, Freezer freezer, Drawer drawer,
+    public Primer(String name, String sequence, Orientation orientation, Freezer freezer, Drawer drawer,
                   Box box, PositionInReference positionInReference, double Tm, double optimalTOfAnnealing,
                   PurificationMethod purificationMethod, double amountAvailableMikroL, int amountAvailablePacks,
                   AmountAvailablePackSize amountAvailablePackSize, Date date, int lengthOfAmplicone, double storingT,
                   double GCPercent, Organism organism, String gen, String ncbiGenId, HumanGenomBuild humanGenomBuild,
                   Formulation formulation, TypeOfPrimer typeOfPrimer, String sondaSequence, String assayId, Size size,
-                  PrimerApplication primerApplication, String applicationComment, String generatedName, FiveModification fiveModification,
+                  PrimerApplication primerApplication, String applicationComment, FiveModification fiveModification,
                   ThreeModification threeModification, int concentrationOrdered, ConcentrationOrderedUnit concentrationOrderedUnit,
                   boolean checkSpecifityInBlast, String designerName, String designerPublication, String designerDatabase,
                   Project project, String orderedBy, Supplier supplier, Manufacturer manufacturer, String comment,
-                  String document, String analysis, User user) {
+                  String document, String analysis, OrderStatus orderStatus, User user) {
+
+        // check that required attributes are nonempty
+        if (!typeOfPrimer.getTypeOfPrimer().equals("TaqProbe")) {
+            if (sequence == null) {
+                throw new IllegalArgumentException("Attribute 'sequence' must not be empty!");
+            }
+            else if (sequence.isEmpty()) {
+                throw new IllegalArgumentException("Attribute 'sequence' must not be empty!");
+            }
+            if (assayId == null) {
+                throw new IllegalArgumentException("Attribute 'assayId' must not be empty!");
+            }
+            else if (assayId.isEmpty()) {
+                throw new IllegalArgumentException("Attribute 'assayId' must not be empty!");
+            }
+            if (size == null) {
+                throw new IllegalArgumentException("Attribute 'size' must not be empty!");
+            }
+        }
+
         this.name = name;
         this.sequence = sequence;
         this.orientation = orientation;
-        this.length = length;
         this.freezer = freezer;
         this.drawer = drawer;
         this.box = box;
@@ -197,7 +218,6 @@ public class Primer {
         this.size = size;
         this.primerApplication = primerApplication;
         this.applicationComment = applicationComment;
-        this.generatedName = generatedName;
         this.fiveModification = fiveModification;
         this.threeModification = threeModification;
         this.concentrationOrdered = concentrationOrdered;
@@ -213,7 +233,61 @@ public class Primer {
         this.comment = comment;
         this.document = document;
         this.user = user;
+        this.orderStatus = orderStatus;
         this.analysis = analysis;
+        calculateLength();
+    }
+
+    public void generateName() {
+
+        String delimiter = "-";
+        String generatedName = "";
+
+        if (orientation == Orientation.REVERSE) {
+            generatedName += "R";
+        }
+        else if (orientation == Orientation.FORWARD) {
+            generatedName += "F";
+        }
+        else {
+            generatedName += "X";
+        }
+
+        generatedName += delimiter;
+
+        String organismName = organism.getOrganism();
+        switch (organismName) {
+            case "Escherichia coli TG1":
+                generatedName += "G1";
+                break;
+            case "Escherichia coli WK6":
+                generatedName += "K6";
+                break;
+            case "Homo sapiens":
+                generatedName += "HS";
+                break;
+            case "Mus musculus":
+                generatedName += "MM";
+                break;
+            case "Rattus norvegicus domestica":
+                generatedName += "RN";
+                break;
+            default:
+                generatedName += "XX";
+                break;
+        }
+        generatedName += delimiter;
+
+        generatedName += ncbiGenId;
+        generatedName += delimiter;
+
+        generatedName += String.valueOf(id);
+
+        this.generatedName = generatedName;
+    }
+
+    public void calculateLength() {
+        this.length = this.sequence.length();
     }
 
     @JsonProperty
@@ -629,6 +703,15 @@ public class Primer {
 
     public void setAnalysis(String analysis) {
         this.analysis = analysis;
+    }
+
+    @JsonProperty
+    public OrderStatus getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
     }
 
     @JsonProperty

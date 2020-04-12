@@ -19,7 +19,9 @@ public class PrimerDAO extends AbstractDAO<Primer> {
     }
 
     public Primer create(Primer primer) {
-        return persist(primer);
+        Primer p = persist(primer);
+        p.generateName();
+        return p;
     }
 
     @SuppressWarnings("unchecked")

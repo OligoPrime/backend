@@ -1,10 +1,9 @@
 package si.fri.core;
 
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import com.fasterxml.jackson.annotation.*;
 import javax.persistence.*;
-import java.util.Date;
+import java.util.*;
 
 @Entity
 @Table(name = "primers")
@@ -36,18 +35,26 @@ public class Primer {
 
     @ManyToOne(targetEntity = Freezer.class)
     @JoinColumn(name = "freezer_id", referencedColumnName = "id", nullable = false)
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "freezer")
+    @JsonIdentityReference(alwaysAsId = true)
     private Freezer freezer;
 
     @ManyToOne(targetEntity = Drawer.class)
     @JoinColumn(name = "drawer_id", referencedColumnName = "id", nullable = false)
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "drawer")
+    @JsonIdentityReference(alwaysAsId = true)
     private Drawer drawer;
 
     @ManyToOne(targetEntity = Box.class)
     @JoinColumn(name = "box_id", referencedColumnName = "id", nullable = false)
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "box")
+    @JsonIdentityReference(alwaysAsId = true)
     private Box box;
 
     @ManyToOne(targetEntity = PositionInReference.class)
     @JoinColumn(name = "positionInReference_id", referencedColumnName = "id", nullable = false)
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "positionInReference")
+    @JsonIdentityReference(alwaysAsId = true)
     private PositionInReference positionInReference;
 
     @Column
@@ -57,6 +64,8 @@ public class Primer {
 
     @ManyToOne(targetEntity = PurificationMethod.class)
     @JoinColumn(name = "purificationMethod_id", referencedColumnName = "id", nullable = false)
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "purificationMethod")
+    @JsonIdentityReference(alwaysAsId = true)
     private PurificationMethod purificationMethod;
 
     private double amountAvailableMikroL;
@@ -76,6 +85,8 @@ public class Primer {
 
     @ManyToOne(targetEntity = Organism.class)
     @JoinColumn(name = "organism_id", referencedColumnName = "id", nullable = false)
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "organism")
+    @JsonIdentityReference(alwaysAsId = true)
     private Organism organism;
 
     @Column(nullable = false)
@@ -85,14 +96,20 @@ public class Primer {
 
     @ManyToOne(targetEntity = HumanGenomBuild.class)
     @JoinColumn(name = "humanGenomBuild_id", referencedColumnName = "id")
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "humanGenomBuild")
+    @JsonIdentityReference(alwaysAsId = true)
     private HumanGenomBuild humanGenomBuild;
 
     @ManyToOne(targetEntity = Formulation.class)
     @JoinColumn(name = "formulation_id", referencedColumnName = "id", nullable = false)
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "formulation")
+    @JsonIdentityReference(alwaysAsId = true)
     private Formulation formulation;
 
     @ManyToOne(targetEntity = TypeOfPrimer.class)
     @JoinColumn(name = "typeOfPrimer_id", referencedColumnName = "id", nullable = false)
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "typeOfPrimer")
+    @JsonIdentityReference(alwaysAsId = true)
     private TypeOfPrimer typeOfPrimer;
 
     @Column(length = 50)
@@ -105,16 +122,22 @@ public class Primer {
 
     @ManyToOne(targetEntity = PrimerApplication.class)
     @JoinColumn(name = "primerApplication_id", referencedColumnName = "id", nullable = false)
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "primerApplication")
+    @JsonIdentityReference(alwaysAsId = true)
     private PrimerApplication primerApplication;
 
     private String applicationComment;
 
     @ManyToOne(targetEntity = FiveModification.class)
     @JoinColumn(name = "fiveModification_id", referencedColumnName = "id", nullable = false)
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "fiveModification")
+    @JsonIdentityReference(alwaysAsId = true)
     private FiveModification fiveModification;
 
     @ManyToOne(targetEntity = ThreeModification.class)
     @JoinColumn(name = "threeModification_id", referencedColumnName = "id", nullable = false)
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "threeModification")
+    @JsonIdentityReference(alwaysAsId = true)
     private ThreeModification threeModification;
 
     private int concentrationOrdered;
@@ -131,16 +154,22 @@ public class Primer {
 
     @ManyToOne(targetEntity = Project.class)
     @JoinColumn(name = "project_id", referencedColumnName = "id")
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "project")
+    @JsonIdentityReference(alwaysAsId = true)
     private Project project;
 
     private String orderedBy;
 
     @ManyToOne(targetEntity = Supplier.class)
     @JoinColumn(name = "supplier_id", referencedColumnName = "id")
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "supplier")
+    @JsonIdentityReference(alwaysAsId = true)
     private Supplier supplier;
 
     @ManyToOne(targetEntity = Manufacturer.class)
     @JoinColumn(name = "manufacturer_id", referencedColumnName = "id")
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "manufacturer")
+    @JsonIdentityReference(alwaysAsId = true)
     private Manufacturer manufacturer;
 
     private String comment;
@@ -153,7 +182,26 @@ public class Primer {
 
     @ManyToOne(targetEntity = User.class)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "username")
+    @JsonIdentityReference(alwaysAsId = true)
     private User user;
+
+    @ManyToMany
+    @JoinTable(name="primerPairs",
+            joinColumns=@JoinColumn(name="primer1_id"),
+            inverseJoinColumns=@JoinColumn(name="primer2_id")
+    )
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference(alwaysAsId = true)
+    private Set<Primer> pairs = new HashSet<>();
+
+    @ManyToMany
+    @JoinTable(name="primerPairs",
+            joinColumns=@JoinColumn(name="primer2_id"),
+            inverseJoinColumns=@JoinColumn(name="primer1_id")
+    )
+    @JsonIgnore
+    private Set<Primer> pairsOf = new HashSet<>();
 
     public Primer() {
         // Jackson deserialization
@@ -278,7 +326,15 @@ public class Primer {
         }
         generatedName += delimiter;
 
-        generatedName += ncbiGenId;
+        if (ncbiGenId == null) {
+            generatedName += "XXX";
+        }
+        else if (ncbiGenId.isEmpty()) {
+            generatedName += "XXX";
+        }
+        else {
+            generatedName += ncbiGenId;
+        }
         generatedName += delimiter;
 
         generatedName += String.valueOf(id);
@@ -288,6 +344,11 @@ public class Primer {
 
     public void calculateLength() {
         this.length = this.sequence.length();
+    }
+
+    public void pairWith(Primer primer) {
+        this.pairs.add(primer);
+        this.pairsOf.add(primer);
     }
 
     @JsonProperty
@@ -721,6 +782,11 @@ public class Primer {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    @JsonProperty
+    public Set<Primer> getPairs() {
+        return pairs;
     }
 }
 

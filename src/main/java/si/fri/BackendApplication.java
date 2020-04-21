@@ -1,9 +1,11 @@
 package si.fri;
 
+import com.github.benmanes.caffeine.cache.CaffeineSpec;
 import io.dropwizard.Application;
 import io.dropwizard.auth.AuthDynamicFeature;
 import io.dropwizard.auth.AuthValueFactoryProvider;
-import io.dropwizard.auth.basic.BasicCredentialAuthFilter;
+import io.dropwizard.auth.CachingAuthenticator;
+import io.dropwizard.auth.oauth.OAuthCredentialAuthFilter;
 import io.dropwizard.configuration.EnvironmentVariableSubstitutor;
 import io.dropwizard.configuration.SubstitutingSourceProvider;
 import io.dropwizard.db.DataSourceFactory;
@@ -11,17 +13,22 @@ import io.dropwizard.hibernate.HibernateBundle;
 import io.dropwizard.hibernate.UnitOfWorkAwareProxyFactory;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
 import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 import si.fri.auth.SimpleAuthenticator;
 import si.fri.auth.SimpleAuthorizer;
 import si.fri.core.*;
 import si.fri.db.HelloDAO;
-import si.fri.db.UserDAO;
 import si.fri.db.PrimerDAO;
+import si.fri.db.UserDAO;
 import si.fri.health.BasicHealthCheck;
+import si.fri.resources.AuthenticationResource;
 import si.fri.resources.HelloResource;
-import si.fri.resources.UserResource;
 import si.fri.resources.PrimerResource;
+import si.fri.resources.UserResource;
+
+import java.security.Key;
 
 public class BackendApplication extends Application<BackendConfiguration> {
 
@@ -58,15 +65,23 @@ public class BackendApplication extends Application<BackendConfiguration> {
         final UserDAO userDAO = new UserDAO(hibernate.getSessionFactory());
         final PrimerDAO primerDAO = new PrimerDAO(hibernate.getSessionFactory());
 
+        final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+
 
         SimpleAuthenticator simpleAuthenticator = new UnitOfWorkAwareProxyFactory(hibernate)
-                .create(SimpleAuthenticator.class, UserDAO.class, userDAO);
+                .create(SimpleAuthenticator.class, new Class<?>[]{UserDAO.class, Key.class}, new Object[]{userDAO, key});
 
-        environment.jersey().register(new AuthDynamicFeature(new BasicCredentialAuthFilter.Builder<User>()
-                .setAuthenticator(simpleAuthenticator)
-                .setAuthorizer(new SimpleAuthorizer())
-                .setRealm("BASIC REALM")
-                .buildAuthFilter()));
+        CachingAuthenticator<String, User> cachingAuthenticator = new CachingAuthenticator<>(
+                environment.metrics(), simpleAuthenticator,
+                CaffeineSpec.parse(configuration.getAuthenticationCachePolicy()));
+
+        environment.jersey().register(new AuthDynamicFeature(
+                new OAuthCredentialAuthFilter.Builder<User>()
+                        .setAuthenticator(cachingAuthenticator)
+                        .setAuthorizer(new SimpleAuthorizer())
+                        .setPrefix("Bearer")
+                        .buildAuthFilter()));
+        environment.jersey().register(RolesAllowedDynamicFeature.class);
         environment.jersey().register(new AuthValueFactoryProvider.Binder<>(User.class));
         environment.jersey().register(RolesAllowedDynamicFeature.class);
 
@@ -77,6 +92,7 @@ public class BackendApplication extends Application<BackendConfiguration> {
         ));
         environment.jersey().register(new UserResource(userDAO));
         environment.jersey().register(new PrimerResource(primerDAO));
+        environment.jersey().register(new AuthenticationResource(userDAO, key));
         environment.healthChecks().register("template", new BasicHealthCheck(configuration.getTemplate()));
 
 

@@ -3,7 +3,6 @@ package si.fri;
 import io.dropwizard.Configuration;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.dropwizard.db.DataSourceFactory;
-import org.hibernate.validator.constraints.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.*;
@@ -15,6 +14,9 @@ public class BackendConfiguration extends Configuration {
 
     @NotEmpty
     private String defaultName = "backend";
+
+    @NotEmpty
+    private String authenticationCachePolicy;
 
     @Valid
     @NotNull
@@ -48,5 +50,15 @@ public class BackendConfiguration extends Configuration {
     @JsonProperty
     public void setDefaultName(String name) {
         this.defaultName = name;
+    }
+
+    @JsonProperty
+    public String getAuthenticationCachePolicy() {
+        return authenticationCachePolicy;
+    }
+
+    @JsonProperty
+    public void setAuthenticationCachePolicy(String authenticationCachePolicy) {
+        this.authenticationCachePolicy = authenticationCachePolicy;
     }
 }

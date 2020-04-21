@@ -35,6 +35,9 @@ database:
   # whether or not idle connections should be validated
   checkConnectionWhileIdle: true
 
+# Caching authenticator.
+authenticationCachePolicy: maximumSize=10000, expireAfterAccess=10m
+
 logging:
   level: INFO
   loggers:

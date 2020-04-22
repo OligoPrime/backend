@@ -7,17 +7,6 @@ import java.util.Set;
 
 @Entity
 @Table(name = "freezer")
-@NamedQueries(
-        {
-                @NamedQuery(
-                        name = "si.fri.core.Freezer.findAll",
-                        query = "SELECT f FROM Freezer f"
-                ),
-                @NamedQuery(
-                        name = "si.fri.core.Freezer.findName",
-                        query = "SELECT f FROM Freezer f"
-                )
-        })
 
 public class Freezer {
     @Id

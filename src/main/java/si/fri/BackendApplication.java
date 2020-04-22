@@ -13,6 +13,7 @@ import io.dropwizard.hibernate.HibernateBundle;
 import io.dropwizard.hibernate.UnitOfWorkAwareProxyFactory;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
@@ -27,6 +28,7 @@ import si.fri.resources.AuthenticationResource;
 import si.fri.resources.HelloResource;
 import si.fri.resources.PrimerResource;
 import si.fri.resources.UserResource;
+import si.fri.resources.CsvResource;
 
 import java.security.Key;
 
@@ -92,6 +94,8 @@ public class BackendApplication extends Application<BackendConfiguration> {
         ));
         environment.jersey().register(new UserResource(userDAO));
         environment.jersey().register(new PrimerResource(primerDAO));
+        environment.jersey().register(new CsvResource());
+        environment.jersey().register(MultiPartFeature.class);
         environment.jersey().register(new AuthenticationResource(userDAO, key));
         environment.healthChecks().register("template", new BasicHealthCheck(configuration.getTemplate()));
 

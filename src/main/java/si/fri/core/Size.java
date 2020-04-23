@@ -16,4 +16,13 @@ public enum Size {
     public String toString() {
         return name;
     }
+
+    public static Size fromString(String name) {
+        for (Size o : Size.values()) {
+            if (o.name.equalsIgnoreCase(name)) {
+                return o;
+            }
+        }
+        return null;
+    }
 }

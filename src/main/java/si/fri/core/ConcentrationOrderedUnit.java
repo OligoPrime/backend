@@ -15,4 +15,13 @@ public enum ConcentrationOrderedUnit {
     public String toString() {
         return name;
     }
+
+    public static ConcentrationOrderedUnit fromString(String name) {
+        for (ConcentrationOrderedUnit o : ConcentrationOrderedUnit.values()) {
+            if (o.name.equalsIgnoreCase(name)) {
+                return o;
+            }
+        }
+        return null;
+    }
 }

@@ -12,6 +12,15 @@ public enum Orientation {
 
     @Override
     public String toString() {
-        return name;
+        return this.name;
+    }
+
+    public static Orientation fromString(String name) {
+        for (Orientation o : Orientation.values()) {
+            if (o.name.equalsIgnoreCase(name)) {
+                return o;
+            }
+        }
+        return null;
     }
 }

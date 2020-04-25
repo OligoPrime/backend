@@ -35,8 +35,7 @@ public class PrimerDAO extends AbstractDAO<Primer> {
         Query query = session.createQuery(hql);
         query.setParameter("freezerName", name);
         List results = query.list();
-        Freezer freezer = (Freezer) results.get(0);
-        return freezer;
+        return (Freezer) results.get(0);
     }
 
     public Organism findOrganism(String name) {
@@ -45,8 +44,7 @@ public class PrimerDAO extends AbstractDAO<Primer> {
         Query query = session.createQuery(hql);
         query.setParameter("organismName", name);
         List results = query.list();
-        Organism organism = (Organism) results.get(0);
-        return organism;
+        return (Organism) results.get(0);
     }
 
     public Drawer findDrawer(String name) {
@@ -55,8 +53,7 @@ public class PrimerDAO extends AbstractDAO<Primer> {
         Query query = session.createQuery(hql);
         query.setParameter("drawerName", name);
         List results = query.list();
-        Drawer drawer = (Drawer) results.get(0);
-        return drawer;
+        return (Drawer) results.get(0);
     }
 
     public Box findBox(String name) {
@@ -65,8 +62,7 @@ public class PrimerDAO extends AbstractDAO<Primer> {
         Query query = session.createQuery(hql);
         query.setParameter("boxName", name);
         List results = query.list();
-        Box box = (Box) results.get(0);
-        return box;
+        return (Box) results.get(0);
     }
 
     public PositionInReference findPositionInReference(String name) {
@@ -75,8 +71,7 @@ public class PrimerDAO extends AbstractDAO<Primer> {
         Query query = session.createQuery(hql);
         query.setParameter("positionInReferenceName", name);
         List results = query.list();
-        PositionInReference positionInReference = (PositionInReference) results.get(0);
-        return positionInReference;
+        return (PositionInReference) results.get(0);
     }
 
     public PurificationMethod findPurificationMethod(String name) {
@@ -85,8 +80,7 @@ public class PrimerDAO extends AbstractDAO<Primer> {
         Query query = session.createQuery(hql);
         query.setParameter("purificationMethodName", name);
         List results = query.list();
-        PurificationMethod purificationMethod = (PurificationMethod) results.get(0);
-        return purificationMethod;
+        return (PurificationMethod) results.get(0);
     }
 
     public HumanGenomBuild findHumanGenomBuild(String name) {
@@ -95,8 +89,7 @@ public class PrimerDAO extends AbstractDAO<Primer> {
         Query query = session.createQuery(hql);
         query.setParameter("humanGenomBuildName", name);
         List results = query.list();
-        HumanGenomBuild humanGenomBuild = (HumanGenomBuild) results.get(0);
-        return humanGenomBuild;
+        return (HumanGenomBuild) results.get(0);
     }
 
     public Formulation findFormulation(String name) {
@@ -105,8 +98,7 @@ public class PrimerDAO extends AbstractDAO<Primer> {
         Query query = session.createQuery(hql);
         query.setParameter("formulationName", name);
         List results = query.list();
-        Formulation formulation = (Formulation) results.get(0);
-        return formulation;
+        return (Formulation) results.get(0);
     }
 
     public TypeOfPrimer findTypeOfPrimer(String name) {
@@ -115,8 +107,7 @@ public class PrimerDAO extends AbstractDAO<Primer> {
         Query query = session.createQuery(hql);
         query.setParameter("typeOfPrimerName", name);
         List results = query.list();
-        TypeOfPrimer typeOfPrimer = (TypeOfPrimer) results.get(0);
-        return typeOfPrimer;
+        return (TypeOfPrimer) results.get(0);
     }
 
     public PrimerApplication findPrimerApplication(String name) {
@@ -125,8 +116,7 @@ public class PrimerDAO extends AbstractDAO<Primer> {
         Query query = session.createQuery(hql);
         query.setParameter("primerApplicationName", name);
         List results = query.list();
-        PrimerApplication primerApplication = (PrimerApplication) results.get(0);
-        return primerApplication;
+        return (PrimerApplication) results.get(0);
     }
 
     public FiveModification findFiveModification(String name) {
@@ -135,8 +125,7 @@ public class PrimerDAO extends AbstractDAO<Primer> {
         Query query = session.createQuery(hql);
         query.setParameter("fiveModificationName", name);
         List results = query.list();
-        FiveModification fiveModification = (FiveModification) results.get(0);
-        return fiveModification;
+        return (FiveModification) results.get(0);
     }
 
     public ThreeModification findThreeModification(String name) {
@@ -145,8 +134,7 @@ public class PrimerDAO extends AbstractDAO<Primer> {
         Query query = session.createQuery(hql);
         query.setParameter("threeModificationName", name);
         List results = query.list();
-        ThreeModification threeModification = (ThreeModification) results.get(0);
-        return threeModification;
+        return (ThreeModification) results.get(0);
     }
 
     public Project findProject(String name) {
@@ -155,8 +143,7 @@ public class PrimerDAO extends AbstractDAO<Primer> {
         Query query = session.createQuery(hql);
         query.setParameter("projectName", name);
         List results = query.list();
-        Project project = (Project) results.get(0);
-        return project;
+        return (Project) results.get(0);
     }
 
     public Supplier findSupplier(String name) {
@@ -165,8 +152,7 @@ public class PrimerDAO extends AbstractDAO<Primer> {
         Query query = session.createQuery(hql);
         query.setParameter("supplierName", name);
         List results = query.list();
-        Supplier supplier = (Supplier) results.get(0);
-        return supplier;
+        return (Supplier) results.get(0);
     }
 
     public Manufacturer findManufacturer(String name) {
@@ -175,7 +161,13 @@ public class PrimerDAO extends AbstractDAO<Primer> {
         Query query = session.createQuery(hql);
         query.setParameter("manufacturerName", name);
         List results = query.list();
-        Manufacturer manufacturer = (Manufacturer) results.get(0);
-        return manufacturer;
+        return (Manufacturer) results.get(0);
+    }
+
+    public void deletePrimer(long id) {
+        Session session = currentSession();
+        String hql = "DELETE FROM Primer p WHERE p.id = :primerId";
+        Query query = session.createQuery(hql);
+        query.setParameter("primerId", id).executeUpdate();
     }
 }

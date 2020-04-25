@@ -15,6 +15,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Path("/primers")
 @Produces(MediaType.APPLICATION_JSON)
@@ -84,18 +85,10 @@ public class PrimerResource {
     @Path("/add")
     @UnitOfWork
     public Primer addPrimer(PrimerJSON p) {
-        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-        Date date;
-        try {
-            date = format.parse(p.date);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return null;
-        }
         Primer primer = new Primer(p.name, p.sequence, Orientation.fromString(p.orientation), dao.findFreezer(p.freezer),
                 dao.findDrawer(p.drawer), dao.findBox(p.box), dao.findPositionInReference(p.positionInReference), p.Tm,
                 p.optimalTOfAnnealing, dao.findPurificationMethod(p.purificationMethod), p.amountAvailableMikroL,
-                p.amountAvailablePacks, AmountAvailablePackSize.fromString(p.amountAvailablePackSize), date, p.lengthOfAmplicone,
+                p.amountAvailablePacks, AmountAvailablePackSize.fromString(p.amountAvailablePackSize), new Date(), p.lengthOfAmplicone,
                 p.storingT, p.GCPercent, dao.findOrganism(p.organism), p.gen, p.ncbiGenId, dao.findHumanGenomBuild(p.humanGenomBuild),
                 dao.findFormulation(p.formulation), dao.findTypeOfPrimer(p.typeOfPrimer), p.sondaSequence, p.assayId,
                 Size.fromString(p.size), dao.findPrimerApplication(p.primerApplication), p.applicationComment,
@@ -107,10 +100,32 @@ public class PrimerResource {
         return primer;
     }
 
-    // TODO
-    //@POST
-    //@Path("/remove")
-    //@UnitOfWork
+    @POST
+    @Path("/delete")
+    @UnitOfWork
+    public String deletePrimer(long id) {
+        dao.deletePrimer(id);
+        return "Successfully deleted primer.";
+    }
+
+    @POST
+    @Path("/pair")
+    @UnitOfWork
+    public String pairPrimers(long[] idArr) {
+        if (idArr[0] == idArr[1]) {
+            return "Cannot pair primer with itself.";
+        }
+
+        Optional<Primer> primer1 = dao.findById(idArr[0]);
+        Optional<Primer> primer2 = dao.findById(idArr[1]);
+
+        if (!primer1.isPresent() || !primer2.isPresent()) {
+            return "Couldn't find primers with specified id.";
+        }
+
+        primer1.get().pairWith(primer2.get());
+        return "Successfully paired primers.";
+    }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -148,8 +163,6 @@ public class PrimerResource {
         public int amountAvailablePacks;
         @JsonProperty
         public String amountAvailablePackSize;
-        @JsonProperty
-        public String date;
         @JsonProperty
         public int lengthOfAmplicone;
         @JsonProperty

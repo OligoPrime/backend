@@ -13,6 +13,7 @@ import io.dropwizard.hibernate.HibernateBundle;
 import io.dropwizard.hibernate.UnitOfWorkAwareProxyFactory;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import org.glassfish.jersey.logging.LoggingFeature;
 import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -35,6 +36,8 @@ import javax.servlet.DispatcherType;
 import javax.servlet.FilterRegistration;
 import java.security.Key;
 import java.util.EnumSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class BackendApplication extends Application<BackendConfiguration> {
 
@@ -120,7 +123,7 @@ public class BackendApplication extends Application<BackendConfiguration> {
         environment.jersey().register(MultiPartFeature.class);
         environment.jersey().register(new AuthenticationResource(userDAO, key));
         environment.healthChecks().register("template", new BasicHealthCheck(configuration.getTemplate()));
-
+        environment.jersey().register(new LoggingFeature(Logger.getLogger("si.fri"), Level.INFO, LoggingFeature.Verbosity.PAYLOAD_ANY, 10000));
 
     }
 

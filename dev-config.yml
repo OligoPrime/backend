@@ -41,7 +41,7 @@ authenticationCachePolicy: maximumSize=10000, expireAfterAccess=10m
 logging:
   level: INFO
   loggers:
-    si.fri: DEBUG
+    si.fri: INFO
 
 server:
   requestLog:

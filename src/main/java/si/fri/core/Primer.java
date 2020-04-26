@@ -210,7 +210,7 @@ public class Primer {
     public Primer(String name, String sequence, Orientation orientation, Freezer freezer, Drawer drawer,
                   Box box, PositionInReference positionInReference, double Tm, double optimalTOfAnnealing,
                   PurificationMethod purificationMethod, double amountAvailableMikroL, int amountAvailablePacks,
-                  AmountAvailablePackSize amountAvailablePackSize, Date date, int lengthOfAmplicone, double storingT,
+                  AmountAvailablePackSize amountAvailablePackSize, int lengthOfAmplicone, double storingT,
                   double GCPercent, Organism organism, String gen, String ncbiGenId, HumanGenomBuild humanGenomBuild,
                   Formulation formulation, TypeOfPrimer typeOfPrimer, String sondaSequence, String assayId, Size size,
                   PrimerApplication primerApplication, String applicationComment, FiveModification fiveModification,
@@ -251,7 +251,6 @@ public class Primer {
         this.amountAvailableMikroL = amountAvailableMikroL;
         this.amountAvailablePacks = amountAvailablePacks;
         this.amountAvailablePackSize = amountAvailablePackSize;
-        this.date = date;
         this.lengthOfAmplicone = lengthOfAmplicone;
         this.storingT = storingT;
         this.GCPercent = GCPercent;
@@ -283,7 +282,8 @@ public class Primer {
         this.user = user;
         this.orderStatus = orderStatus;
         this.analysis = analysis;
-        calculateLength();
+        this.length = this.sequence.length();
+        this.date = new Date();
     }
 
     public void generateName() {
@@ -340,10 +340,6 @@ public class Primer {
         generatedName += String.valueOf(id);
 
         this.generatedName = generatedName;
-    }
-
-    public void calculateLength() {
-        this.length = this.sequence.length();
     }
 
     public void pairWith(Primer primer) {

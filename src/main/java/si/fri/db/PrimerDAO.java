@@ -164,6 +164,8 @@ public class PrimerDAO extends AbstractDAO<Primer> {
         return (Manufacturer) results.get(0);
     }
 
+    // TODO: methods for adding into foreign tables
+
     public void deletePrimer(long id) {
         Session session = currentSession();
         String hql = "DELETE FROM Primer p WHERE p.id = :primerId";

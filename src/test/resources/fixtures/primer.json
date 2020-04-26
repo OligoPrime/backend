@@ -1,0 +1,79 @@
+{
+  "generatedName":"R-HS-ncbigenid123-0",
+  "name": "testname",
+  "sequence": "testsequence",
+  "orientation": "REVERSE",
+  "length": 12,
+  "freezer": {
+    "freezer": "freezer2"
+  },
+  "drawer": {
+    "drawer": "drawer3"
+  },
+  "box": {
+    "box": "box5"
+  },
+  "positionInReference": {
+    "positionInReference": "5'-promotor"
+  },
+  "optimalTOfAnnealing": 22.1,
+  "purificationMethod": {
+    "purificationMethod": "Cartridge"
+  },
+  "amountAvailableMikroL": 42.3,
+  "amountAvailablePacks": 30,
+  "amountAvailablePackSize": "PLATE",
+  "date": 1577746800000,
+  "lengthOfAmplicone": 30,
+  "storingT": 42.2,
+  "organism": {
+    "organism": "Homo sapiens"
+  },
+  "gen": "gen123",
+  "ncbiGenId": "ncbigenid123",
+  "humanGenomBuild": {
+    "humanGenomBuild": "NCBI Build 36.1"
+  },
+  "formulation": {
+    "formulation": "Resuspended in TRIS"
+  },
+  "typeOfPrimer": {
+    "typeOfPrimer": "M13/pUC primer"
+  },
+  "sondaSequence": "sondaseq123",
+  "assayId": "assayid123",
+  "size": "M",
+  "primerApplication": {
+    "primerApplication": "Sanger Sequencing"
+  },
+  "applicationComment": "application comment 123",
+  "fiveModification": {
+    "fiveModification": "Aldehyde Modifier"
+  },
+  "threeModification": {
+    "threeModification": "Biotin TEG"
+  },
+  "concentrationOrdered": 40,
+  "concentrationOrderedUnit": "NANOMOL",
+  "checkSpecifityInBlast": true,
+  "designerName": "designer123",
+  "designerPublication": "publication123",
+  "designerDatabase": "database123",
+  "project": {
+    "project": "project3"
+  },
+  "orderedBy": "miha",
+  "supplier": {
+    "supplier": "Omega"
+  },
+  "manufacturer": {
+    "manufacturer": "BioSearch"
+  },
+  "comment": "komentar",
+  "document": "dokument link",
+  "analysis": "analiza 123",
+  "orderStatus": "RECEIVED",
+  "user": null,
+  "gcpercent": 34.3,
+  "tm": 65.2
+}

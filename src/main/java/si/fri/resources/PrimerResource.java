@@ -10,6 +10,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
@@ -93,28 +94,28 @@ public class PrimerResource {
     @POST
     @Path("/delete")
     @UnitOfWork
-    public String deletePrimer(long id) {
+    public Response deletePrimer(long id) {
         dao.deletePrimer(id);
-        return "Successfully deleted primer.";
+        return Response.ok("Successfully deleted primer.").build();
     }
 
     @POST
     @Path("/pair")
     @UnitOfWork
-    public String pairPrimers(long[] idArr) {
+    public Response pairPrimers(long[] idArr) {
         if (idArr[0] == idArr[1]) {
-            return "Cannot pair primer with itself.";
+            return Response.status(Response.Status.BAD_REQUEST).entity("Cannot pair primer with itself.").build();
         }
 
         Optional<Primer> primer1 = dao.findById(idArr[0]);
         Optional<Primer> primer2 = dao.findById(idArr[1]);
 
         if (!primer1.isPresent() || !primer2.isPresent()) {
-            return "Couldn't find primers with specified id.";
+            return Response.status(Response.Status.NOT_FOUND).entity( "Couldn't find primers with specified id.").build();
         }
 
         primer1.get().pairWith(primer2.get());
-        return "Successfully paired primers.";
+        return Response.ok("Successfully paired primers.").build();
     }
 
     @GET

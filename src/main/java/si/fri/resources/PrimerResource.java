@@ -31,39 +31,50 @@ public class PrimerResource {
     @UnitOfWork
     public Primer fillPrimers() {
 
-        Primer primer = new Primer("testname", "testsequence", Orientation.REVERSE, dao.findFreezer("freezer2"),
+        for (int i = 0; i < 600; i++) {
+            dao.create(new Primer("COVID-19", "testsequence", Orientation.REVERSE, dao.findFreezer("freezer3"),
+                    dao.findDrawer("drawer3"), dao.findBox("box5"), dao.findPositionInReference("5'-promotor"), 65.2, 22.1, dao.findPurificationMethod("Cartridge"),
+                    42.3, 30, AmountAvailablePackSize.PLATE, 30,
+                    42.2, 34.3, dao.findOrganism("Homo sapiens"), "gen123", "ncbigenid123", dao.findHumanGenomBuild("NCBI Build 36.1"),
+                    dao.findFormulation("Resuspended in TRIS"), dao.findTypeOfPrimer("M13/pUC primer"), "sondaseq123", "assayid123", Size.M, dao.findPrimerApplication("Sanger Sequencing"),
+                    "application comment 123",  dao.findFiveModification("Aldehyde Modifier"), dao.findThreeModification("Biotin TEG"), 40,
+                    ConcentrationOrderedUnit.NANOMOL, true, "designer123", "publication123",
+                    "database123", dao.findProject("project3"), "Čomi", dao.findSupplier("Omega"), dao.findManufacturer("BioSearch"),
+                    "Tega je pa kr velik", "dokument link", "analiza 123", OrderStatus.RECEIVED, null));
+        }
+
+        Primer primer = new Primer("SuperPrimer3000", "testsequence", Orientation.REVERSE, dao.findFreezer("freezer2"),
                 dao.findDrawer("drawer3"), dao.findBox("box5"), dao.findPositionInReference("5'-promotor"), 65.2, 22.1, dao.findPurificationMethod("Cartridge"),
                 42.3, 30, AmountAvailablePackSize.PLATE, 30,
                 42.2, 34.3, dao.findOrganism("Homo sapiens"), "gen123", "ncbigenid123", dao.findHumanGenomBuild("NCBI Build 36.1"),
                 dao.findFormulation("Resuspended in TRIS"), dao.findTypeOfPrimer("M13/pUC primer"), "sondaseq123", "assayid123", Size.M, dao.findPrimerApplication("Sanger Sequencing"),
                 "application comment 123",  dao.findFiveModification("Aldehyde Modifier"), dao.findThreeModification("Biotin TEG"), 40,
                 ConcentrationOrderedUnit.NANOMOL, true, "designer123", "publication123",
-                "database123", dao.findProject("project3"), "miha", dao.findSupplier("Omega"), dao.findManufacturer("BioSearch"),
-                "komentar", "dokument link", "analiza 123", OrderStatus.RECEIVED, null);
+                "database123", dao.findProject("project3"), "Čomi", dao.findSupplier("Omega"), dao.findManufacturer("BioSearch"),
+                "Lačen sem", "dokument link", "analiza 123", OrderStatus.RECEIVED, null);
 
-        primer = dao.create(primer);
 
-        Primer primer2 = new Primer("testname", "testsequence", Orientation.REVERSE, dao.findFreezer("freezer2"),
+        Primer primer2 = new Primer("MegaBestPrimer1Million", "tcidf", Orientation.REVERSE, dao.findFreezer("freezer1"),
                 dao.findDrawer("drawer3"), dao.findBox("box5"), dao.findPositionInReference("5'-promotor"), 65.2, 22.1, dao.findPurificationMethod("Cartridge"),
                 42.3, 30, AmountAvailablePackSize.PLATE, 30,
                 42.2, 34.3, dao.findOrganism("Homo sapiens"), "gen123", "ncbigenid123", dao.findHumanGenomBuild("NCBI Build 36.1"),
                 dao.findFormulation("Resuspended in TRIS"), dao.findTypeOfPrimer("M13/pUC primer"), "sondaseq123", "assayid123", Size.M, dao.findPrimerApplication("Sanger Sequencing"),
                 "application comment 123",  dao.findFiveModification("Aldehyde Modifier"), dao.findThreeModification("Biotin TEG"), 40,
                 ConcentrationOrderedUnit.NANOMOL, true, "designer123", "publication123",
-                "database123", dao.findProject("project3"), "miha", dao.findSupplier("Omega"), dao.findManufacturer("BioSearch"),
-                "komentar", "dokument link", "analiza 123", OrderStatus.RECEIVED, null);
-        primer2 = dao.create(primer2);
+                "database123", dao.findProject("project3"), "Ichigo", dao.findSupplier("Omega"), dao.findManufacturer("BioSearch"),
+                "Tega sm dobil za rojstni dan", "dokument link", "analiza 123", OrderStatus.RECEIVED, null);
 
-        Primer primer3 = new Primer("testname", "testsequence", Orientation.REVERSE, dao.findFreezer("freezer2"),
+        Primer primer3 = new Primer("PleaseUseME", "banana", Orientation.REVERSE, dao.findFreezer("freezer3"),
                 dao.findDrawer("drawer3"), dao.findBox("box5"), dao.findPositionInReference("5'-promotor"), 65.2, 22.1, dao.findPurificationMethod("Cartridge"),
                 42.3, 30, AmountAvailablePackSize.PLATE, 30,
                 42.2, 34.3, dao.findOrganism("Homo sapiens"), "gen123", "ncbigenid123", dao.findHumanGenomBuild("NCBI Build 36.1"),
                 dao.findFormulation("Resuspended in TRIS"), dao.findTypeOfPrimer("M13/pUC primer"), "sondaseq123", "assayid123", Size.M, dao.findPrimerApplication("Sanger Sequencing"),
                 "application comment 123",  dao.findFiveModification("Aldehyde Modifier"), dao.findThreeModification("Biotin TEG"), 40,
                 ConcentrationOrderedUnit.NANOMOL, true, "designer123", "publication123",
-                "database123", dao.findProject("project3"), "miha", dao.findSupplier("Omega"), dao.findManufacturer("BioSearch"),
-                "komentar", "dokument link", "analiza 123", OrderStatus.RECEIVED, null);
-        primer3 = dao.create(primer3);
+                "database123", dao.findProject("project3"), "Николай", dao.findSupplier("Omega"), dao.findManufacturer("BioSearch"),
+                "Rad imam maline!", "dokument link", "analiza 123", OrderStatus.RECEIVED, null);
+
+
 
         primer.pairWith(primer2);
         primer3.pairWith(primer);

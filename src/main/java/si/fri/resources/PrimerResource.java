@@ -5,10 +5,7 @@ import io.dropwizard.hibernate.UnitOfWork;
 import si.fri.core.*;
 import si.fri.db.PrimerDAO;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.Serializable;
@@ -85,6 +82,7 @@ public class PrimerResource {
 
     @POST
     @Path("/add")
+    @Produces(MediaType.APPLICATION_JSON)
     @UnitOfWork
     public Primer addPrimer(PrimerJSON p) {
         Primer primer = new Primer(p.name, p.sequence, Orientation.fromString(p.orientation), dao.findFreezer(p.freezer),
@@ -122,11 +120,20 @@ public class PrimerResource {
         Optional<Primer> primer2 = dao.findById(idArr[1]);
 
         if (!primer1.isPresent() || !primer2.isPresent()) {
-            return Response.status(Response.Status.NOT_FOUND).entity( "Couldn't find primers with specified id.").build();
+            return Response.status(Response.Status.NOT_FOUND).entity("Couldn't find primers with specified id.").build();
         }
 
         primer1.get().pairWith(primer2.get());
         return Response.ok("Successfully paired primers.").build();
+    }
+
+    @GET
+    @Path("/get/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @UnitOfWork
+    public Primer getPrimer(@PathParam("id") long id) {
+        Optional<Primer> primer = dao.findById(id);
+        return primer.orElse(null);
     }
 
     @GET

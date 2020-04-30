@@ -32,12 +32,9 @@ public class PrimerTest {
                 new Formulation("Resuspended in TRIS"), new TypeOfPrimer("M13/pUC primer"), "sondaseq123", "assayid123", Size.M, new PrimerApplication("Sanger Sequencing"),
                 "application comment 123",  new FiveModification("Aldehyde Modifier"), new ThreeModification("Biotin TEG"), 40,
                 ConcentrationOrderedUnit.NANOMOL, true, "designer123", "publication123",
-                "database123", new Project("project3"), "miha", new Supplier("Omega"), new Manufacturer("BioSearch"),
-                "komentar", "dokument link", "analiza 123", OrderStatus.RECEIVED, null);
-
-        // since date is always set to date of insertion, it needs to be manually set for testing
-        primer.setDate(date);
-
+                "database123", new Project("project3"), new Supplier("Omega"), new Manufacturer("BioSearch"),
+                "komentar", "dokument link", "analiza 123", OrderStatus.RECEIVED,
+                new ThreeQuencher("TAMRA"), new FiveDye("NED"), date, null);
         primer.generateName();
 
         final String expected = MAPPER.writeValueAsString(

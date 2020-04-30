@@ -9,6 +9,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,8 +37,9 @@ public class PrimerResource {
                     dao.findFormulation("Resuspended in TRIS"), dao.findTypeOfPrimer("M13/pUC primer"), "sondaseq123", "assayid123", Size.M, dao.findPrimerApplication("Sanger Sequencing"),
                     "application comment 123",  dao.findFiveModification("Aldehyde Modifier"), dao.findThreeModification("Biotin TEG"), 40,
                     ConcentrationOrderedUnit.NANOMOL, true, "designer123", "publication123",
-                    "database123", dao.findProject("project3"), "Čomi", dao.findSupplier("Omega"), dao.findManufacturer("BioSearch"),
-                    "Tega je pa kr velik", "dokument link", "analiza 123", OrderStatus.RECEIVED, null));
+                    "database123", dao.findProject("project3"), dao.findSupplier("Omega"), dao.findManufacturer("BioSearch"),
+                    "Tega je pa kr velik", "dokument link", "analiza 123", OrderStatus.RECEIVED,
+                    dao.findThreeQuencher("TAMRA"), dao.findFiveDye("NED"), new Date(), null));
         }
 
         Primer primer = new Primer("SuperPrimer3000", "testsequence", Orientation.REVERSE, dao.findFreezer("freezer2"),
@@ -47,9 +49,10 @@ public class PrimerResource {
                 dao.findFormulation("Resuspended in TRIS"), dao.findTypeOfPrimer("M13/pUC primer"), "sondaseq123", "assayid123", Size.M, dao.findPrimerApplication("Sanger Sequencing"),
                 "application comment 123",  dao.findFiveModification("Aldehyde Modifier"), dao.findThreeModification("Biotin TEG"), 40,
                 ConcentrationOrderedUnit.NANOMOL, true, "designer123", "publication123",
-                "database123", dao.findProject("project3"), "Čomi", dao.findSupplier("Omega"), dao.findManufacturer("BioSearch"),
-                "Lačen sem", "dokument link", "analiza 123", OrderStatus.RECEIVED, null);
-
+                "database123", dao.findProject("project3"), dao.findSupplier("Omega"), dao.findManufacturer("BioSearch"),
+                "Lačen sem", "dokument link", "analiza 123", OrderStatus.RECEIVED,
+                dao.findThreeQuencher("TAMRA"), dao.findFiveDye("NED"), new Date(), null);
+        dao.create(primer);
 
         Primer primer2 = new Primer("MegaBestPrimer1Million", "tcidf", Orientation.REVERSE, dao.findFreezer("freezer1"),
                 dao.findDrawer("drawer3"), dao.findBox("box5"), dao.findPositionInReference("5'-promotor"), 65.2, 22.1, dao.findPurificationMethod("Cartridge"),
@@ -58,8 +61,10 @@ public class PrimerResource {
                 dao.findFormulation("Resuspended in TRIS"), dao.findTypeOfPrimer("M13/pUC primer"), "sondaseq123", "assayid123", Size.M, dao.findPrimerApplication("Sanger Sequencing"),
                 "application comment 123",  dao.findFiveModification("Aldehyde Modifier"), dao.findThreeModification("Biotin TEG"), 40,
                 ConcentrationOrderedUnit.NANOMOL, true, "designer123", "publication123",
-                "database123", dao.findProject("project3"), "Ichigo", dao.findSupplier("Omega"), dao.findManufacturer("BioSearch"),
-                "Tega sm dobil za rojstni dan", "dokument link", "analiza 123", OrderStatus.RECEIVED, null);
+                "database123", dao.findProject("project3"), dao.findSupplier("Omega"), dao.findManufacturer("BioSearch"),
+                "Tega sm dobil za rojstni dan", "dokument link", "analiza 123", OrderStatus.RECEIVED,
+                dao.findThreeQuencher("TAMRA"), dao.findFiveDye("NED"), new Date(), null);
+        dao.create(primer2);
 
         Primer primer3 = new Primer("PleaseUseME", "banana", Orientation.REVERSE, dao.findFreezer("freezer3"),
                 dao.findDrawer("drawer3"), dao.findBox("box5"), dao.findPositionInReference("5'-promotor"), 65.2, 22.1, dao.findPurificationMethod("Cartridge"),
@@ -68,10 +73,10 @@ public class PrimerResource {
                 dao.findFormulation("Resuspended in TRIS"), dao.findTypeOfPrimer("M13/pUC primer"), "sondaseq123", "assayid123", Size.M, dao.findPrimerApplication("Sanger Sequencing"),
                 "application comment 123",  dao.findFiveModification("Aldehyde Modifier"), dao.findThreeModification("Biotin TEG"), 40,
                 ConcentrationOrderedUnit.NANOMOL, true, "designer123", "publication123",
-                "database123", dao.findProject("project3"), "Николай", dao.findSupplier("Omega"), dao.findManufacturer("BioSearch"),
-                "Rad imam maline!", "dokument link", "analiza 123", OrderStatus.RECEIVED, null);
-
-
+                "database123", dao.findProject("project3"), dao.findSupplier("Omega"), dao.findManufacturer("BioSearch"),
+                "Rad imam maline!", "dokument link", "analiza 123", OrderStatus.RECEIVED,
+                dao.findThreeQuencher("TAMRA"), dao.findFiveDye("NED"), new Date(), null);
+        dao.create(primer3);
 
         primer.pairWith(primer2);
         primer3.pairWith(primer);
@@ -94,8 +99,9 @@ public class PrimerResource {
                 Size.fromString(p.size), dao.findPrimerApplication(p.primerApplication), p.applicationComment,
                 dao.findFiveModification(p.fiveModification), dao.findThreeModification(p.threeModification), p.concentrationOrdered,
                 ConcentrationOrderedUnit.fromString(p.concentrationOrderedUnit), p.checkSpecifityInBlast, p.designerName,
-                p.designerPublication, p.designerDatabase, dao.findProject(p.project), p.orderedBy, dao.findSupplier(p.supplier),
-                dao.findManufacturer(p.manufacturer), p.comment, p.document, p.analysis, OrderStatus.fromString(p.orderStatus), null);
+                p.designerPublication, p.designerDatabase, dao.findProject(p.project), dao.findSupplier(p.supplier),
+                dao.findManufacturer(p.manufacturer), p.comment, p.document, p.analysis, OrderStatus.fromString(p.orderStatus),
+                dao.findThreeQuencher(p.threeQuencher), dao.findFiveDye(p.fiveDye), new Date(), null);
         primer = dao.create(primer);
         return primer;
     }
@@ -219,8 +225,6 @@ public class PrimerResource {
         @JsonProperty
         public String project;
         @JsonProperty
-        public String orderedBy;
-        @JsonProperty
         public String supplier;
         @JsonProperty
         public String manufacturer;
@@ -232,5 +236,9 @@ public class PrimerResource {
         public String analysis;
         @JsonProperty
         public String orderStatus;
+        @JsonProperty
+        public String threeQuencher;
+        @JsonProperty
+        public String fiveDye;
     }
 }

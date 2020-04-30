@@ -158,8 +158,6 @@ public class Primer {
     @JsonIdentityReference(alwaysAsId = true)
     private Project project;
 
-    private String orderedBy;
-
     @ManyToOne(targetEntity = Supplier.class)
     @JoinColumn(name = "supplier_id", referencedColumnName = "id")
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "supplier")
@@ -179,6 +177,18 @@ public class Primer {
     private String analysis;
 
     private OrderStatus orderStatus;
+
+    @ManyToOne(targetEntity = ThreeQuencher.class)
+    @JoinColumn(name = "threeQuencher_id", referencedColumnName = "id")
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "threeQuencher")
+    @JsonIdentityReference(alwaysAsId = true)
+    private ThreeQuencher threeQuencher;
+
+    @ManyToOne(targetEntity = FiveDye.class)
+    @JoinColumn(name = "fiveDye_id", referencedColumnName = "id")
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "fiveDye")
+    @JsonIdentityReference(alwaysAsId = true)
+    private FiveDye fiveDye;
 
     @ManyToOne(targetEntity = User.class)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
@@ -216,8 +226,9 @@ public class Primer {
                   PrimerApplication primerApplication, String applicationComment, FiveModification fiveModification,
                   ThreeModification threeModification, int concentrationOrdered, ConcentrationOrderedUnit concentrationOrderedUnit,
                   boolean checkSpecifityInBlast, String designerName, String designerPublication, String designerDatabase,
-                  Project project, String orderedBy, Supplier supplier, Manufacturer manufacturer, String comment,
-                  String document, String analysis, OrderStatus orderStatus, User user) {
+                  Project project,Supplier supplier, Manufacturer manufacturer, String comment, String document,
+                  String analysis, OrderStatus orderStatus, ThreeQuencher threeQuencher, FiveDye fiveDye, Date date,
+                  User user) {
 
         // check that required attributes are nonempty
         if (!typeOfPrimer.getTypeOfPrimer().equals("TaqProbe")) {
@@ -274,16 +285,17 @@ public class Primer {
         this.designerPublication = designerPublication;
         this.designerDatabase = designerDatabase;
         this.project = project;
-        this.orderedBy = orderedBy;
         this.supplier = supplier;
         this.manufacturer = manufacturer;
         this.comment = comment;
         this.document = document;
+        this.threeQuencher = threeQuencher;
+        this.fiveDye = fiveDye;
+        this.date = date;
         this.user = user;
         this.orderStatus = orderStatus;
         this.analysis = analysis;
         this.length = this.sequence.length();
-        this.date = new Date();
     }
 
     public void generateName() {
@@ -709,15 +721,6 @@ public class Primer {
     }
 
     @JsonProperty
-    public String getOrderedBy() {
-        return orderedBy;
-    }
-
-    public void setOrderedBy(String orderedBy) {
-        this.orderedBy = orderedBy;
-    }
-
-    @JsonProperty
     public Supplier getSupplier() {
         return supplier;
     }
@@ -769,6 +772,24 @@ public class Primer {
 
     public void setOrderStatus(OrderStatus orderStatus) {
         this.orderStatus = orderStatus;
+    }
+
+    @JsonProperty
+    public ThreeQuencher getThreeQuencher() {
+        return threeQuencher;
+    }
+
+    public void setThreeQuencher(ThreeQuencher threeQuencher) {
+        this.threeQuencher = threeQuencher;
+    }
+
+    @JsonProperty
+    public FiveDye getFiveDye() {
+        return fiveDye;
+    }
+
+    public void setFiveDye(FiveDye fiveDye) {
+        this.fiveDye = fiveDye;
     }
 
     @JsonProperty

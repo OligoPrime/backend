@@ -164,6 +164,24 @@ public class PrimerDAO extends AbstractDAO<Primer> {
         return (Manufacturer) results.get(0);
     }
 
+    public ThreeQuencher findThreeQuencher(String name) {
+        Session session = currentSession();
+        String hql = "SELECT t FROM ThreeQuencher t WHERE t.threeQuencher = :threeQuencherName";
+        Query query = session.createQuery(hql);
+        query.setParameter("threeQuencherName", name);
+        List results = query.list();
+        return (ThreeQuencher) results.get(0);
+    }
+
+    public FiveDye findFiveDye(String name) {
+        Session session = currentSession();
+        String hql = "SELECT f FROM FiveDye f WHERE f.fiveDye = :fiveDyeName";
+        Query query = session.createQuery(hql);
+        query.setParameter("fiveDyeName", name);
+        List results = query.list();
+        return (FiveDye) results.get(0);
+    }
+
     // TODO: methods for adding into foreign tables
 
     public void deletePrimer(long id) {

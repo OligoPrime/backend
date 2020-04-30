@@ -73,6 +73,12 @@
   "document": "dokument link",
   "analysis": "analiza 123",
   "orderStatus": "RECEIVED",
+  "threeQuencher": {
+    "threeQuencher": "TAMRA"
+  },
+  "fiveDye": {
+    "fiveDye": "NED"
+  },
   "user": null,
   "gcpercent": 34.3,
   "tm": 65.2

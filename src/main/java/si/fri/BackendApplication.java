@@ -44,7 +44,8 @@ public class BackendApplication extends Application<BackendConfiguration> {
     private final HibernateBundle<BackendConfiguration> hibernate = new HibernateBundle<BackendConfiguration>(Hello.class, User.class,
             Primer.class, PositionInReference.class, PurificationMethod.class, Freezer.class, Drawer.class, Box.class,
             Organism.class, HumanGenomBuild.class, Formulation.class, TypeOfPrimer.class, PrimerApplication.class,
-            FiveModification.class, ThreeModification.class, Project.class, Manufacturer.class, Supplier.class) {
+            FiveModification.class, ThreeModification.class, Project.class, Manufacturer.class, Supplier.class,
+            ThreeQuencher.class, FiveDye.class) {
         @Override
         public DataSourceFactory getDataSourceFactory(BackendConfiguration configuration) {
             return configuration.getDataSourceFactory();

@@ -72,7 +72,7 @@ public class Primer {
 
     private int amountAvailablePacks;
 
-    private AmountAvailablePackSize amountAvailablePackSize;
+    private AmountAvailablePackSize amountAvailablePackType;
 
     @Temporal(TemporalType.DATE)
     private Date date;
@@ -220,13 +220,13 @@ public class Primer {
     public Primer(String name, String sequence, Orientation orientation, Freezer freezer, Drawer drawer,
                   Box box, PositionInReference positionInReference, double Tm, double optimalTOfAnnealing,
                   PurificationMethod purificationMethod, double amountAvailableMikroL, int amountAvailablePacks,
-                  AmountAvailablePackSize amountAvailablePackSize, int lengthOfAmplicone, double storingT,
+                  AmountAvailablePackSize amountAvailablePackType, int lengthOfAmplicone, double storingT,
                   double GCPercent, Organism organism, String gen, String ncbiGenId, HumanGenomBuild humanGenomBuild,
                   Formulation formulation, TypeOfPrimer typeOfPrimer, String sondaSequence, String assayId, Size size,
                   PrimerApplication primerApplication, String applicationComment, FiveModification fiveModification,
                   ThreeModification threeModification, int concentrationOrdered, ConcentrationOrderedUnit concentrationOrderedUnit,
                   boolean checkSpecifityInBlast, String designerName, String designerPublication, String designerDatabase,
-                  Project project,Supplier supplier, Manufacturer manufacturer, String comment, String document,
+                  Project project, Supplier supplier, Manufacturer manufacturer, String comment, String document,
                   String analysis, OrderStatus orderStatus, ThreeQuencher threeQuencher, FiveDye fiveDye, Date date,
                   User user) {
 
@@ -261,7 +261,7 @@ public class Primer {
         this.purificationMethod = purificationMethod;
         this.amountAvailableMikroL = amountAvailableMikroL;
         this.amountAvailablePacks = amountAvailablePacks;
-        this.amountAvailablePackSize = amountAvailablePackSize;
+        this.amountAvailablePackType = amountAvailablePackType;
         this.lengthOfAmplicone = lengthOfAmplicone;
         this.storingT = storingT;
         this.GCPercent = GCPercent;
@@ -496,12 +496,12 @@ public class Primer {
     }
 
     @JsonProperty
-    public AmountAvailablePackSize getAmountAvailablePackSize() {
-        return amountAvailablePackSize;
+    public AmountAvailablePackSize getAmountAvailablePackType() {
+        return amountAvailablePackType;
     }
 
-    public void setAmountAvailablePackSize(AmountAvailablePackSize amountAvailablePackSize) {
-        this.amountAvailablePackSize = amountAvailablePackSize;
+    public void setAmountAvailablePackType(AmountAvailablePackSize amountAvailablePackSize) {
+        this.amountAvailablePackType = amountAvailablePackSize;
     }
 
     @JsonProperty

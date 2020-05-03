@@ -42,7 +42,7 @@ public class PrimerResourceTest {
 
         primer = new Primer("testname", "testsequence", Orientation.REVERSE, new Freezer("freezer2"),
                 new Drawer("drawer3"), new Box("box5"), new PositionInReference("5'-promotor"), 65.2, 22.1, new PurificationMethod("Cartridge"),
-                42.3, 30, AmountAvailablePackSize.PLATE, 30,
+                42.3, 30, AmountAvailablePackType.PLATE, 30,
                 "42.2", 34.3, new Organism("Homo sapiens"), "gen123", "ncbigenid123", new HumanGenomBuild("NCBI Build 36.1"),
                 new Formulation("Resuspended in TRIS"), new TypeOfPrimer("M13/pUC primer"), "sondaseq123", "assayid123", Size.M, new PrimerApplication("Sanger Sequencing"),
                 "application comment 123", new FiveModification("Aldehyde Modifier"), new ThreeModification("Biotin TEG"), 40,

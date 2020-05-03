@@ -32,7 +32,7 @@ public class PrimerResource {
         for (int i = 0; i < 600; i++) {
             dao.create(new Primer("COVID-19", "testsequence", Orientation.REVERSE, dao.findFreezer("freezer3"),
                     dao.findDrawer("drawer3"), dao.findBox("box5"), dao.findPositionInReference("5'-promotor"), 65.2, 22.1, dao.findPurificationMethod("Cartridge"),
-                    42.3, 30, AmountAvailablePackSize.PLATE, 30,
+                    42.3, 30, AmountAvailablePackType.PLATE, 30,
                     "42.2", 34.3, dao.findOrganism("Homo sapiens"), "gen123", "ncbigenid123", dao.findHumanGenomBuild("NCBI Build 36.1"),
                     dao.findFormulation("Resuspended in TRIS"), dao.findTypeOfPrimer("M13/pUC primer"), "sondaseq123", "assayid123", Size.M, dao.findPrimerApplication("Sanger Sequencing"),
                     "application comment 123",  dao.findFiveModification("Aldehyde Modifier"), dao.findThreeModification("Biotin TEG"), 40,
@@ -44,7 +44,7 @@ public class PrimerResource {
 
         Primer primer = new Primer("SuperPrimer3000", "testsequence", Orientation.REVERSE, dao.findFreezer("freezer2"),
                 dao.findDrawer("drawer3"), dao.findBox("box5"), dao.findPositionInReference("5'-promotor"), 65.2, 22.1, dao.findPurificationMethod("Cartridge"),
-                42.3, 30, AmountAvailablePackSize.PLATE, 30,
+                42.3, 30, AmountAvailablePackType.PLATE, 30,
                 "42.2", 34.3, dao.findOrganism("Homo sapiens"), "gen123", "ncbigenid123", dao.findHumanGenomBuild("NCBI Build 36.1"),
                 dao.findFormulation("Resuspended in TRIS"), dao.findTypeOfPrimer("M13/pUC primer"), "sondaseq123", "assayid123", Size.M, dao.findPrimerApplication("Sanger Sequencing"),
                 "application comment 123",  dao.findFiveModification("Aldehyde Modifier"), dao.findThreeModification("Biotin TEG"), 40,
@@ -56,7 +56,7 @@ public class PrimerResource {
 
         Primer primer2 = new Primer("MegaBestPrimer1Million", "tcidf", Orientation.REVERSE, dao.findFreezer("freezer1"),
                 dao.findDrawer("drawer3"), dao.findBox("box5"), dao.findPositionInReference("5'-promotor"), 65.2, 22.1, dao.findPurificationMethod("Cartridge"),
-                42.3, 30, AmountAvailablePackSize.PLATE, 30,
+                42.3, 30, AmountAvailablePackType.PLATE, 30,
                 "42.2", 34.3, dao.findOrganism("Homo sapiens"), "gen123", "ncbigenid123", dao.findHumanGenomBuild("NCBI Build 36.1"),
                 dao.findFormulation("Resuspended in TRIS"), dao.findTypeOfPrimer("M13/pUC primer"), "sondaseq123", "assayid123", Size.M, dao.findPrimerApplication("Sanger Sequencing"),
                 "application comment 123",  dao.findFiveModification("Aldehyde Modifier"), dao.findThreeModification("Biotin TEG"), 40,
@@ -68,7 +68,7 @@ public class PrimerResource {
 
         Primer primer3 = new Primer("PleaseUseME", "banana", Orientation.REVERSE, dao.findFreezer("freezer3"),
                 dao.findDrawer("drawer3"), dao.findBox("box5"), dao.findPositionInReference("5'-promotor"), 65.2, 22.1, dao.findPurificationMethod("Cartridge"),
-                42.3, 30, AmountAvailablePackSize.PLATE, 30,
+                42.3, 30, AmountAvailablePackType.PLATE, 30,
                 "42.2", 34.3, dao.findOrganism("Homo sapiens"), "gen123", "ncbigenid123", dao.findHumanGenomBuild("NCBI Build 36.1"),
                 dao.findFormulation("Resuspended in TRIS"), dao.findTypeOfPrimer("M13/pUC primer"), "sondaseq123", "assayid123", Size.M, dao.findPrimerApplication("Sanger Sequencing"),
                 "application comment 123",  dao.findFiveModification("Aldehyde Modifier"), dao.findThreeModification("Biotin TEG"), 40,
@@ -93,7 +93,7 @@ public class PrimerResource {
         Primer primer = new Primer(p.name, p.sequence, Orientation.fromString(p.orientation), dao.findFreezer(p.freezer),
                 dao.findDrawer(p.drawer), dao.findBox(p.box), dao.findPositionInReference(p.positionInReference), p.Tm,
                 p.optimalTOfAnnealing, dao.findPurificationMethod(p.purificationMethod), p.amountAvailableMikroL,
-                p.amountAvailablePacks, AmountAvailablePackSize.fromString(p.amountAvailablePackSize), p.lengthOfAmplicone,
+                p.amountAvailablePacks, AmountAvailablePackType.fromString(p.amountAvailablePackSize), p.lengthOfAmplicone,
                 p.storingT, p.GCPercent, dao.findOrganism(p.organism), p.gen, p.ncbiGenId, dao.findHumanGenomBuild(p.humanGenomBuild),
                 dao.findFormulation(p.formulation), dao.findTypeOfPrimer(p.typeOfPrimer), p.sondaSequence, p.assayId,
                 Size.fromString(p.size), dao.findPrimerApplication(p.primerApplication), p.applicationComment,

@@ -68,11 +68,11 @@ public class Primer {
     @JsonIdentityReference(alwaysAsId = true)
     private PurificationMethod purificationMethod;
 
-    private double amountAvailableMikroL;
+    private double amountAvailable;
 
     private int amountAvailablePacks;
 
-    private AmountAvailablePackSize amountAvailablePackType;
+    private AmountAvailablePackType amountAvailablePackType;
 
     @Temporal(TemporalType.DATE)
     private Date date;
@@ -219,8 +219,8 @@ public class Primer {
 
     public Primer(String name, String sequence, Orientation orientation, Freezer freezer, Drawer drawer,
                   Box box, PositionInReference positionInReference, double Tm, double optimalTOfAnnealing,
-                  PurificationMethod purificationMethod, double amountAvailableMikroL, int amountAvailablePacks,
-                  AmountAvailablePackSize amountAvailablePackType, int lengthOfAmplicone, String storingT,
+                  PurificationMethod purificationMethod, double amountAvailable, int amountAvailablePacks,
+                  AmountAvailablePackType amountAvailablePackType, int lengthOfAmplicone, String storingT,
                   double GCPercent, Organism organism, String gen, String ncbiGenId, HumanGenomBuild humanGenomBuild,
                   Formulation formulation, TypeOfPrimer typeOfPrimer, String sondaSequence, String assayId, Size size,
                   PrimerApplication primerApplication, String applicationComment, FiveModification fiveModification,
@@ -259,7 +259,7 @@ public class Primer {
         this.Tm = Tm;
         this.optimalTOfAnnealing = optimalTOfAnnealing;
         this.purificationMethod = purificationMethod;
-        this.amountAvailableMikroL = amountAvailableMikroL;
+        this.amountAvailable = amountAvailable;
         this.amountAvailablePacks = amountAvailablePacks;
         this.amountAvailablePackType = amountAvailablePackType;
         this.lengthOfAmplicone = lengthOfAmplicone;
@@ -477,12 +477,12 @@ public class Primer {
     }
 
     @JsonProperty
-    public double getAmountAvailableMikroL() {
-        return amountAvailableMikroL;
+    public double getAmountAvailable() {
+        return amountAvailable;
     }
 
-    public void setAmountAvailableMikroL(double amountAvailableMikroL) {
-        this.amountAvailableMikroL = amountAvailableMikroL;
+    public void setAmountAvailable(double amountAvailableMikroL) {
+        this.amountAvailable = amountAvailableMikroL;
     }
 
     @JsonProperty
@@ -496,12 +496,12 @@ public class Primer {
     }
 
     @JsonProperty
-    public AmountAvailablePackSize getAmountAvailablePackType() {
+    public AmountAvailablePackType getAmountAvailablePackType() {
         return amountAvailablePackType;
     }
 
-    public void setAmountAvailablePackType(AmountAvailablePackSize amountAvailablePackSize) {
-        this.amountAvailablePackType = amountAvailablePackSize;
+    public void setAmountAvailablePackType(AmountAvailablePackType amountAvailablePackType) {
+        this.amountAvailablePackType = amountAvailablePackType;
     }
 
     @JsonProperty

@@ -20,7 +20,7 @@
   "purificationMethod": {
     "purificationMethod": "Cartridge"
   },
-  "amountAvailableMikroL": 42.3,
+  "amountAvailable": 42.3,
   "amountAvailablePacks": 30,
   "amountAvailablePackType": "PLATE",
   "date": 1577746800000,

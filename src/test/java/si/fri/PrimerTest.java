@@ -28,11 +28,11 @@ public class PrimerTest {
         final Primer primer = new Primer("testname", "testsequence", Orientation.REVERSE, new Freezer("freezer2"),
                 new Drawer("drawer3"), new Box("box5"), new PositionInReference("5'-promotor"), 65.2, 22.1, new PurificationMethod("Cartridge"),
                 42.3, 30, AmountAvailablePackType.PLATE, 30,
-                "42.2", 34.3, new Organism("Homo sapiens"), "gen123", "ncbigenid123", new HumanGenomBuild("NCBI Build 36.1"),
+                "42.2", 34.3, new Organism("Homo sapiens"), new Gen("gen123"), new NcbiGenId("ncbigenid123"), new HumanGenomBuild("NCBI Build 36.1"),
                 new Formulation("Resuspended in TRIS"), new TypeOfPrimer("M13/pUC primer"), "sondaseq123", "assayid123", Size.M, new PrimerApplication("Sanger Sequencing"),
-                "application comment 123",  new FiveModification("Aldehyde Modifier"), new ThreeModification("Biotin TEG"), 40,
-                ConcentrationOrderedUnit.NANOMOL, true, "designer123", "publication123",
-                "database123", new Project("project3"), new Supplier("Omega"), new Manufacturer("BioSearch"),
+                "application comment 123", new FiveModification("Aldehyde Modifier"), new ThreeModification("Biotin TEG"), 40,
+                ConcentrationOrderedUnit.NANOMOL, true, new DesignerName("designer123"), new DesignerPublication("publication123"),
+                new DesignerDatabase("database123"), new Project("project3"), new Supplier("Omega"), new Manufacturer("BioSearch"),
                 "komentar", "dokument link", "analiza 123", OrderStatus.RECEIVED,
                 new ThreeQuencher("TAMRA"), new FiveDye("NED"), date, null);
         primer.generateName();

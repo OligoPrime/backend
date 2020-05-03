@@ -29,8 +29,12 @@
   "organism": {
     "organism": "Homo sapiens"
   },
-  "gen": "gen123",
-  "ncbiGenId": "ncbigenid123",
+  "gen": {
+    "gen": "gen123"
+  },
+  "ncbiGenId": {
+    "ncbiGenId": "ncbigenid123"
+  },
   "humanGenomBuild": {
     "humanGenomBuild": "NCBI Build 36.1"
   },
@@ -56,9 +60,15 @@
   "concentrationOrdered": 40,
   "concentrationOrderedUnit": "NANOMOL",
   "checkSpecifityInBlast": true,
-  "designerName": "designer123",
-  "designerPublication": "publication123",
-  "designerDatabase": "database123",
+  "designerName": {
+    "designerName": "designer123"
+  },
+  "designerPublication": {
+    "designerPublication": "publication123"
+  },
+  "designerDatabase": {
+    "designerDatabase": "database123"
+  },
   "project": {
     "project": "project3"
   },

@@ -33,11 +33,11 @@ public class PrimerResource {
             dao.create(new Primer("COVID-19", "testsequence", Orientation.REVERSE, dao.findFreezer("freezer3"),
                     dao.findDrawer("drawer3"), dao.findBox("box5"), dao.findPositionInReference("5'-promotor"), 65.2, 22.1, dao.findPurificationMethod("Cartridge"),
                     42.3, 30, AmountAvailablePackType.PLATE, 30,
-                    "42.2", 34.3, dao.findOrganism("Homo sapiens"), "gen123", "ncbigenid123", dao.findHumanGenomBuild("NCBI Build 36.1"),
+                    "42.2", 34.3, dao.findOrganism("Homo sapiens"), dao.findGen("gen1"), dao.findNcbiGenId("ncbiGenId1"), dao.findHumanGenomBuild("NCBI Build 36.1"),
                     dao.findFormulation("Resuspended in TRIS"), dao.findTypeOfPrimer("M13/pUC primer"), "sondaseq123", "assayid123", Size.M, dao.findPrimerApplication("Sanger Sequencing"),
                     "application comment 123",  dao.findFiveModification("Aldehyde Modifier"), dao.findThreeModification("Biotin TEG"), 40,
-                    ConcentrationOrderedUnit.NANOMOL, true, "designer123", "publication123",
-                    "database123", dao.findProject("project3"), dao.findSupplier("Omega"), dao.findManufacturer("BioSearch"),
+                    ConcentrationOrderedUnit.NANOMOL, true, dao.findDesignerName("designerName1"), dao.findDesignerPublication("designerPublication1"),
+                    dao.findDesignerDatabase("designerDatabase1"), dao.findProject("project3"), dao.findSupplier("Omega"), dao.findManufacturer("BioSearch"),
                     "Tega je pa kr velik", "dokument link", "analiza 123", OrderStatus.RECEIVED,
                     dao.findThreeQuencher("TAMRA"), dao.findFiveDye("NED"), new Date(), null));
         }
@@ -45,11 +45,11 @@ public class PrimerResource {
         Primer primer = new Primer("SuperPrimer3000", "testsequence", Orientation.REVERSE, dao.findFreezer("freezer2"),
                 dao.findDrawer("drawer3"), dao.findBox("box5"), dao.findPositionInReference("5'-promotor"), 65.2, 22.1, dao.findPurificationMethod("Cartridge"),
                 42.3, 30, AmountAvailablePackType.PLATE, 30,
-                "42.2", 34.3, dao.findOrganism("Homo sapiens"), "gen123", "ncbigenid123", dao.findHumanGenomBuild("NCBI Build 36.1"),
+                "42.2", 34.3, dao.findOrganism("Homo sapiens"), dao.findGen("gen2"), dao.findNcbiGenId("ncbiGenId2"), dao.findHumanGenomBuild("NCBI Build 36.1"),
                 dao.findFormulation("Resuspended in TRIS"), dao.findTypeOfPrimer("M13/pUC primer"), "sondaseq123", "assayid123", Size.M, dao.findPrimerApplication("Sanger Sequencing"),
                 "application comment 123",  dao.findFiveModification("Aldehyde Modifier"), dao.findThreeModification("Biotin TEG"), 40,
-                ConcentrationOrderedUnit.NANOMOL, true, "designer123", "publication123",
-                "database123", dao.findProject("project3"), dao.findSupplier("Omega"), dao.findManufacturer("BioSearch"),
+                ConcentrationOrderedUnit.NANOMOL, true, dao.findDesignerName("designerName2"), dao.findDesignerPublication("designerPublication2"),
+                dao.findDesignerDatabase("designerDatabase2"), dao.findProject("project3"), dao.findSupplier("Omega"), dao.findManufacturer("BioSearch"),
                 "Lačen sem", "dokument link", "analiza 123", OrderStatus.RECEIVED,
                 dao.findThreeQuencher("TAMRA"), dao.findFiveDye("NED"), new Date(), null);
         dao.create(primer);
@@ -57,11 +57,11 @@ public class PrimerResource {
         Primer primer2 = new Primer("MegaBestPrimer1Million", "tcidf", Orientation.REVERSE, dao.findFreezer("freezer1"),
                 dao.findDrawer("drawer3"), dao.findBox("box5"), dao.findPositionInReference("5'-promotor"), 65.2, 22.1, dao.findPurificationMethod("Cartridge"),
                 42.3, 30, AmountAvailablePackType.PLATE, 30,
-                "42.2", 34.3, dao.findOrganism("Homo sapiens"), "gen123", "ncbigenid123", dao.findHumanGenomBuild("NCBI Build 36.1"),
+                "42.2", 34.3, dao.findOrganism("Homo sapiens"), dao.findGen("gen3"), dao.findNcbiGenId("ncbiGenId3"), dao.findHumanGenomBuild("NCBI Build 36.1"),
                 dao.findFormulation("Resuspended in TRIS"), dao.findTypeOfPrimer("M13/pUC primer"), "sondaseq123", "assayid123", Size.M, dao.findPrimerApplication("Sanger Sequencing"),
                 "application comment 123",  dao.findFiveModification("Aldehyde Modifier"), dao.findThreeModification("Biotin TEG"), 40,
-                ConcentrationOrderedUnit.NANOMOL, true, "designer123", "publication123",
-                "database123", dao.findProject("project3"), dao.findSupplier("Omega"), dao.findManufacturer("BioSearch"),
+                ConcentrationOrderedUnit.NANOMOL, true, dao.findDesignerName("designerName3"), dao.findDesignerPublication("designerPublication3"),
+                dao.findDesignerDatabase("designerDatabase3"), dao.findProject("project3"), dao.findSupplier("Omega"), dao.findManufacturer("BioSearch"),
                 "Tega sm dobil za rojstni dan", "dokument link", "analiza 123", OrderStatus.RECEIVED,
                 dao.findThreeQuencher("TAMRA"), dao.findFiveDye("NED"), new Date(), null);
         dao.create(primer2);
@@ -69,11 +69,11 @@ public class PrimerResource {
         Primer primer3 = new Primer("PleaseUseME", "banana", Orientation.REVERSE, dao.findFreezer("freezer3"),
                 dao.findDrawer("drawer3"), dao.findBox("box5"), dao.findPositionInReference("5'-promotor"), 65.2, 22.1, dao.findPurificationMethod("Cartridge"),
                 42.3, 30, AmountAvailablePackType.PLATE, 30,
-                "42.2", 34.3, dao.findOrganism("Homo sapiens"), "gen123", "ncbigenid123", dao.findHumanGenomBuild("NCBI Build 36.1"),
+                "42.2", 34.3, dao.findOrganism("Homo sapiens"), dao.findGen("gen4"), dao.findNcbiGenId("ncbiGenId4"), dao.findHumanGenomBuild("NCBI Build 36.1"),
                 dao.findFormulation("Resuspended in TRIS"), dao.findTypeOfPrimer("M13/pUC primer"), "sondaseq123", "assayid123", Size.M, dao.findPrimerApplication("Sanger Sequencing"),
                 "application comment 123",  dao.findFiveModification("Aldehyde Modifier"), dao.findThreeModification("Biotin TEG"), 40,
-                ConcentrationOrderedUnit.NANOMOL, true, "designer123", "publication123",
-                "database123", dao.findProject("project3"), dao.findSupplier("Omega"), dao.findManufacturer("BioSearch"),
+                ConcentrationOrderedUnit.NANOMOL, true, dao.findDesignerName("designerName4"), dao.findDesignerPublication("designerPublication4"),
+                dao.findDesignerDatabase("designerDatabase4"), dao.findProject("project3"), dao.findSupplier("Omega"), dao.findManufacturer("BioSearch"),
                 "Rad imam maline!", "dokument link", "analiza 123", OrderStatus.RECEIVED,
                 dao.findThreeQuencher("TAMRA"), dao.findFiveDye("NED"), new Date(), null);
         dao.create(primer3);
@@ -94,12 +94,13 @@ public class PrimerResource {
                 dao.findDrawer(p.drawer), dao.findBox(p.box), dao.findPositionInReference(p.positionInReference), p.Tm,
                 p.optimalTOfAnnealing, dao.findPurificationMethod(p.purificationMethod), p.amountAvailableMikroL,
                 p.amountAvailablePacks, AmountAvailablePackType.fromString(p.amountAvailablePackSize), p.lengthOfAmplicone,
-                p.storingT, p.GCPercent, dao.findOrganism(p.organism), p.gen, p.ncbiGenId, dao.findHumanGenomBuild(p.humanGenomBuild),
-                dao.findFormulation(p.formulation), dao.findTypeOfPrimer(p.typeOfPrimer), p.sondaSequence, p.assayId,
-                Size.fromString(p.size), dao.findPrimerApplication(p.primerApplication), p.applicationComment,
-                dao.findFiveModification(p.fiveModification), dao.findThreeModification(p.threeModification), p.concentrationOrdered,
-                ConcentrationOrderedUnit.fromString(p.concentrationOrderedUnit), p.checkSpecifityInBlast, p.designerName,
-                p.designerPublication, p.designerDatabase, dao.findProject(p.project), dao.findSupplier(p.supplier),
+                p.storingT, p.GCPercent, dao.findOrganism(p.organism), dao.findGen(p.gen), dao.findNcbiGenId(p.ncbiGenId),
+                dao.findHumanGenomBuild(p.humanGenomBuild), dao.findFormulation(p.formulation), dao.findTypeOfPrimer(p.typeOfPrimer),
+                p.sondaSequence, p.assayId, Size.fromString(p.size), dao.findPrimerApplication(p.primerApplication),
+                p.applicationComment, dao.findFiveModification(p.fiveModification), dao.findThreeModification(p.threeModification),
+                p.concentrationOrdered, ConcentrationOrderedUnit.fromString(p.concentrationOrderedUnit), p.checkSpecifityInBlast,
+                dao.findDesignerName(p.designerName), dao.findDesignerPublication(p.designerPublication),
+                dao.findDesignerDatabase(p.designerDatabase), dao.findProject(p.project), dao.findSupplier(p.supplier),
                 dao.findManufacturer(p.manufacturer), p.comment, p.document, p.analysis, OrderStatus.fromString(p.orderStatus),
                 dao.findThreeQuencher(p.threeQuencher), dao.findFiveDye(p.fiveDye), new Date(), null);
         primer = dao.create(primer);
@@ -245,6 +246,54 @@ public class PrimerResource {
     @UnitOfWork
     public FiveDye addFiveDye(String name) {
         return dao.addFiveDye(name);
+    }
+
+    @POST
+    @Path("/add-organism")
+    @Produces(MediaType.APPLICATION_JSON)
+    @UnitOfWork
+    public Organism addOrganism(String name) {
+        return dao.addOrganism(name);
+    }
+
+    @POST
+    @Path("/add-gen")
+    @Produces(MediaType.APPLICATION_JSON)
+    @UnitOfWork
+    public Gen addGen(String name) {
+        return dao.addGen(name);
+    }
+
+    @POST
+    @Path("/add-ncbigenid")
+    @Produces(MediaType.APPLICATION_JSON)
+    @UnitOfWork
+    public NcbiGenId addNcbiGenId(String name) {
+        return dao.addNcbiGenId(name);
+    }
+
+    @POST
+    @Path("/add-designername")
+    @Produces(MediaType.APPLICATION_JSON)
+    @UnitOfWork
+    public DesignerName addDesignerName(String name) {
+        return dao.addDesignerName(name);
+    }
+
+    @POST
+    @Path("/add-designerpublication")
+    @Produces(MediaType.APPLICATION_JSON)
+    @UnitOfWork
+    public DesignerPublication addDesignerPublication(String name) {
+        return dao.addDesignerPublication(name);
+    }
+
+    @POST
+    @Path("/add-designerdatabase")
+    @Produces(MediaType.APPLICATION_JSON)
+    @UnitOfWork
+    public DesignerDatabase addDesignerDatabase(String name) {
+        return dao.addDesignerDatabase(name);
     }
 
     @GET

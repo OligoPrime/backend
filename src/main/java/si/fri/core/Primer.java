@@ -89,10 +89,17 @@ public class Primer {
     @JsonIdentityReference(alwaysAsId = true)
     private Organism organism;
 
-    @Column(nullable = false)
-    private String gen;
+    @ManyToOne(targetEntity = Gen.class)
+    @JoinColumn(name = "gen_id", referencedColumnName = "id", nullable = false)
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "gen")
+    @JsonIdentityReference(alwaysAsId = true)
+    private Gen gen;
 
-    private String ncbiGenId;
+    @ManyToOne(targetEntity = NcbiGenId.class)
+    @JoinColumn(name = "ncbiGenId_id", referencedColumnName = "id")
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "ncbiGenId")
+    @JsonIdentityReference(alwaysAsId = true)
+    private NcbiGenId ncbiGenId;
 
     @ManyToOne(targetEntity = HumanGenomBuild.class)
     @JoinColumn(name = "humanGenomBuild_id", referencedColumnName = "id")
@@ -146,11 +153,23 @@ public class Primer {
 
     private boolean checkSpecifityInBlast;
 
-    private String designerName;
+    @ManyToOne(targetEntity = DesignerName.class)
+    @JoinColumn(name = "designerName_id", referencedColumnName = "id")
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "designerName")
+    @JsonIdentityReference(alwaysAsId = true)
+    private DesignerName designerName;
 
-    private String designerPublication;
+    @ManyToOne(targetEntity = DesignerPublication.class)
+    @JoinColumn(name = "designerPublication_id", referencedColumnName = "id")
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "designerPublication")
+    @JsonIdentityReference(alwaysAsId = true)
+    private DesignerPublication designerPublication;
 
-    private String designerDatabase;
+    @ManyToOne(targetEntity = DesignerDatabase.class)
+    @JoinColumn(name = "designerDatabase_id", referencedColumnName = "id")
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "designerDatabase")
+    @JsonIdentityReference(alwaysAsId = true)
+    private DesignerDatabase designerDatabase;
 
     @ManyToOne(targetEntity = Project.class)
     @JoinColumn(name = "project_id", referencedColumnName = "id")
@@ -221,14 +240,14 @@ public class Primer {
                   Box box, PositionInReference positionInReference, double Tm, double optimalTOfAnnealing,
                   PurificationMethod purificationMethod, double amountAvailable, int amountAvailablePacks,
                   AmountAvailablePackType amountAvailablePackType, int lengthOfAmplicone, String storingT,
-                  double GCPercent, Organism organism, String gen, String ncbiGenId, HumanGenomBuild humanGenomBuild,
+                  double GCPercent, Organism organism, Gen gen, NcbiGenId ncbiGenId, HumanGenomBuild humanGenomBuild,
                   Formulation formulation, TypeOfPrimer typeOfPrimer, String sondaSequence, String assayId, Size size,
                   PrimerApplication primerApplication, String applicationComment, FiveModification fiveModification,
                   ThreeModification threeModification, int concentrationOrdered, ConcentrationOrderedUnit concentrationOrderedUnit,
-                  boolean checkSpecifityInBlast, String designerName, String designerPublication, String designerDatabase,
-                  Project project, Supplier supplier, Manufacturer manufacturer, String comment, String document,
-                  String analysis, OrderStatus orderStatus, ThreeQuencher threeQuencher, FiveDye fiveDye, Date date,
-                  User user) {
+                  boolean checkSpecifityInBlast, DesignerName designerName, DesignerPublication designerPublication,
+                  DesignerDatabase designerDatabase, Project project, Supplier supplier, Manufacturer manufacturer,
+                  String comment, String document, String analysis, OrderStatus orderStatus, ThreeQuencher threeQuencher,
+                  FiveDye fiveDye, Date date, User user) {
 
         // check that required attributes are nonempty
         if (!typeOfPrimer.getTypeOfPrimer().equals("TaqProbe")) {
@@ -295,7 +314,8 @@ public class Primer {
         this.user = user;
         this.orderStatus = orderStatus;
         this.analysis = analysis;
-        this.length = this.sequence.length();
+        this.length = sequence.length();
+        // TODO: set user to currently logged in user
     }
 
     public void generateName() {
@@ -341,11 +361,11 @@ public class Primer {
         if (ncbiGenId == null) {
             generatedName += "XXX";
         }
-        else if (ncbiGenId.isEmpty()) {
+        else if (ncbiGenId.getNcbiGenId().isEmpty()) {
             generatedName += "XXX";
         }
         else {
-            generatedName += ncbiGenId;
+            generatedName += ncbiGenId.getNcbiGenId();
         }
         generatedName += delimiter;
 
@@ -550,20 +570,20 @@ public class Primer {
     }
 
     @JsonProperty
-    public String getGen() {
+    public Gen getGen() {
         return gen;
     }
 
-    public void setGen(String gen) {
+    public void setGen(Gen gen) {
         this.gen = gen;
     }
 
     @JsonProperty
-    public String getNcbiGenId() {
+    public NcbiGenId getNcbiGenId() {
         return ncbiGenId;
     }
 
-    public void setNcbiGenId(String ncbiGenId) {
+    public void setNcbiGenId(NcbiGenId ncbiGenId) {
         this.ncbiGenId = ncbiGenId;
     }
 
@@ -685,29 +705,29 @@ public class Primer {
     }
 
     @JsonProperty
-    public String getDesignerName() {
+    public DesignerName getDesignerName() {
         return designerName;
     }
 
-    public void setDesignerName(String designerName) {
+    public void setDesignerName(DesignerName designerName) {
         this.designerName = designerName;
     }
 
     @JsonProperty
-    public String getDesignerPublication() {
+    public DesignerPublication getDesignerPublication() {
         return designerPublication;
     }
 
-    public void setDesignerPublication(String designerPublication) {
+    public void setDesignerPublication(DesignerPublication designerPublication) {
         this.designerPublication = designerPublication;
     }
 
     @JsonProperty
-    public String getDesignerDatabase() {
+    public DesignerDatabase getDesignerDatabase() {
         return designerDatabase;
     }
 
-    public void setDesignerDatabase(String designerDatabase) {
+    public void setDesignerDatabase(DesignerDatabase designerDatabase) {
         this.designerDatabase = designerDatabase;
     }
 

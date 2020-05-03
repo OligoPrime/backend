@@ -45,7 +45,8 @@ public class BackendApplication extends Application<BackendConfiguration> {
             Primer.class, PositionInReference.class, PurificationMethod.class, Freezer.class, Drawer.class, Box.class,
             Organism.class, HumanGenomBuild.class, Formulation.class, TypeOfPrimer.class, PrimerApplication.class,
             FiveModification.class, ThreeModification.class, Project.class, Manufacturer.class, Supplier.class,
-            ThreeQuencher.class, FiveDye.class) {
+            ThreeQuencher.class, FiveDye.class, Gen.class, NcbiGenId.class, DesignerName.class, DesignerPublication.class,
+            DesignerDatabase.class) {
         @Override
         public DataSourceFactory getDataSourceFactory(BackendConfiguration configuration) {
             return configuration.getDataSourceFactory();

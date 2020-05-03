@@ -182,6 +182,51 @@ public class PrimerDAO extends AbstractDAO<Primer> {
         return (FiveDye) results.get(0);
     }
 
+    public Gen findGen(String name) {
+        Session session = currentSession();
+        String hql = "SELECT g FROM Gen g WHERE g.gen = :genName";
+        Query query = session.createQuery(hql);
+        query.setParameter("genName", name);
+        List results = query.list();
+        return (Gen) results.get(0);
+    }
+
+    public NcbiGenId findNcbiGenId(String name) {
+        Session session = currentSession();
+        String hql = "SELECT n FROM NcbiGenId n WHERE n.ncbiGenId = :ncbiGenIdName";
+        Query query = session.createQuery(hql);
+        query.setParameter("ncbiGenIdName", name);
+        List results = query.list();
+        return (NcbiGenId) results.get(0);
+    }
+
+    public DesignerName findDesignerName(String name) {
+        Session session = currentSession();
+        String hql = "SELECT d FROM DesignerName d WHERE d.designerName = :designerNameName";
+        Query query = session.createQuery(hql);
+        query.setParameter("designerNameName", name);
+        List results = query.list();
+        return (DesignerName) results.get(0);
+    }
+
+    public DesignerPublication findDesignerPublication(String name) {
+        Session session = currentSession();
+        String hql = "SELECT d FROM DesignerPublication d WHERE d.designerPublication = :designerPublicationName";
+        Query query = session.createQuery(hql);
+        query.setParameter("designerPublicationName", name);
+        List results = query.list();
+        return (DesignerPublication) results.get(0);
+    }
+
+    public DesignerDatabase findDesignerDatabase(String name) {
+        Session session = currentSession();
+        String hql = "SELECT d FROM DesignerDatabase d WHERE d.designerDatabase = :designerDatabaseName";
+        Query query = session.createQuery(hql);
+        query.setParameter("designerDatabaseName", name);
+        List results = query.list();
+        return (DesignerDatabase) results.get(0);
+    }
+
     public Freezer addFreezer(String name) {
         Session session = currentSession();
         Freezer freezer = new Freezer(name);
@@ -316,6 +361,46 @@ public class PrimerDAO extends AbstractDAO<Primer> {
         session.save(fiveDye);
         session.getTransaction().commit();
         return fiveDye;
+    }
+
+    public Gen addGen(String name) {
+        Session session = currentSession();
+        Gen gen = new Gen(name);
+        session.save(gen);
+        session.getTransaction().commit();
+        return gen;
+    }
+
+    public NcbiGenId addNcbiGenId(String name) {
+        Session session = currentSession();
+        NcbiGenId ncbiGenId = new NcbiGenId(name);
+        session.save(ncbiGenId);
+        session.getTransaction().commit();
+        return ncbiGenId;
+    }
+
+    public DesignerName addDesignerName(String name) {
+        Session session = currentSession();
+        DesignerName designerName = new DesignerName(name);
+        session.save(designerName);
+        session.getTransaction().commit();
+        return designerName;
+    }
+
+    public DesignerPublication addDesignerPublication(String name) {
+        Session session = currentSession();
+        DesignerPublication designerPublication = new DesignerPublication(name);
+        session.save(designerPublication);
+        session.getTransaction().commit();
+        return designerPublication;
+    }
+
+    public DesignerDatabase addDesignerDatabase(String name) {
+        Session session = currentSession();
+        DesignerDatabase designerDatabase = new DesignerDatabase(name);
+        session.save(designerDatabase);
+        session.getTransaction().commit();
+        return designerDatabase;
     }
 
     public void deletePrimer(long id) {

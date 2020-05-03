@@ -79,7 +79,7 @@ public class Primer {
 
     private int lengthOfAmplicone;
 
-    private double storingT;
+    private String storingT;
 
     private double GCPercent;
 
@@ -220,7 +220,7 @@ public class Primer {
     public Primer(String name, String sequence, Orientation orientation, Freezer freezer, Drawer drawer,
                   Box box, PositionInReference positionInReference, double Tm, double optimalTOfAnnealing,
                   PurificationMethod purificationMethod, double amountAvailableMikroL, int amountAvailablePacks,
-                  AmountAvailablePackSize amountAvailablePackType, int lengthOfAmplicone, double storingT,
+                  AmountAvailablePackSize amountAvailablePackType, int lengthOfAmplicone, String storingT,
                   double GCPercent, Organism organism, String gen, String ncbiGenId, HumanGenomBuild humanGenomBuild,
                   Formulation formulation, TypeOfPrimer typeOfPrimer, String sondaSequence, String assayId, Size size,
                   PrimerApplication primerApplication, String applicationComment, FiveModification fiveModification,
@@ -523,11 +523,11 @@ public class Primer {
     }
 
     @JsonProperty
-    public double getStoringT() {
+    public String getStoringT() {
         return storingT;
     }
 
-    public void setStoringT(double storingT) {
+    public void setStoringT(String storingT) {
         this.storingT = storingT;
     }
 

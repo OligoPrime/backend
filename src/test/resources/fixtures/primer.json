@@ -22,10 +22,10 @@
   },
   "amountAvailableMikroL": 42.3,
   "amountAvailablePacks": 30,
-  "amountAvailablePackSize": "PLATE",
+  "amountAvailablePackType": "PLATE",
   "date": 1577746800000,
   "lengthOfAmplicone": 30,
-  "storingT": 42.2,
+  "storingT": "42.2",
   "organism": {
     "organism": "Homo sapiens"
   },

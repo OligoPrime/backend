@@ -182,7 +182,141 @@ public class PrimerDAO extends AbstractDAO<Primer> {
         return (FiveDye) results.get(0);
     }
 
-    // TODO: methods for adding into foreign tables
+    public Freezer addFreezer(String name) {
+        Session session = currentSession();
+        Freezer freezer = new Freezer(name);
+        session.save(freezer);
+        session.getTransaction().commit();
+        return freezer;
+    }
+
+    public Organism addOrganism(String name) {
+        Session session = currentSession();
+        Organism organism = new Organism(name);
+        session.save(organism);
+        session.getTransaction().commit();
+        return organism;
+    }
+
+    public Drawer addDrawer(String name) {
+        Session session = currentSession();
+        Drawer drawer = new Drawer(name);
+        session.save(drawer);
+        session.getTransaction().commit();
+        return drawer;
+    }
+
+    public Box addBox(String name) {
+        Session session = currentSession();
+        Box box = new Box(name);
+        session.save(box);
+        session.getTransaction().commit();
+        return box;
+    }
+
+    public PositionInReference addPositionInReference(String name) {
+        Session session = currentSession();
+        PositionInReference positionInReference = new PositionInReference(name);
+        session.save(positionInReference);
+        session.getTransaction().commit();
+        return positionInReference;
+    }
+
+    public PurificationMethod addPurificationMethod(String name) {
+        Session session = currentSession();
+        PurificationMethod purificationMethod = new PurificationMethod(name);
+        session.save(purificationMethod);
+        session.getTransaction().commit();
+        return purificationMethod;
+    }
+
+    public HumanGenomBuild addHumanGenomBuild(String name) {
+        Session session = currentSession();
+        HumanGenomBuild humanGenomBuild = new HumanGenomBuild(name);
+        session.save(humanGenomBuild);
+        session.getTransaction().commit();
+        return humanGenomBuild;
+    }
+
+    public Formulation addFormulation(String name) {
+        Session session = currentSession();
+        Formulation formulation = new Formulation(name);
+        session.save(formulation);
+        session.getTransaction().commit();
+        return formulation;
+    }
+
+    public TypeOfPrimer addTypeOfPrimer(String name) {
+        Session session = currentSession();
+        TypeOfPrimer typeOfPrimer = new TypeOfPrimer(name);
+        session.save(typeOfPrimer);
+        session.getTransaction().commit();
+        return typeOfPrimer;
+    }
+
+    public PrimerApplication addPrimerApplication(String name) {
+        Session session = currentSession();
+        PrimerApplication primerApplication = new PrimerApplication(name);
+        session.save(primerApplication);
+        session.getTransaction().commit();
+        return primerApplication;
+    }
+
+    public FiveModification addFiveModification(String name) {
+        Session session = currentSession();
+        FiveModification fiveModification = new FiveModification(name);
+        session.save(fiveModification);
+        session.getTransaction().commit();
+        return fiveModification;
+    }
+
+    public ThreeModification addThreeModification(String name) {
+        Session session = currentSession();
+        ThreeModification threeModification = new ThreeModification(name);
+        session.save(threeModification);
+        session.getTransaction().commit();
+        return threeModification;
+    }
+
+    public Project addProject(String name) {
+        Session session = currentSession();
+        Project project = new Project(name);
+        session.save(project);
+        session.getTransaction().commit();
+        return project;
+    }
+
+    public Supplier addSupplier(String name) {
+        Session session = currentSession();
+        Supplier supplier = new Supplier(name);
+        session.save(supplier);
+        session.getTransaction().commit();
+        return supplier;
+    }
+
+    public Manufacturer addManufacturer(String name) {
+        Session session = currentSession();
+        Manufacturer manufacturer = new Manufacturer(name);
+        session.save(manufacturer);
+        session.getTransaction().commit();
+        return manufacturer;
+    }
+
+    public ThreeQuencher addThreeQuencher(String name) {
+        Session session = currentSession();
+        ThreeQuencher threeQuencher = new ThreeQuencher(name);
+        session.save(threeQuencher);
+        session.getTransaction().commit();
+        return threeQuencher;
+    }
+
+    public FiveDye addFiveDye(String name) {
+        Session session = currentSession();
+        FiveDye fiveDye = new FiveDye(name);
+        session.save(fiveDye);
+        session.getTransaction().commit();
+        return fiveDye;
+    }
 
     public void deletePrimer(long id) {
         Session session = currentSession();

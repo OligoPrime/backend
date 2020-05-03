@@ -143,6 +143,66 @@ public class PrimerResource {
         return primer.orElse(null);
     }
 
+    @GET
+    @Path("/get-foreign-table")
+    @Produces(MediaType.APPLICATION_JSON)
+    @UnitOfWork
+    public List getForeignTable(@QueryParam("table") String table) {
+        switch(table) {
+            case "box":
+                return dao.findAllBox();
+            case "designerdatabase":
+                return dao.findAllDesignerDatabase();
+            case "designername":
+                return dao.findAllDesignerName();
+            case "designerpublication":
+                return dao.findAllDesignerPublication();
+            case "drawer":
+                return dao.findAllDrawer();
+            case "fivedye":
+                return dao.findAllFiveDye();
+            case "fivemodification":
+                return dao.findAllFiveModification();
+            case "formulation":
+                return dao.findAllFormulation();
+            case "freezer":
+                return dao.findAllFreezer();
+            case "gen":
+                return dao.findAllGen();
+            case "humangenombuild":
+                return dao.findAllHumanGenomBuild();
+            case "ncbigenid":
+                return dao.findAllNcbiGenId();
+            case "organism":
+                return dao.findAllOrganism();
+            case "positioninreference":
+                return dao.findAllPositionInReference();
+            case "primerapplication":
+                return dao.findAllPrimerApplication();
+            case "project":
+                return dao.findAllProject();
+            case "purificationmethod":
+                return dao.findAllPurificationMethod();
+            case "supplier":
+                return dao.findAllSupplier();
+            case "threemodification":
+                return dao.findAllThreeModification();
+            case "threequencher":
+                return dao.findAllThreeQuencher();
+            case "typeofprimer":
+                return dao.findAllTypeOfPrimer();
+        }
+        return null;
+    }
+
+    @GET
+    @Path("/get-all-foreign-tables")
+    @Produces(MediaType.APPLICATION_JSON)
+    @UnitOfWork
+    public PrimerForeignTableJSON getAllForeignTables() {
+        return new PrimerForeignTableJSON(dao);
+    }
+
     @POST
     @Path("/add-formulation")
     @Produces(MediaType.APPLICATION_JSON)
@@ -394,5 +454,77 @@ public class PrimerResource {
         public String threeQuencher;
         @JsonProperty
         public String fiveDye;
+    }
+
+    public static class PrimerForeignTableJSON {
+        @JsonProperty
+        public List<Box> box;
+        @JsonProperty
+        public List<DesignerDatabase> designerDatabase;
+        @JsonProperty
+        public List<DesignerName> designerName;
+        @JsonProperty
+        public List<DesignerPublication> designerPublication;
+        @JsonProperty
+        public List<Drawer> drawer;
+        @JsonProperty
+        public List<FiveDye> fiveDye;
+        @JsonProperty
+        public List<FiveModification> fiveModification;
+        @JsonProperty
+        public List<Formulation> formulation;
+        @JsonProperty
+        public List<Freezer> freezer;
+        @JsonProperty
+        public List<Gen> gen;
+        @JsonProperty
+        public List<HumanGenomBuild> humanGenomBuild;
+        @JsonProperty
+        public List<Manufacturer> manufacturer;
+        @JsonProperty
+        public List<NcbiGenId> ncbiGenId;
+        @JsonProperty
+        public List<Organism> organism;
+        @JsonProperty
+        public List<PositionInReference> positionInReference;
+        @JsonProperty
+        public List<PrimerApplication> primerApplication;
+        @JsonProperty
+        public List<Project> project;
+        @JsonProperty
+        public List<PurificationMethod> purificationMethod;
+        @JsonProperty
+        public List<Supplier> supplier;
+        @JsonProperty
+        public List<ThreeModification> threeModification;
+        @JsonProperty
+        public List<ThreeQuencher> threeQuencher;
+        @JsonProperty
+        public List<TypeOfPrimer> typeOfPrimer;
+
+        public PrimerForeignTableJSON(PrimerDAO dao) {
+            box = dao.findAllBox();
+            designerDatabase = dao.findAllDesignerDatabase();
+            designerName = dao.findAllDesignerName();
+            designerPublication = dao.findAllDesignerPublication();
+            drawer = dao.findAllDrawer();
+            fiveDye = dao.findAllFiveDye();
+            fiveModification = dao.findAllFiveModification();
+            formulation = dao.findAllFormulation();
+            freezer = dao.findAllFreezer();
+            gen = dao.findAllGen();
+            humanGenomBuild = dao.findAllHumanGenomBuild();
+            manufacturer = dao.findAllManufacturer();
+            ncbiGenId = dao.findAllNcbiGenId();
+            organism = dao.findAllOrganism();
+            positionInReference = dao.findAllPositionInReference();
+            primerApplication = dao.findAllPrimerApplication();
+            project = dao.findAllProject();
+            purificationMethod = dao.findAllPurificationMethod();
+            supplier = dao.findAllSupplier();
+            threeModification = dao.findAllThreeModification();
+            threeQuencher = dao.findAllThreeQuencher();
+            typeOfPrimer = dao.findAllTypeOfPrimer();
+        }
     }
 }

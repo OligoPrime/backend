@@ -227,6 +227,160 @@ public class PrimerDAO extends AbstractDAO<Primer> {
         return (DesignerDatabase) results.get(0);
     }
 
+    public List<Box> findAllBox() {
+        Session session = currentSession();
+        String hql = "SELECT b FROM Box b";
+        Query query = session.createQuery(hql);
+        return query.list();
+    }
+
+    public List<DesignerDatabase> findAllDesignerDatabase() {
+        Session session = currentSession();
+        String hql = "SELECT d FROM DesignerDatabase d";
+        Query query = session.createQuery(hql);
+        return query.list();
+    }
+
+    public List<DesignerName> findAllDesignerName() {
+        Session session = currentSession();
+        String hql = "SELECT d FROM DesignerName d";
+        Query query = session.createQuery(hql);
+        return query.list();
+    }
+
+    public List<DesignerPublication> findAllDesignerPublication() {
+        Session session = currentSession();
+        String hql = "SELECT d FROM DesignerPublication d";
+        Query query = session.createQuery(hql);
+        return query.list();
+    }
+
+    public List<Drawer> findAllDrawer() {
+        Session session = currentSession();
+        String hql = "SELECT d FROM Drawer d";
+        Query query = session.createQuery(hql);
+        return query.list();
+    }
+
+    public List<FiveDye> findAllFiveDye() {
+        Session session = currentSession();
+        String hql = "SELECT f FROM FiveDye f";
+        Query query = session.createQuery(hql);
+        return query.list();
+    }
+
+    public List<FiveModification> findAllFiveModification() {
+        Session session = currentSession();
+        String hql = "SELECT f FROM FiveModification f";
+        Query query = session.createQuery(hql);
+        return query.list();
+    }
+
+    public List<Formulation> findAllFormulation() {
+        Session session = currentSession();
+        String hql = "SELECT f FROM Formulation f";
+        Query query = session.createQuery(hql);
+        return query.list();
+    }
+
+    public List<Freezer> findAllFreezer() {
+        Session session = currentSession();
+        String hql = "SELECT f FROM Freezer f";
+        Query query = session.createQuery(hql);
+        return query.list();
+    }
+
+    public List<Gen> findAllGen() {
+        Session session = currentSession();
+        String hql = "SELECT g FROM Gen g";
+        Query query = session.createQuery(hql);
+        return query.list();
+    }
+
+    public List<HumanGenomBuild> findAllHumanGenomBuild() {
+        Session session = currentSession();
+        String hql = "SELECT h FROM HumanGenomBuild h";
+        Query query = session.createQuery(hql);
+        return query.list();
+    }
+
+    public List<Manufacturer> findAllManufacturer() {
+        Session session = currentSession();
+        String hql = "SELECT m FROM Manufacturer m";
+        Query query = session.createQuery(hql);
+        return query.list();
+    }
+
+    public List<NcbiGenId> findAllNcbiGenId() {
+        Session session = currentSession();
+        String hql = "SELECT n FROM NcbiGenId n";
+        Query query = session.createQuery(hql);
+        return query.list();
+    }
+
+    public List<Organism> findAllOrganism() {
+        Session session = currentSession();
+        String hql = "SELECT o FROM Organism o";
+        Query query = session.createQuery(hql);
+        return query.list();
+    }
+
+    public List<PositionInReference> findAllPositionInReference() {
+        Session session = currentSession();
+        String hql = "SELECT p FROM PositionInReference p";
+        Query query = session.createQuery(hql);
+        return query.list();
+    }
+
+    public List<PrimerApplication> findAllPrimerApplication() {
+        Session session = currentSession();
+        String hql = "SELECT p FROM PrimerApplication p";
+        Query query = session.createQuery(hql);
+        return query.list();
+    }
+
+    public List<Project> findAllProject() {
+        Session session = currentSession();
+        String hql = "SELECT p FROM Project p";
+        Query query = session.createQuery(hql);
+        return query.list();
+    }
+
+    public List<PurificationMethod> findAllPurificationMethod() {
+        Session session = currentSession();
+        String hql = "SELECT p FROM PurificationMethod p";
+        Query query = session.createQuery(hql);
+        return query.list();
+    }
+
+    public List<Supplier> findAllSupplier() {
+        Session session = currentSession();
+        String hql = "SELECT s FROM Supplier s";
+        Query query = session.createQuery(hql);
+        return query.list();
+    }
+
+    public List<ThreeModification> findAllThreeModification() {
+        Session session = currentSession();
+        String hql = "SELECT t FROM ThreeModification t";
+        Query query = session.createQuery(hql);
+        return query.list();
+    }
+
+    public List<ThreeQuencher> findAllThreeQuencher() {
+        Session session = currentSession();
+        String hql = "SELECT t FROM ThreeQuencher t";
+        Query query = session.createQuery(hql);
+        return query.list();
+    }
+
+    public List<TypeOfPrimer> findAllTypeOfPrimer() {
+        Session session = currentSession();
+        String hql = "SELECT t FROM TypeOfPrimer t";
+        Query query = session.createQuery(hql);
+        return query.list();
+    }
+
     public Freezer addFreezer(String name) {
         Session session = currentSession();
         Freezer freezer = new Freezer(name);

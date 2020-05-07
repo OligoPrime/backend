@@ -19,6 +19,7 @@ import java.util.*;
         })
 public class Primer {
     @Id
+    @Column(columnDefinition = "serial")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
@@ -199,13 +200,13 @@ public class Primer {
     private OrderStatus orderStatus;
 
     @ManyToOne(targetEntity = ThreeQuencher.class)
-    @JoinColumn(name = "threeQuencher_id", referencedColumnName = "id")
+    @JoinColumn(name = "threeQuencher_id", referencedColumnName = "id",nullable=true)
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "threeQuencher")
     @JsonIdentityReference(alwaysAsId = true)
     private ThreeQuencher threeQuencher;
 
     @ManyToOne(targetEntity = FiveDye.class)
-    @JoinColumn(name = "fiveDye_id", referencedColumnName = "id")
+    @JoinColumn(name = "fiveDye_id", referencedColumnName = "id",nullable=true)
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "fiveDye")
     @JsonIdentityReference(alwaysAsId = true)
     private FiveDye fiveDye;

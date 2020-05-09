@@ -22,15 +22,13 @@ import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 import si.fri.auth.SimpleAuthenticator;
 import si.fri.auth.SimpleAuthorizer;
 import si.fri.core.*;
+import si.fri.core.primer_foreign_tables.*;
 import si.fri.db.HelloDAO;
+import si.fri.db.HistoryDAO;
 import si.fri.db.PrimerDAO;
 import si.fri.db.UserDAO;
 import si.fri.health.BasicHealthCheck;
-import si.fri.resources.AuthenticationResource;
-import si.fri.resources.HelloResource;
-import si.fri.resources.PrimerResource;
-import si.fri.resources.UserResource;
-import si.fri.resources.CsvResource;
+import si.fri.resources.*;
 
 import javax.servlet.DispatcherType;
 import javax.servlet.FilterRegistration;
@@ -46,7 +44,7 @@ public class BackendApplication extends Application<BackendConfiguration> {
             Organism.class, HumanGenomBuild.class, Formulation.class, TypeOfPrimer.class, PrimerApplication.class,
             FiveModification.class, ThreeModification.class, Project.class, Manufacturer.class, Supplier.class,
             ThreeQuencher.class, FiveDye.class, Gen.class, NcbiGenId.class, DesignerName.class, DesignerPublication.class,
-            DesignerDatabase.class) {
+            DesignerDatabase.class, History.class) {
         @Override
         public DataSourceFactory getDataSourceFactory(BackendConfiguration configuration) {
             return configuration.getDataSourceFactory();
@@ -93,6 +91,7 @@ public class BackendApplication extends Application<BackendConfiguration> {
         final HelloDAO helloDAO = new HelloDAO(hibernate.getSessionFactory());
         final UserDAO userDAO = new UserDAO(hibernate.getSessionFactory());
         final PrimerDAO primerDAO = new PrimerDAO(hibernate.getSessionFactory());
+        final HistoryDAO historyDAO = new HistoryDAO(hibernate.getSessionFactory());
 
         final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
@@ -121,7 +120,8 @@ public class BackendApplication extends Application<BackendConfiguration> {
         ));
         environment.jersey().register(new UserResource(userDAO));
         environment.jersey().register(new PrimerResource(primerDAO));
-        environment.jersey().register(new CsvResource());
+        environment.jersey().register(new HistoryResource(historyDAO));
+        environment.jersey().register(new CsvResource(primerDAO));
         environment.jersey().register(MultiPartFeature.class);
         environment.jersey().register(new AuthenticationResource(userDAO, key));
         environment.healthChecks().register("template", new BasicHealthCheck(configuration.getTemplate()));

@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import java.security.Principal;
-import java.util.Base64;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -40,6 +39,10 @@ public class User implements Principal {
     @OneToMany
     @JoinColumn(name = "user_id")
     private Set<Primer> primers;
+
+    @OneToMany
+    @JoinColumn(name = "user_id")
+    private Set<History> history;
 
     public User(String username, String password, String role) {
         this.username = username;

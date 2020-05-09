@@ -1,10 +1,13 @@
-package si.fri.core;
+package si.fri.core.primer_foreign_tables;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.envers.Audited;
+import si.fri.core.Primer;
 
 import javax.persistence.*;
 import java.util.Set;
 
+//@Audited
 @Entity
 @Table(name = "formulation")
 
@@ -13,7 +16,7 @@ public class Formulation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String formulation;
 
     @OneToMany

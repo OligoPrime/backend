@@ -2,6 +2,9 @@ package si.fri.core;
 
 
 import com.fasterxml.jackson.annotation.*;
+import si.fri.core.primer_enums.*;
+import si.fri.core.primer_foreign_tables.*;
+
 import javax.persistence.*;
 import java.util.*;
 
@@ -28,10 +31,9 @@ public class Primer {
     private String sequence;
 
     // not sure if stays
-    @Column
     private Orientation orientation;
 
-    private int length;
+    private Integer length;
 
     @ManyToOne(targetEntity = Freezer.class)
     @JoinColumn(name = "freezer_id", referencedColumnName = "id", nullable = false)
@@ -57,10 +59,9 @@ public class Primer {
     @JsonIdentityReference(alwaysAsId = true)
     private PositionInReference positionInReference;
 
-    @Column
-    private double Tm;
+    private Double Tm;
 
-    private double optimalTOfAnnealing;
+    private Double optimalTOfAnnealing;
 
     @ManyToOne(targetEntity = PurificationMethod.class)
     @JoinColumn(name = "purificationMethod_id", referencedColumnName = "id", nullable = false)
@@ -68,20 +69,20 @@ public class Primer {
     @JsonIdentityReference(alwaysAsId = true)
     private PurificationMethod purificationMethod;
 
-    private double amountAvailable;
+    private Double amountAvailable;
 
-    private int amountAvailablePacks;
+    private Integer amountAvailablePacks;
 
     private AmountAvailablePackType amountAvailablePackType;
 
     @Temporal(TemporalType.DATE)
     private Date date;
 
-    private int lengthOfAmplicone;
+    private Integer lengthOfAmplicone;
 
     private String storingT;
 
-    private double GCPercent;
+    private Double GCPercent;
 
     @ManyToOne(targetEntity = Organism.class)
     @JoinColumn(name = "organism_id", referencedColumnName = "id", nullable = false)
@@ -147,11 +148,11 @@ public class Primer {
     @JsonIdentityReference(alwaysAsId = true)
     private ThreeModification threeModification;
 
-    private int concentrationOrdered;
+    private Double concentrationOrdered;
 
     private ConcentrationOrderedUnit concentrationOrderedUnit;
 
-    private boolean checkSpecifityInBlast;
+    private Boolean checkSpecifityInBlast;
 
     @ManyToOne(targetEntity = DesignerName.class)
     @JoinColumn(name = "designerName_id", referencedColumnName = "id")
@@ -237,20 +238,20 @@ public class Primer {
     }
 
     public Primer(String name, String sequence, Orientation orientation, Freezer freezer, Drawer drawer,
-                  Box box, PositionInReference positionInReference, double Tm, double optimalTOfAnnealing,
-                  PurificationMethod purificationMethod, double amountAvailable, int amountAvailablePacks,
-                  AmountAvailablePackType amountAvailablePackType, int lengthOfAmplicone, String storingT,
-                  double GCPercent, Organism organism, Gen gen, NcbiGenId ncbiGenId, HumanGenomBuild humanGenomBuild,
+                  Box box, PositionInReference positionInReference, Double Tm, Double optimalTOfAnnealing,
+                  PurificationMethod purificationMethod, Double amountAvailable, Integer amountAvailablePacks,
+                  AmountAvailablePackType amountAvailablePackType, Integer lengthOfAmplicone, String storingT,
+                  Double GCPercent, Organism organism, Gen gen, NcbiGenId ncbiGenId, HumanGenomBuild humanGenomBuild,
                   Formulation formulation, TypeOfPrimer typeOfPrimer, String sondaSequence, String assayId, Size size,
                   PrimerApplication primerApplication, String applicationComment, FiveModification fiveModification,
-                  ThreeModification threeModification, int concentrationOrdered, ConcentrationOrderedUnit concentrationOrderedUnit,
-                  boolean checkSpecifityInBlast, DesignerName designerName, DesignerPublication designerPublication,
+                  ThreeModification threeModification, Double concentrationOrdered, ConcentrationOrderedUnit concentrationOrderedUnit,
+                  Boolean checkSpecifityInBlast, DesignerName designerName, DesignerPublication designerPublication,
                   DesignerDatabase designerDatabase, Project project, Supplier supplier, Manufacturer manufacturer,
                   String comment, String document, String analysis, OrderStatus orderStatus, ThreeQuencher threeQuencher,
                   FiveDye fiveDye, Date date, User user) {
 
         // check that required attributes are nonempty
-        if (!typeOfPrimer.getTypeOfPrimer().equals("TaqProbe")) {
+        if (typeOfPrimer.getTypeOfPrimer().equals("TaqProbe")) {
             if (sequence == null) {
                 throw new IllegalArgumentException("Attribute 'sequence' must not be empty!");
             }
@@ -425,11 +426,11 @@ public class Primer {
     }
 
     @JsonProperty
-    public int getLength() {
+    public Integer getLength() {
         return length;
     }
 
-    public void setLength(int length) {
+    public void setLength(Integer length) {
         this.length = length;
     }
 
@@ -470,20 +471,20 @@ public class Primer {
     }
 
     @JsonProperty
-    public double getTm() {
+    public Double getTm() {
         return Tm;
     }
 
-    public void setTm(double tm) {
+    public void setTm(Double tm) {
         Tm = tm;
     }
 
     @JsonProperty
-    public double getOptimalTOfAnnealing() {
+    public Double getOptimalTOfAnnealing() {
         return optimalTOfAnnealing;
     }
 
-    public void setOptimalTOfAnnealing(double optimalTOfAnnealing) {
+    public void setOptimalTOfAnnealing(Double optimalTOfAnnealing) {
         this.optimalTOfAnnealing = optimalTOfAnnealing;
     }
 
@@ -497,21 +498,21 @@ public class Primer {
     }
 
     @JsonProperty
-    public double getAmountAvailable() {
+    public Double getAmountAvailable() {
         return amountAvailable;
     }
 
-    public void setAmountAvailable(double amountAvailableMikroL) {
+    public void setAmountAvailable(Double amountAvailableMikroL) {
         this.amountAvailable = amountAvailableMikroL;
     }
 
     @JsonProperty
-    public int getAmountAvailablePacks() {
+    public Integer getAmountAvailablePacks() {
         return amountAvailablePacks;
     }
 
 
-    public void setAmountAvailablePacks(int amountAvailablePacks) {
+    public void setAmountAvailablePacks(Integer amountAvailablePacks) {
         this.amountAvailablePacks = amountAvailablePacks;
     }
 
@@ -534,11 +535,11 @@ public class Primer {
     }
 
     @JsonProperty
-    public int getLengthOfAmplicone() {
+    public Integer getLengthOfAmplicone() {
         return lengthOfAmplicone;
     }
 
-    public void setLengthOfAmplicone(int lengthOfAmplicone) {
+    public void setLengthOfAmplicone(Integer lengthOfAmplicone) {
         this.lengthOfAmplicone = lengthOfAmplicone;
     }
 
@@ -552,11 +553,11 @@ public class Primer {
     }
 
     @JsonProperty
-    public double getGCPercent() {
+    public Double getGCPercent() {
         return GCPercent;
     }
 
-    public void setGCPercent(double GCPercent) {
+    public void setGCPercent(Double GCPercent) {
         this.GCPercent = GCPercent;
     }
 
@@ -678,11 +679,11 @@ public class Primer {
     }
 
     @JsonProperty
-    public int getConcentrationOrdered() {
+    public Double getConcentrationOrdered() {
         return concentrationOrdered;
     }
 
-    public void setConcentrationOrdered(int concentrationOrdered) {
+    public void setConcentrationOrdered(Double concentrationOrdered) {
         this.concentrationOrdered = concentrationOrdered;
     }
 
@@ -696,11 +697,11 @@ public class Primer {
     }
 
 
-    public boolean isCheckSpecifityInBlast() {
+    public Boolean isCheckSpecifityInBlast() {
         return checkSpecifityInBlast;
     }
 
-    public void setCheckSpecifityInBlast(boolean checkSpecifityInBlast) {
+    public void setCheckSpecifityInBlast(Boolean checkSpecifityInBlast) {
         this.checkSpecifityInBlast = checkSpecifityInBlast;
     }
 

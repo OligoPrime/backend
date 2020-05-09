@@ -3,6 +3,8 @@ package si.fri.resources;
 import com.fasterxml.jackson.annotation.*;
 import io.dropwizard.hibernate.UnitOfWork;
 import si.fri.core.*;
+import si.fri.core.primer_enums.*;
+import si.fri.core.primer_foreign_tables.*;
 import si.fri.db.PrimerDAO;
 
 import javax.ws.rs.*;
@@ -35,7 +37,7 @@ public class PrimerResource {
                     42.3, 30, AmountAvailablePackType.PLATE, 30,
                     "42.2", 34.3, dao.findOrganism("Homo sapiens"), dao.findGen("gen1"), dao.findNcbiGenId("ncbiGenId1"), dao.findHumanGenomBuild("NCBI Build 36.1"),
                     dao.findFormulation("Resuspended in TRIS"), dao.findTypeOfPrimer("M13/pUC primer"), "sondaseq123", "assayid123", Size.M, dao.findPrimerApplication("Sanger Sequencing"),
-                    "application comment 123",  dao.findFiveModification("Aldehyde Modifier"), dao.findThreeModification("Biotin TEG"), 40,
+                    "application comment 123",  dao.findFiveModification("Aldehyde Modifier"), dao.findThreeModification("Biotin TEG"), 40.0,
                     ConcentrationOrderedUnit.NANOMOL, true, dao.findDesignerName("designerName1"), dao.findDesignerPublication("designerPublication1"),
                     dao.findDesignerDatabase("designerDatabase1"), dao.findProject("project3"), dao.findSupplier("Omega"), dao.findManufacturer("BioSearch"),
                     "Tega je pa kr velik", "dokument link", "analiza 123", OrderStatus.RECEIVED,
@@ -47,7 +49,7 @@ public class PrimerResource {
                 42.3, 30, AmountAvailablePackType.PLATE, 30,
                 "42.2", 34.3, dao.findOrganism("Homo sapiens"), dao.findGen("gen2"), dao.findNcbiGenId("ncbiGenId2"), dao.findHumanGenomBuild("NCBI Build 36.1"),
                 dao.findFormulation("Resuspended in TRIS"), dao.findTypeOfPrimer("M13/pUC primer"), "sondaseq123", "assayid123", Size.M, dao.findPrimerApplication("Sanger Sequencing"),
-                "application comment 123",  dao.findFiveModification("Aldehyde Modifier"), dao.findThreeModification("Biotin TEG"), 40,
+                "application comment 123",  dao.findFiveModification("Aldehyde Modifier"), dao.findThreeModification("Biotin TEG"), 40.0,
                 ConcentrationOrderedUnit.NANOMOL, true, dao.findDesignerName("designerName2"), dao.findDesignerPublication("designerPublication2"),
                 dao.findDesignerDatabase("designerDatabase2"), dao.findProject("project3"), dao.findSupplier("Omega"), dao.findManufacturer("BioSearch"),
                 "Lačen sem", "dokument link", "analiza 123", OrderStatus.RECEIVED,
@@ -59,7 +61,7 @@ public class PrimerResource {
                 42.3, 30, AmountAvailablePackType.PLATE, 30,
                 "42.2", 34.3, dao.findOrganism("Homo sapiens"), dao.findGen("gen3"), dao.findNcbiGenId("ncbiGenId3"), dao.findHumanGenomBuild("NCBI Build 36.1"),
                 dao.findFormulation("Resuspended in TRIS"), dao.findTypeOfPrimer("M13/pUC primer"), "sondaseq123", "assayid123", Size.M, dao.findPrimerApplication("Sanger Sequencing"),
-                "application comment 123",  dao.findFiveModification("Aldehyde Modifier"), dao.findThreeModification("Biotin TEG"), 40,
+                "application comment 123",  dao.findFiveModification("Aldehyde Modifier"), dao.findThreeModification("Biotin TEG"), 40.0,
                 ConcentrationOrderedUnit.NANOMOL, true, dao.findDesignerName("designerName3"), dao.findDesignerPublication("designerPublication3"),
                 dao.findDesignerDatabase("designerDatabase3"), dao.findProject("project3"), dao.findSupplier("Omega"), dao.findManufacturer("BioSearch"),
                 "Tega sm dobil za rojstni dan", "dokument link", "analiza 123", OrderStatus.RECEIVED,
@@ -71,7 +73,7 @@ public class PrimerResource {
                 42.3, 30, AmountAvailablePackType.PLATE, 30,
                 "42.2", 34.3, dao.findOrganism("Homo sapiens"), dao.findGen("gen4"), dao.findNcbiGenId("ncbiGenId4"), dao.findHumanGenomBuild("NCBI Build 36.1"),
                 dao.findFormulation("Resuspended in TRIS"), dao.findTypeOfPrimer("M13/pUC primer"), "sondaseq123", "assayid123", Size.M, dao.findPrimerApplication("Sanger Sequencing"),
-                "application comment 123",  dao.findFiveModification("Aldehyde Modifier"), dao.findThreeModification("Biotin TEG"), 40,
+                "application comment 123",  dao.findFiveModification("Aldehyde Modifier"), dao.findThreeModification("Biotin TEG"), 40.0,
                 ConcentrationOrderedUnit.NANOMOL, true, dao.findDesignerName("designerName4"), dao.findDesignerPublication("designerPublication4"),
                 dao.findDesignerDatabase("designerDatabase4"), dao.findProject("project3"), dao.findSupplier("Omega"), dao.findManufacturer("BioSearch"),
                 "Rad imam maline!", "dokument link", "analiza 123", OrderStatus.RECEIVED,
@@ -93,7 +95,7 @@ public class PrimerResource {
         Primer primer = new Primer(p.name, p.sequence, Orientation.fromString(p.orientation), dao.findFreezer(p.freezer),
                 dao.findDrawer(p.drawer), dao.findBox(p.box), dao.findPositionInReference(p.positionInReference), p.Tm,
                 p.optimalTOfAnnealing, dao.findPurificationMethod(p.purificationMethod), p.amountAvailableMikroL,
-                p.amountAvailablePacks, AmountAvailablePackType.fromString(p.amountAvailablePackSize), p.lengthOfAmplicone,
+                p.amountAvailablePacks, AmountAvailablePackType.fromString(p.amountAvailablePackType), p.lengthOfAmplicone,
                 p.storingT, p.GCPercent, dao.findOrganism(p.organism), dao.findGen(p.gen), dao.findNcbiGenId(p.ncbiGenId),
                 dao.findHumanGenomBuild(p.humanGenomBuild), dao.findFormulation(p.formulation), dao.findTypeOfPrimer(p.typeOfPrimer),
                 p.sondaSequence, p.assayId, Size.fromString(p.size), dao.findPrimerApplication(p.primerApplication),
@@ -102,7 +104,7 @@ public class PrimerResource {
                 dao.findDesignerName(p.designerName), dao.findDesignerPublication(p.designerPublication),
                 dao.findDesignerDatabase(p.designerDatabase), dao.findProject(p.project), dao.findSupplier(p.supplier),
                 dao.findManufacturer(p.manufacturer), p.comment, p.document, p.analysis, OrderStatus.fromString(p.orderStatus),
-                dao.findThreeQuencher(p.threeQuencher), dao.findFiveDye(p.fiveDye), new Date(), null);
+                dao.findThreeQuencher(p.threeQuencher), dao.findFiveDye(p.fiveDye), p.date, null);
         primer = dao.create(primer);
         return primer;
     }
@@ -371,8 +373,6 @@ public class PrimerResource {
         @JsonProperty
         public String orientation;
         @JsonProperty
-        public int length;
-        @JsonProperty
         public String freezer;
         @JsonProperty
         public String drawer;
@@ -381,23 +381,25 @@ public class PrimerResource {
         @JsonProperty
         public String positionInReference;
         @JsonProperty
-        public double Tm;
+        public Double Tm;
         @JsonProperty
-        public double optimalTOfAnnealing;
+        public Double optimalTOfAnnealing;
         @JsonProperty
         public String purificationMethod;
         @JsonProperty
-        public double amountAvailableMikroL;
+        public Double amountAvailableMikroL;
         @JsonProperty
-        public int amountAvailablePacks;
+        public Integer amountAvailablePacks;
         @JsonProperty
-        public String amountAvailablePackSize;
+        public String amountAvailablePackType;
         @JsonProperty
-        public int lengthOfAmplicone;
+        public Date date;
+        @JsonProperty
+        public Integer lengthOfAmplicone;
         @JsonProperty
         public String storingT;
         @JsonProperty
-        public double GCPercent;
+        public Double GCPercent;
         @JsonProperty
         public String organism;
         @JsonProperty
@@ -425,11 +427,11 @@ public class PrimerResource {
         @JsonProperty
         public String threeModification;
         @JsonProperty
-        public int concentrationOrdered;
+        public Double concentrationOrdered;
         @JsonProperty
         public String concentrationOrderedUnit;
         @JsonProperty
-        public boolean checkSpecifityInBlast;
+        public Boolean checkSpecifityInBlast;
         @JsonProperty
         public String designerName;
         @JsonProperty

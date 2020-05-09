@@ -6,6 +6,8 @@ import io.dropwizard.jackson.Jackson;
 import org.junit.jupiter.api.Test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import si.fri.core.*;
+import si.fri.core.primer_enums.*;
+import si.fri.core.primer_foreign_tables.*;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -30,7 +32,7 @@ public class PrimerTest {
                 42.3, 30, AmountAvailablePackType.PLATE, 30,
                 "42.2", 34.3, new Organism("Homo sapiens"), new Gen("gen123"), new NcbiGenId("ncbigenid123"), new HumanGenomBuild("NCBI Build 36.1"),
                 new Formulation("Resuspended in TRIS"), new TypeOfPrimer("M13/pUC primer"), "sondaseq123", "assayid123", Size.M, new PrimerApplication("Sanger Sequencing"),
-                "application comment 123", new FiveModification("Aldehyde Modifier"), new ThreeModification("Biotin TEG"), 40,
+                "application comment 123", new FiveModification("Aldehyde Modifier"), new ThreeModification("Biotin TEG"), 40.0,
                 ConcentrationOrderedUnit.NANOMOL, true, new DesignerName("designer123"), new DesignerPublication("publication123"),
                 new DesignerDatabase("database123"), new Project("project3"), new Supplier("Omega"), new Manufacturer("BioSearch"),
                 "komentar", "dokument link", "analiza 123", OrderStatus.RECEIVED,

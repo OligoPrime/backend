@@ -1,14 +1,12 @@
-package si.fri.core;
+package si.fri.core.primer_enums;
 
-public enum Size {
-    XS("XS"),
-    S("S"),
-    M("M"),
-    L("L");
+public enum OrderStatus {
+    ORDERED("ordered"),
+    RECEIVED("received");
 
     private final String name;
 
-    Size(String name) {
+    OrderStatus(String name) {
         this.name = name;
     }
 
@@ -17,8 +15,8 @@ public enum Size {
         return name;
     }
 
-    public static Size fromString(String name) {
-        for (Size o : Size.values()) {
+    public static OrderStatus fromString(String name) {
+        for (OrderStatus o : OrderStatus.values()) {
             if (o.name.equalsIgnoreCase(name)) {
                 return o;
             }

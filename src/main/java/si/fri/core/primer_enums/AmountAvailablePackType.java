@@ -1,4 +1,4 @@
-package si.fri.core;
+package si.fri.core.primer_enums;
 
 public enum AmountAvailablePackType {
     TUBE("tube","µl"),

@@ -5,13 +5,18 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import si.fri.core.*;
+import si.fri.core.primer_foreign_tables.*;
 
 import java.util.List;
 import java.util.Optional;
 
 public class PrimerDAO extends AbstractDAO<Primer> {
+
+    private final SessionFactory sessionFactory;
+
     public PrimerDAO(SessionFactory factory) {
         super(factory);
+        this.sessionFactory = factory;
     }
 
     public Optional<Primer> findById(Long id) {

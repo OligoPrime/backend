@@ -9,9 +9,11 @@ import org.apache.commons.io.IOUtils;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import si.fri.core.Primer;
+import si.fri.core.Roles;
 import si.fri.core.primer_enums.*;
 import si.fri.db.PrimerDAO;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -34,6 +36,7 @@ public class CsvResource {
 
     @POST
     @Path("/import")
+    @RolesAllowed({Roles.RESEARCHER})
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @UnitOfWork
     public Response uploadFile(

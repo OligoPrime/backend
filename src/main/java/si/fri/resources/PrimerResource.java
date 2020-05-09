@@ -7,6 +7,7 @@ import si.fri.core.primer_enums.*;
 import si.fri.core.primer_foreign_tables.*;
 import si.fri.db.PrimerDAO;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -91,6 +92,7 @@ public class PrimerResource {
     @Path("/add")
     @Produces(MediaType.APPLICATION_JSON)
     @UnitOfWork
+    @RolesAllowed({Roles.RESEARCHER})
     public Primer addPrimer(PrimerJSON p) {
         Primer primer = new Primer(p.name, p.sequence, Orientation.fromString(p.orientation), dao.findFreezer(p.freezer),
                 dao.findDrawer(p.drawer), dao.findBox(p.box), dao.findPositionInReference(p.positionInReference), p.Tm,
@@ -112,6 +114,7 @@ public class PrimerResource {
     @POST
     @Path("/delete")
     @UnitOfWork
+    @RolesAllowed({Roles.RESEARCHER})
     public Response deletePrimer(long id) {
         dao.deletePrimer(id);
         return Response.ok("Successfully deleted primer.").build();
@@ -120,6 +123,7 @@ public class PrimerResource {
     @POST
     @Path("/pair")
     @UnitOfWork
+    @RolesAllowed({Roles.RESEARCHER})
     public Response pairPrimers(long[] idArr) {
         if (idArr[0] == idArr[1]) {
             return Response.status(Response.Status.BAD_REQUEST).entity("Cannot pair primer with itself.").build();
@@ -140,6 +144,7 @@ public class PrimerResource {
     @Path("/get/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @UnitOfWork
+    @RolesAllowed({Roles.ADMIN, Roles.TECHNICIAN, Roles.RESEARCHER, Roles.GUEST})
     public Primer getPrimer(@PathParam("id") long id) {
         Optional<Primer> primer = dao.findById(id);
         return primer.orElse(null);
@@ -149,6 +154,7 @@ public class PrimerResource {
     @Path("/get-foreign-table")
     @Produces(MediaType.APPLICATION_JSON)
     @UnitOfWork
+    @RolesAllowed({Roles.ADMIN, Roles.TECHNICIAN, Roles.RESEARCHER, Roles.GUEST})
     public List getForeignTable(@QueryParam("table") String table) {
         switch(table) {
             case "box":
@@ -201,6 +207,7 @@ public class PrimerResource {
     @Path("/get-all-foreign-tables")
     @Produces(MediaType.APPLICATION_JSON)
     @UnitOfWork
+    @RolesAllowed({Roles.ADMIN, Roles.TECHNICIAN, Roles.RESEARCHER, Roles.GUEST})
     public PrimerForeignTableJSON getAllForeignTables() {
         return new PrimerForeignTableJSON(dao);
     }
@@ -209,6 +216,7 @@ public class PrimerResource {
     @Path("/add-formulation")
     @Produces(MediaType.APPLICATION_JSON)
     @UnitOfWork
+    @RolesAllowed({Roles.RESEARCHER})
     public Formulation addFormulation(String name) {
         return dao.addFormulation(name);
     }
@@ -218,6 +226,7 @@ public class PrimerResource {
     @Path("/add-purificationmethod")
     @Produces(MediaType.APPLICATION_JSON)
     @UnitOfWork
+    @RolesAllowed({Roles.RESEARCHER})
     public PurificationMethod addPurificationMethod(String name) {
         return dao.addPurificationMethod(name);
     }
@@ -226,6 +235,7 @@ public class PrimerResource {
     @Path("/add-primerapplication")
     @Produces(MediaType.APPLICATION_JSON)
     @UnitOfWork
+    @RolesAllowed({Roles.RESEARCHER})
     public PrimerApplication addPrimerApplication(String name) {
         return dao.addPrimerApplication(name);
     }
@@ -234,6 +244,7 @@ public class PrimerResource {
     @Path("/add-fivemodification")
     @Produces(MediaType.APPLICATION_JSON)
     @UnitOfWork
+    @RolesAllowed({Roles.RESEARCHER})
     public FiveModification addFiveModification(String name) {
         return dao.addFiveModification(name);
     }
@@ -242,6 +253,7 @@ public class PrimerResource {
     @Path("/add-threemodification")
     @Produces(MediaType.APPLICATION_JSON)
     @UnitOfWork
+    @RolesAllowed({Roles.RESEARCHER})
     public ThreeModification addThreeModification(String name) {
         return dao.addThreeModification(name);
     }
@@ -250,6 +262,7 @@ public class PrimerResource {
     @Path("/add-project")
     @Produces(MediaType.APPLICATION_JSON)
     @UnitOfWork
+    @RolesAllowed({Roles.RESEARCHER})
     public Project addProject(String name) {
         return dao.addProject(name);
     }
@@ -258,6 +271,7 @@ public class PrimerResource {
     @Path("/add-supplier")
     @Produces(MediaType.APPLICATION_JSON)
     @UnitOfWork
+    @RolesAllowed({Roles.RESEARCHER})
     public Supplier addSupplier(String name) {
         return dao.addSupplier(name);
     }
@@ -266,6 +280,7 @@ public class PrimerResource {
     @Path("/add-manufacturer")
     @Produces(MediaType.APPLICATION_JSON)
     @UnitOfWork
+    @RolesAllowed({Roles.RESEARCHER})
     public Manufacturer addManufacturer(String name) {
         return dao.addManufacturer(name);
     }
@@ -274,6 +289,7 @@ public class PrimerResource {
     @Path("/add-freezer")
     @Produces(MediaType.APPLICATION_JSON)
     @UnitOfWork
+    @RolesAllowed({Roles.RESEARCHER})
     public Freezer addFreezer(String name) {
         return dao.addFreezer(name);
     }
@@ -282,6 +298,7 @@ public class PrimerResource {
     @Path("/add-box")
     @Produces(MediaType.APPLICATION_JSON)
     @UnitOfWork
+    @RolesAllowed({Roles.RESEARCHER})
     public Box addBox(String name) {
         return dao.addBox(name);
     }
@@ -290,6 +307,7 @@ public class PrimerResource {
     @Path("/add-drawer")
     @Produces(MediaType.APPLICATION_JSON)
     @UnitOfWork
+    @RolesAllowed({Roles.RESEARCHER})
     public Drawer addDrawer(String name) {
         return dao.addDrawer(name);
     }
@@ -298,6 +316,7 @@ public class PrimerResource {
     @Path("/add-threequencher")
     @Produces(MediaType.APPLICATION_JSON)
     @UnitOfWork
+    @RolesAllowed({Roles.RESEARCHER})
     public ThreeQuencher addThreeQuencher(String name) {
         return dao.addThreeQuencher(name);
     }
@@ -306,6 +325,7 @@ public class PrimerResource {
     @Path("/add-fivedye")
     @Produces(MediaType.APPLICATION_JSON)
     @UnitOfWork
+    @RolesAllowed({Roles.RESEARCHER})
     public FiveDye addFiveDye(String name) {
         return dao.addFiveDye(name);
     }
@@ -314,6 +334,7 @@ public class PrimerResource {
     @Path("/add-organism")
     @Produces(MediaType.APPLICATION_JSON)
     @UnitOfWork
+    @RolesAllowed({Roles.RESEARCHER})
     public Organism addOrganism(String name) {
         return dao.addOrganism(name);
     }
@@ -322,6 +343,7 @@ public class PrimerResource {
     @Path("/add-gen")
     @Produces(MediaType.APPLICATION_JSON)
     @UnitOfWork
+    @RolesAllowed({Roles.RESEARCHER})
     public Gen addGen(String name) {
         return dao.addGen(name);
     }
@@ -330,6 +352,7 @@ public class PrimerResource {
     @Path("/add-ncbigenid")
     @Produces(MediaType.APPLICATION_JSON)
     @UnitOfWork
+    @RolesAllowed({Roles.RESEARCHER})
     public NcbiGenId addNcbiGenId(String name) {
         return dao.addNcbiGenId(name);
     }
@@ -338,6 +361,7 @@ public class PrimerResource {
     @Path("/add-designername")
     @Produces(MediaType.APPLICATION_JSON)
     @UnitOfWork
+    @RolesAllowed({Roles.RESEARCHER})
     public DesignerName addDesignerName(String name) {
         return dao.addDesignerName(name);
     }
@@ -346,6 +370,7 @@ public class PrimerResource {
     @Path("/add-designerpublication")
     @Produces(MediaType.APPLICATION_JSON)
     @UnitOfWork
+    @RolesAllowed({Roles.RESEARCHER})
     public DesignerPublication addDesignerPublication(String name) {
         return dao.addDesignerPublication(name);
     }
@@ -354,6 +379,7 @@ public class PrimerResource {
     @Path("/add-designerdatabase")
     @Produces(MediaType.APPLICATION_JSON)
     @UnitOfWork
+    @RolesAllowed({Roles.RESEARCHER})
     public DesignerDatabase addDesignerDatabase(String name) {
         return dao.addDesignerDatabase(name);
     }
@@ -361,6 +387,7 @@ public class PrimerResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @UnitOfWork
+    @RolesAllowed({Roles.ADMIN, Roles.TECHNICIAN, Roles.RESEARCHER, Roles.GUEST})
     public List<Primer> getAll(){
         return dao.findAll();
     }

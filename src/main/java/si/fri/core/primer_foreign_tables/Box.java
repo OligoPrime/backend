@@ -1,15 +1,12 @@
 package si.fri.core.primer_foreign_tables;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.hibernate.envers.AuditTable;
-import org.hibernate.envers.Audited;
 import si.fri.core.History;
 import si.fri.core.Primer;
 
 import javax.persistence.*;
 import java.util.Set;
 
-//@Audited
 @Entity
 @Table(name = "box")
 

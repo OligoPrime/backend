@@ -11,11 +11,11 @@ public class SimpleAuthorizer implements Authorizer<User> {
 
     @Override
     public boolean authorize(User user, String role) {
-        return true;
+        return user.getRole().equals(role);
     }
 
     @Override
     public boolean authorize(User user, String role, @Nullable ContainerRequestContext requestContext) {
-        return true;
+        return user.getRole().equals(role);
     }
 }

@@ -26,7 +26,7 @@ import static si.fri.auth.Passwords.hashPassword;
         })
 public class User implements Principal {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column(unique = true)
@@ -35,6 +35,9 @@ public class User implements Principal {
     private byte[] hash;
     private byte[] salt;
     private String role;
+
+    private String name;
+    private String workTitle;
 
     @OneToMany
     @JoinColumn(name = "user_id")
@@ -92,11 +95,6 @@ public class User implements Principal {
         this.username = content;
     }
 
-    @Override
-    public String getName() {
-        return username;
-    }
-
     public byte[] getHash() {
         return this.hash;
     }
@@ -111,5 +109,24 @@ public class User implements Principal {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    @Override
+    @JsonProperty
+    public String getName() {
+        return username;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @JsonProperty
+    public String getWorkTitle() {
+        return workTitle;
+    }
+
+    public void setWorkTitle(String workTitle) {
+        this.workTitle = workTitle;
     }
 }

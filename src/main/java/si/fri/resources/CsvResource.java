@@ -3,6 +3,7 @@ package si.fri.resources;
 import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
+import io.dropwizard.auth.Auth;
 import io.dropwizard.hibernate.UnitOfWork;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
@@ -10,8 +11,10 @@ import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import si.fri.core.Primer;
 import si.fri.core.Roles;
+import si.fri.core.User;
 import si.fri.core.primer_enums.*;
 import si.fri.db.PrimerDAO;
+import si.fri.db.PrimerForeignTablesDAO;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.*;
@@ -28,10 +31,12 @@ import java.util.List;
 @Produces(MediaType.APPLICATION_JSON)
 public class CsvResource {
 
-    private final PrimerDAO dao;
+    private final PrimerDAO pDao;
+    private final PrimerForeignTablesDAO pftDao;
 
-    public CsvResource(PrimerDAO dao) {
-        this.dao = dao;
+    public CsvResource(PrimerDAO pDao, PrimerForeignTablesDAO pftDao) {
+        this.pDao = pDao;
+        this.pftDao = pftDao;
     }
 
     @POST
@@ -41,7 +46,8 @@ public class CsvResource {
     @UnitOfWork
     public Response uploadFile(
             @FormDataParam("file") InputStream uploadedInputStream,
-            @FormDataParam("file") FormDataContentDisposition fileDetail) throws IOException {
+            @FormDataParam("file") FormDataContentDisposition fileDetail,
+            @Auth User user) throws IOException {
 
         String fileName = fileDetail.getFileName();
 
@@ -95,20 +101,20 @@ public class CsvResource {
                 e.printStackTrace();
             }
 
-            Primer primer = new Primer(p.name, p.sequence, Orientation.fromString(p.orientation), dao.findFreezer(p.freezer),
-                    dao.findDrawer(p.drawer), dao.findBox(p.box), dao.findPositionInReference(p.positionInReference), p.Tm,
-                    p.optimalTOfAnnealing, dao.findPurificationMethod(p.purificationMethod), p.amountAvailableMikroL,
+            Primer primer = new Primer(p.name, p.sequence, Orientation.fromString(p.orientation), pftDao.findFreezer(p.freezer),
+                    pftDao.findDrawer(p.drawer), pftDao.findBox(p.box), pftDao.findPositionInReference(p.positionInReference), p.Tm,
+                    p.optimalTOfAnnealing, pftDao.findPurificationMethod(p.purificationMethod), p.amountAvailableMikroL,
                     p.amountAvailablePacks, AmountAvailablePackType.fromString(p.amountAvailablePackType), p.lengthOfAmplicone,
-                    p.storingT, p.GCPercent, dao.findOrganism(p.organism), dao.findGen(p.gen), dao.findNcbiGenId(p.ncbiGenId),
-                    dao.findHumanGenomBuild(p.humanGenomBuild), dao.findFormulation(p.formulation), dao.findTypeOfPrimer(p.typeOfPrimer),
-                    p.sondaSequence, p.assayId, Size.fromString(p.size), dao.findPrimerApplication(p.primerApplication),
-                    p.applicationComment, dao.findFiveModification(p.fiveModification), dao.findThreeModification(p.threeModification),
+                    p.storingT, p.GCPercent, pftDao.findOrganism(p.organism), pftDao.findGen(p.gen), pftDao.findNcbiGenId(p.ncbiGenId),
+                    pftDao.findHumanGenomBuild(p.humanGenomBuild), pftDao.findFormulation(p.formulation), pftDao.findTypeOfPrimer(p.typeOfPrimer),
+                    p.sondaSequence, p.assayId, Size.fromString(p.size), pftDao.findPrimerApplication(p.primerApplication),
+                    p.applicationComment, pftDao.findFiveModification(p.fiveModification), pftDao.findThreeModification(p.threeModification),
                     p.concentrationOrdered, ConcentrationOrderedUnit.fromString(p.concentrationOrderedUnit), p.checkSpecifityInBlast,
-                    dao.findDesignerName(p.designerName), dao.findDesignerPublication(p.designerPublication),
-                    dao.findDesignerDatabase(p.designerDatabase), dao.findProject(p.project), dao.findSupplier(p.supplier),
-                    dao.findManufacturer(p.manufacturer), p.comment, p.document, p.analysis, OrderStatus.fromString(p.orderStatus),
-                    dao.findThreeQuencher(p.threeQuencher), dao.findFiveDye(p.fiveDye), date, null);
-            dao.create(primer);
+                    pftDao.findDesignerName(p.designerName), pftDao.findDesignerPublication(p.designerPublication),
+                    pftDao.findDesignerDatabase(p.designerDatabase), pftDao.findProject(p.project), pftDao.findSupplier(p.supplier),
+                    pftDao.findManufacturer(p.manufacturer), p.comment, p.document, p.analysis, OrderStatus.fromString(p.orderStatus),
+                    pftDao.findThreeQuencher(p.threeQuencher), pftDao.findFiveDye(p.fiveDye), date, user);
+            pDao.create(primer);
         }
 
         return Response.ok("Successfully uploaded primers from CSV file.").build();

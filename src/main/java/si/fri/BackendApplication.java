@@ -119,7 +119,7 @@ public class BackendApplication extends Application<BackendConfiguration> {
         environment.jersey().register(new UserResource(userDAO));
         environment.jersey().register(new PrimerResource(primerDAO, primerForeignTablesDAO));
         environment.jersey().register(new HistoryResource(historyDAO));
-        environment.jersey().register(new CsvResource(primerDAO));
+        environment.jersey().register(new CsvResource(primerDAO, primerForeignTablesDAO));
         environment.jersey().register(MultiPartFeature.class);
         environment.jersey().register(new AuthenticationResource(userDAO, key));
         environment.healthChecks().register("template", new BasicHealthCheck(configuration.getTemplate()));

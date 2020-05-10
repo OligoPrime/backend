@@ -502,8 +502,8 @@ public class Primer {
         return amountAvailable;
     }
 
-    public void setAmountAvailable(Double amountAvailableMikroL) {
-        this.amountAvailable = amountAvailableMikroL;
+    public void setAmountAvailable(Double amountAvailable) {
+        this.amountAvailable = amountAvailable;
     }
 
     @JsonProperty

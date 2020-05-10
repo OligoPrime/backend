@@ -13,12 +13,10 @@ import java.util.Optional;
 public class PrimerDAO extends AbstractDAO<Primer> {
 
     private final SessionFactory sessionFactory;
-    private final Session currentSession;
 
     public PrimerDAO(SessionFactory factory) {
         super(factory);
         this.sessionFactory = factory;
-        this.currentSession = currentSession();
     }
 
     public Optional<Primer> findById(Long id) {
@@ -38,7 +36,7 @@ public class PrimerDAO extends AbstractDAO<Primer> {
 
     public void deletePrimer(long id) {
         String hql = "DELETE FROM Primer p WHERE p.id = :primerId";
-        Query query = currentSession.createQuery(hql);
+        Query query = currentSession().createQuery(hql);
         query.setParameter("primerId", id).executeUpdate();
     }
 }

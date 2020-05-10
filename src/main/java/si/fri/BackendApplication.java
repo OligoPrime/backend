@@ -23,10 +23,7 @@ import si.fri.auth.SimpleAuthenticator;
 import si.fri.auth.SimpleAuthorizer;
 import si.fri.core.*;
 import si.fri.core.primer_foreign_tables.*;
-import si.fri.db.HelloDAO;
-import si.fri.db.HistoryDAO;
-import si.fri.db.PrimerDAO;
-import si.fri.db.UserDAO;
+import si.fri.db.*;
 import si.fri.health.BasicHealthCheck;
 import si.fri.resources.*;
 
@@ -92,6 +89,7 @@ public class BackendApplication extends Application<BackendConfiguration> {
         final UserDAO userDAO = new UserDAO(hibernate.getSessionFactory());
         final PrimerDAO primerDAO = new PrimerDAO(hibernate.getSessionFactory());
         final HistoryDAO historyDAO = new HistoryDAO(hibernate.getSessionFactory());
+        final PrimerForeignTablesDAO primerForeignTablesDAO = new PrimerForeignTablesDAO(hibernate.getSessionFactory());
 
         final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
@@ -119,7 +117,7 @@ public class BackendApplication extends Application<BackendConfiguration> {
                 helloDAO
         ));
         environment.jersey().register(new UserResource(userDAO));
-        environment.jersey().register(new PrimerResource(primerDAO));
+        environment.jersey().register(new PrimerResource(primerDAO, primerForeignTablesDAO));
         environment.jersey().register(new HistoryResource(historyDAO));
         environment.jersey().register(new CsvResource(primerDAO));
         environment.jersey().register(MultiPartFeature.class);

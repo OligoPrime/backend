@@ -1,11 +1,13 @@
 package si.fri.resources;
 
 import com.fasterxml.jackson.annotation.*;
+import io.dropwizard.auth.Auth;
 import io.dropwizard.hibernate.UnitOfWork;
 import si.fri.core.*;
 import si.fri.core.primer_enums.*;
 import si.fri.core.primer_foreign_tables.*;
 import si.fri.db.PrimerDAO;
+import si.fri.db.PrimerForeignTablesDAO;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.*;
@@ -20,66 +22,69 @@ import java.util.Optional;
 @Produces(MediaType.APPLICATION_JSON)
 public class PrimerResource {
 
-    private final PrimerDAO dao;
+    private final PrimerDAO pDao;
+    private final PrimerForeignTablesDAO pftDao;
 
-    public PrimerResource(PrimerDAO dao) {
-        this.dao = dao;
+    public PrimerResource(PrimerDAO pDao, PrimerForeignTablesDAO pftDao) {
+        this.pDao = pDao;
+        this.pftDao = pftDao;
     }
 
     @POST
     @Path("/fill")
     @Produces(MediaType.APPLICATION_JSON)
     @UnitOfWork
-    public Primer fillPrimers() {
+    @RolesAllowed({Roles.ADMIN})
+    public Primer fillPrimers(@Auth User user) {
 
         for (int i = 0; i < 600; i++) {
-            dao.create(new Primer("COVID-19", "testsequence", Orientation.REVERSE, dao.findFreezer("freezer3"),
-                    dao.findDrawer("drawer3"), dao.findBox("box5"), dao.findPositionInReference("5'-promotor"), 65.2, 22.1, dao.findPurificationMethod("Cartridge"),
+            pDao.create(new Primer("COVID-19", "testsequence", Orientation.REVERSE, pftDao.findFreezer("freezer3"),
+                    pftDao.findDrawer("drawer3"), pftDao.findBox("box5"), pftDao.findPositionInReference("5'-promotor"), 65.2, 22.1, pftDao.findPurificationMethod("Cartridge"),
                     42.3, 30, AmountAvailablePackType.PLATE, 30,
-                    "42.2", 34.3, dao.findOrganism("Homo sapiens"), dao.findGen("gen1"), dao.findNcbiGenId("ncbiGenId1"), dao.findHumanGenomBuild("NCBI Build 36.1"),
-                    dao.findFormulation("Resuspended in TRIS"), dao.findTypeOfPrimer("M13/pUC primer"), "sondaseq123", "assayid123", Size.M, dao.findPrimerApplication("Sanger Sequencing"),
-                    "application comment 123",  dao.findFiveModification("Aldehyde Modifier"), dao.findThreeModification("Biotin TEG"), 40.0,
-                    ConcentrationOrderedUnit.NANOMOL, true, dao.findDesignerName("designerName1"), dao.findDesignerPublication("designerPublication1"),
-                    dao.findDesignerDatabase("designerDatabase1"), dao.findProject("project3"), dao.findSupplier("Omega"), dao.findManufacturer("BioSearch"),
+                    "42.2", 34.3, pftDao.findOrganism("Homo sapiens"), pftDao.findGen("gen1"), pftDao.findNcbiGenId("ncbiGenId1"), pftDao.findHumanGenomBuild("NCBI Build 36.1"),
+                    pftDao.findFormulation("Resuspended in TRIS"), pftDao.findTypeOfPrimer("M13/pUC primer"), "sondaseq123", "assayid123", Size.M, pftDao.findPrimerApplication("Sanger Sequencing"),
+                    "application comment 123",  pftDao.findFiveModification("Aldehyde Modifier"), pftDao.findThreeModification("Biotin TEG"), 40.0,
+                    ConcentrationOrderedUnit.NANOMOL, true, pftDao.findDesignerName("designerName1"), pftDao.findDesignerPublication("designerPublication1"),
+                    pftDao.findDesignerDatabase("designerDatabase1"), pftDao.findProject("project3"), pftDao.findSupplier("Omega"), pftDao.findManufacturer("BioSearch"),
                     "Tega je pa kr velik", "dokument link", "analiza 123", OrderStatus.RECEIVED,
-                    dao.findThreeQuencher("TAMRA"), dao.findFiveDye("NED"), new Date(), null));
+                    pftDao.findThreeQuencher("TAMRA"), pftDao.findFiveDye("NED"), new Date(), user));
         }
 
-        Primer primer = new Primer("SuperPrimer3000", "testsequence", Orientation.REVERSE, dao.findFreezer("freezer2"),
-                dao.findDrawer("drawer3"), dao.findBox("box5"), dao.findPositionInReference("5'-promotor"), 65.2, 22.1, dao.findPurificationMethod("Cartridge"),
+        Primer primer = new Primer("SuperPrimer3000", "testsequence", Orientation.REVERSE, pftDao.findFreezer("freezer2"),
+                pftDao.findDrawer("drawer3"), pftDao.findBox("box5"), pftDao.findPositionInReference("5'-promotor"), 65.2, 22.1, pftDao.findPurificationMethod("Cartridge"),
                 42.3, 30, AmountAvailablePackType.PLATE, 30,
-                "42.2", 34.3, dao.findOrganism("Homo sapiens"), dao.findGen("gen2"), dao.findNcbiGenId("ncbiGenId2"), dao.findHumanGenomBuild("NCBI Build 36.1"),
-                dao.findFormulation("Resuspended in TRIS"), dao.findTypeOfPrimer("M13/pUC primer"), "sondaseq123", "assayid123", Size.M, dao.findPrimerApplication("Sanger Sequencing"),
-                "application comment 123",  dao.findFiveModification("Aldehyde Modifier"), dao.findThreeModification("Biotin TEG"), 40.0,
-                ConcentrationOrderedUnit.NANOMOL, true, dao.findDesignerName("designerName2"), dao.findDesignerPublication("designerPublication2"),
-                dao.findDesignerDatabase("designerDatabase2"), dao.findProject("project3"), dao.findSupplier("Omega"), dao.findManufacturer("BioSearch"),
+                "42.2", 34.3, pftDao.findOrganism("Homo sapiens"), pftDao.findGen("gen2"), pftDao.findNcbiGenId("ncbiGenId2"), pftDao.findHumanGenomBuild("NCBI Build 36.1"),
+                pftDao.findFormulation("Resuspended in TRIS"), pftDao.findTypeOfPrimer("M13/pUC primer"), "sondaseq123", "assayid123", Size.M, pftDao.findPrimerApplication("Sanger Sequencing"),
+                "application comment 123",  pftDao.findFiveModification("Aldehyde Modifier"), pftDao.findThreeModification("Biotin TEG"), 40.0,
+                ConcentrationOrderedUnit.NANOMOL, true, pftDao.findDesignerName("designerName2"), pftDao.findDesignerPublication("designerPublication2"),
+                pftDao.findDesignerDatabase("designerDatabase2"), pftDao.findProject("project3"), pftDao.findSupplier("Omega"), pftDao.findManufacturer("BioSearch"),
                 "Lačen sem", "dokument link", "analiza 123", OrderStatus.RECEIVED,
-                dao.findThreeQuencher("TAMRA"), dao.findFiveDye("NED"), new Date(), null);
-        dao.create(primer);
+                pftDao.findThreeQuencher("TAMRA"), pftDao.findFiveDye("NED"), new Date(), user);
+        pDao.create(primer);
 
-        Primer primer2 = new Primer("MegaBestPrimer1Million", "tcidf", Orientation.REVERSE, dao.findFreezer("freezer1"),
-                dao.findDrawer("drawer3"), dao.findBox("box5"), dao.findPositionInReference("5'-promotor"), 65.2, 22.1, dao.findPurificationMethod("Cartridge"),
+        Primer primer2 = new Primer("MegaBestPrimer1Million", "tcidf", Orientation.REVERSE, pftDao.findFreezer("freezer1"),
+                pftDao.findDrawer("drawer3"), pftDao.findBox("box5"), pftDao.findPositionInReference("5'-promotor"), 65.2, 22.1, pftDao.findPurificationMethod("Cartridge"),
                 42.3, 30, AmountAvailablePackType.PLATE, 30,
-                "42.2", 34.3, dao.findOrganism("Homo sapiens"), dao.findGen("gen3"), dao.findNcbiGenId("ncbiGenId3"), dao.findHumanGenomBuild("NCBI Build 36.1"),
-                dao.findFormulation("Resuspended in TRIS"), dao.findTypeOfPrimer("M13/pUC primer"), "sondaseq123", "assayid123", Size.M, dao.findPrimerApplication("Sanger Sequencing"),
-                "application comment 123",  dao.findFiveModification("Aldehyde Modifier"), dao.findThreeModification("Biotin TEG"), 40.0,
-                ConcentrationOrderedUnit.NANOMOL, true, dao.findDesignerName("designerName3"), dao.findDesignerPublication("designerPublication3"),
-                dao.findDesignerDatabase("designerDatabase3"), dao.findProject("project3"), dao.findSupplier("Omega"), dao.findManufacturer("BioSearch"),
+                "42.2", 34.3, pftDao.findOrganism("Homo sapiens"), pftDao.findGen("gen3"), pftDao.findNcbiGenId("ncbiGenId3"), pftDao.findHumanGenomBuild("NCBI Build 36.1"),
+                pftDao.findFormulation("Resuspended in TRIS"), pftDao.findTypeOfPrimer("M13/pUC primer"), "sondaseq123", "assayid123", Size.M, pftDao.findPrimerApplication("Sanger Sequencing"),
+                "application comment 123",  pftDao.findFiveModification("Aldehyde Modifier"), pftDao.findThreeModification("Biotin TEG"), 40.0,
+                ConcentrationOrderedUnit.NANOMOL, true, pftDao.findDesignerName("designerName3"), pftDao.findDesignerPublication("designerPublication3"),
+                pftDao.findDesignerDatabase("designerDatabase3"), pftDao.findProject("project3"), pftDao.findSupplier("Omega"), pftDao.findManufacturer("BioSearch"),
                 "Tega sm dobil za rojstni dan", "dokument link", "analiza 123", OrderStatus.RECEIVED,
-                dao.findThreeQuencher("TAMRA"), dao.findFiveDye("NED"), new Date(), null);
-        dao.create(primer2);
+                pftDao.findThreeQuencher("TAMRA"), pftDao.findFiveDye("NED"), new Date(), user);
+        pDao.create(primer2);
 
-        Primer primer3 = new Primer("PleaseUseME", "banana", Orientation.REVERSE, dao.findFreezer("freezer3"),
-                dao.findDrawer("drawer3"), dao.findBox("box5"), dao.findPositionInReference("5'-promotor"), 65.2, 22.1, dao.findPurificationMethod("Cartridge"),
+        Primer primer3 = new Primer("PleaseUseME", "banana", Orientation.REVERSE, pftDao.findFreezer("freezer3"),
+                pftDao.findDrawer("drawer3"), pftDao.findBox("box5"), pftDao.findPositionInReference("5'-promotor"), 65.2, 22.1, pftDao.findPurificationMethod("Cartridge"),
                 42.3, 30, AmountAvailablePackType.PLATE, 30,
-                "42.2", 34.3, dao.findOrganism("Homo sapiens"), dao.findGen("gen4"), dao.findNcbiGenId("ncbiGenId4"), dao.findHumanGenomBuild("NCBI Build 36.1"),
-                dao.findFormulation("Resuspended in TRIS"), dao.findTypeOfPrimer("M13/pUC primer"), "sondaseq123", "assayid123", Size.M, dao.findPrimerApplication("Sanger Sequencing"),
-                "application comment 123",  dao.findFiveModification("Aldehyde Modifier"), dao.findThreeModification("Biotin TEG"), 40.0,
-                ConcentrationOrderedUnit.NANOMOL, true, dao.findDesignerName("designerName4"), dao.findDesignerPublication("designerPublication4"),
-                dao.findDesignerDatabase("designerDatabase4"), dao.findProject("project3"), dao.findSupplier("Omega"), dao.findManufacturer("BioSearch"),
+                "42.2", 34.3, pftDao.findOrganism("Homo sapiens"), pftDao.findGen("gen4"), pftDao.findNcbiGenId("ncbiGenId4"), pftDao.findHumanGenomBuild("NCBI Build 36.1"),
+                pftDao.findFormulation("Resuspended in TRIS"), pftDao.findTypeOfPrimer("M13/pUC primer"), "sondaseq123", "assayid123", Size.M, pftDao.findPrimerApplication("Sanger Sequencing"),
+                "application comment 123",  pftDao.findFiveModification("Aldehyde Modifier"), pftDao.findThreeModification("Biotin TEG"), 40.0,
+                ConcentrationOrderedUnit.NANOMOL, true, pftDao.findDesignerName("designerName4"), pftDao.findDesignerPublication("designerPublication4"),
+                pftDao.findDesignerDatabase("designerDatabase4"), pftDao.findProject("project3"), pftDao.findSupplier("Omega"), pftDao.findManufacturer("BioSearch"),
                 "Rad imam maline!", "dokument link", "analiza 123", OrderStatus.RECEIVED,
-                dao.findThreeQuencher("TAMRA"), dao.findFiveDye("NED"), new Date(), null);
-        dao.create(primer3);
+                pftDao.findThreeQuencher("TAMRA"), pftDao.findFiveDye("NED"), new Date(), user);
+        pDao.create(primer3);
 
         primer.pairWith(primer2);
         primer3.pairWith(primer);
@@ -93,21 +98,21 @@ public class PrimerResource {
     @Produces(MediaType.APPLICATION_JSON)
     @UnitOfWork
     @RolesAllowed({Roles.RESEARCHER})
-    public Primer addPrimer(PrimerJSON p) {
-        Primer primer = new Primer(p.name, p.sequence, Orientation.fromString(p.orientation), dao.findFreezer(p.freezer),
-                dao.findDrawer(p.drawer), dao.findBox(p.box), dao.findPositionInReference(p.positionInReference), p.Tm,
-                p.optimalTOfAnnealing, dao.findPurificationMethod(p.purificationMethod), p.amountAvailableMikroL,
+    public Primer addPrimer(@Auth User user, PrimerJSON p) {
+        Primer primer = new Primer(p.name, p.sequence, Orientation.fromString(p.orientation), pftDao.findFreezer(p.freezer),
+                pftDao.findDrawer(p.drawer), pftDao.findBox(p.box), pftDao.findPositionInReference(p.positionInReference), p.Tm,
+                p.optimalTOfAnnealing, pftDao.findPurificationMethod(p.purificationMethod), p.amountAvailable,
                 p.amountAvailablePacks, AmountAvailablePackType.fromString(p.amountAvailablePackType), p.lengthOfAmplicone,
-                p.storingT, p.GCPercent, dao.findOrganism(p.organism), dao.findGen(p.gen), dao.findNcbiGenId(p.ncbiGenId),
-                dao.findHumanGenomBuild(p.humanGenomBuild), dao.findFormulation(p.formulation), dao.findTypeOfPrimer(p.typeOfPrimer),
-                p.sondaSequence, p.assayId, Size.fromString(p.size), dao.findPrimerApplication(p.primerApplication),
-                p.applicationComment, dao.findFiveModification(p.fiveModification), dao.findThreeModification(p.threeModification),
+                p.storingT, p.GCPercent, pftDao.findOrganism(p.organism), pftDao.findGen(p.gen), pftDao.findNcbiGenId(p.ncbiGenId),
+                pftDao.findHumanGenomBuild(p.humanGenomBuild), pftDao.findFormulation(p.formulation), pftDao.findTypeOfPrimer(p.typeOfPrimer),
+                p.sondaSequence, p.assayId, Size.fromString(p.size), pftDao.findPrimerApplication(p.primerApplication),
+                p.applicationComment, pftDao.findFiveModification(p.fiveModification), pftDao.findThreeModification(p.threeModification),
                 p.concentrationOrdered, ConcentrationOrderedUnit.fromString(p.concentrationOrderedUnit), p.checkSpecifityInBlast,
-                dao.findDesignerName(p.designerName), dao.findDesignerPublication(p.designerPublication),
-                dao.findDesignerDatabase(p.designerDatabase), dao.findProject(p.project), dao.findSupplier(p.supplier),
-                dao.findManufacturer(p.manufacturer), p.comment, p.document, p.analysis, OrderStatus.fromString(p.orderStatus),
-                dao.findThreeQuencher(p.threeQuencher), dao.findFiveDye(p.fiveDye), p.date, null);
-        primer = dao.create(primer);
+                pftDao.findDesignerName(p.designerName), pftDao.findDesignerPublication(p.designerPublication),
+                pftDao.findDesignerDatabase(p.designerDatabase), pftDao.findProject(p.project), pftDao.findSupplier(p.supplier),
+                pftDao.findManufacturer(p.manufacturer), p.comment, p.document, p.analysis, OrderStatus.fromString(p.orderStatus),
+                pftDao.findThreeQuencher(p.threeQuencher), pftDao.findFiveDye(p.fiveDye), p.date, user);
+        primer = pDao.create(primer);
         return primer;
     }
 
@@ -116,7 +121,7 @@ public class PrimerResource {
     @UnitOfWork
     @RolesAllowed({Roles.RESEARCHER})
     public Response deletePrimer(long id) {
-        dao.deletePrimer(id);
+        pDao.deletePrimer(id);
         return Response.ok("Successfully deleted primer.").build();
     }
 
@@ -129,8 +134,8 @@ public class PrimerResource {
             return Response.status(Response.Status.BAD_REQUEST).entity("Cannot pair primer with itself.").build();
         }
 
-        Optional<Primer> primer1 = dao.findById(idArr[0]);
-        Optional<Primer> primer2 = dao.findById(idArr[1]);
+        Optional<Primer> primer1 = pDao.findById(idArr[0]);
+        Optional<Primer> primer2 = pDao.findById(idArr[1]);
 
         if (!primer1.isPresent() || !primer2.isPresent()) {
             return Response.status(Response.Status.NOT_FOUND).entity("Couldn't find primers with specified id.").build();
@@ -146,7 +151,7 @@ public class PrimerResource {
     @UnitOfWork
     @RolesAllowed({Roles.ADMIN, Roles.TECHNICIAN, Roles.RESEARCHER, Roles.GUEST})
     public Primer getPrimer(@PathParam("id") long id) {
-        Optional<Primer> primer = dao.findById(id);
+        Optional<Primer> primer = pDao.findById(id);
         return primer.orElse(null);
     }
 
@@ -158,47 +163,47 @@ public class PrimerResource {
     public List getForeignTable(@QueryParam("table") String table) {
         switch(table) {
             case "box":
-                return dao.findAllBox();
+                return pftDao.findAllBox();
             case "designerdatabase":
-                return dao.findAllDesignerDatabase();
+                return pftDao.findAllDesignerDatabase();
             case "designername":
-                return dao.findAllDesignerName();
+                return pftDao.findAllDesignerName();
             case "designerpublication":
-                return dao.findAllDesignerPublication();
+                return pftDao.findAllDesignerPublication();
             case "drawer":
-                return dao.findAllDrawer();
+                return pftDao.findAllDrawer();
             case "fivedye":
-                return dao.findAllFiveDye();
+                return pftDao.findAllFiveDye();
             case "fivemodification":
-                return dao.findAllFiveModification();
+                return pftDao.findAllFiveModification();
             case "formulation":
-                return dao.findAllFormulation();
+                return pftDao.findAllFormulation();
             case "freezer":
-                return dao.findAllFreezer();
+                return pftDao.findAllFreezer();
             case "gen":
-                return dao.findAllGen();
+                return pftDao.findAllGen();
             case "humangenombuild":
-                return dao.findAllHumanGenomBuild();
+                return pftDao.findAllHumanGenomBuild();
             case "ncbigenid":
-                return dao.findAllNcbiGenId();
+                return pftDao.findAllNcbiGenId();
             case "organism":
-                return dao.findAllOrganism();
+                return pftDao.findAllOrganism();
             case "positioninreference":
-                return dao.findAllPositionInReference();
+                return pftDao.findAllPositionInReference();
             case "primerapplication":
-                return dao.findAllPrimerApplication();
+                return pftDao.findAllPrimerApplication();
             case "project":
-                return dao.findAllProject();
+                return pftDao.findAllProject();
             case "purificationmethod":
-                return dao.findAllPurificationMethod();
+                return pftDao.findAllPurificationMethod();
             case "supplier":
-                return dao.findAllSupplier();
+                return pftDao.findAllSupplier();
             case "threemodification":
-                return dao.findAllThreeModification();
+                return pftDao.findAllThreeModification();
             case "threequencher":
-                return dao.findAllThreeQuencher();
+                return pftDao.findAllThreeQuencher();
             case "typeofprimer":
-                return dao.findAllTypeOfPrimer();
+                return pftDao.findAllTypeOfPrimer();
         }
         return null;
     }
@@ -209,7 +214,65 @@ public class PrimerResource {
     @UnitOfWork
     @RolesAllowed({Roles.ADMIN, Roles.TECHNICIAN, Roles.RESEARCHER, Roles.GUEST})
     public PrimerForeignTableJSON getAllForeignTables() {
-        return new PrimerForeignTableJSON(dao);
+        return new PrimerForeignTableJSON(pftDao);
+    }
+
+    @GET
+    @Path("/primerjson-example")
+    @Produces(MediaType.APPLICATION_JSON)
+    @UnitOfWork
+    @RolesAllowed({Roles.ADMIN, Roles.TECHNICIAN, Roles.RESEARCHER, Roles.GUEST})
+    public PrimerJSON getPrimerJSONExample() {
+        Primer primer = getPrimer(1);
+        PrimerJSON primerJson = new PrimerJSON();
+
+        primerJson.amountAvailable = primer.getAmountAvailable();
+        primerJson.amountAvailablePacks = primer.getAmountAvailablePacks();
+        primerJson.amountAvailablePackType = primer.getAmountAvailablePackType().toString();
+        primerJson.analysis = primer.getAnalysis();
+        primerJson.applicationComment = primer.getApplicationComment();
+        primerJson.assayId = primer.getAssayId();
+        primerJson.box = primer.getBox().getBox();
+        primerJson.checkSpecifityInBlast = primer.isCheckSpecifityInBlast();
+        primerJson.comment = primer.getComment();
+        primerJson.concentrationOrdered = primer.getConcentrationOrdered();
+        primerJson.concentrationOrderedUnit = primer.getConcentrationOrderedUnit().toString();
+        primerJson.date = primer.getDate();
+        primerJson.designerDatabase = primer.getDesignerDatabase().getDesignerDatabase();
+        primerJson.designerName = primer.getDesignerName().getDesignerName();
+        primerJson.designerPublication = primer.getDesignerPublication().getDesignerPublication();
+        primerJson.document = primer.getDocument();
+        primerJson.drawer = primer.getDrawer().getDrawer();
+        primerJson.fiveDye = primer.getFiveDye().getFiveDye();
+        primerJson.fiveModification = primer.getFiveModification().getFiveModification();
+        primerJson.formulation = primer.getFormulation().getFormulation();
+        primerJson.freezer = primer.getFreezer().getFreezer();
+        primerJson.GCPercent = primer.getGCPercent();
+        primerJson.gen = primer.getGen().getGen();
+        primerJson.humanGenomBuild = primer.getHumanGenomBuild().getHumanGenomBuild();
+        primerJson.lengthOfAmplicone = primer.getLengthOfAmplicone();
+        primerJson.manufacturer = primer.getManufacturer().getManufacturer();
+        primerJson.name = primer.getName();
+        primerJson.ncbiGenId = primer.getNcbiGenId().getNcbiGenId();
+        primerJson.optimalTOfAnnealing = primer.getOptimalTOfAnnealing();
+        primerJson.orderStatus = primer.getOrderStatus().toString();
+        primerJson.organism = primer.getOrganism().getOrganism();
+        primerJson.orientation = primer.getOrientation().toString();
+        primerJson.positionInReference = primer.getPositionInReference().getPositionInReference();
+        primerJson.primerApplication = primer.getPrimerApplication().getPrimerApplication();
+        primerJson.project = primer.getProject().getProject();
+        primerJson.purificationMethod = primer.getPurificationMethod().getPurificationMethod();
+        primerJson.sequence = primer.getSequence();
+        primerJson.size = primer.getSize().toString();
+        primerJson.sondaSequence = primer.getSondaSequence();
+        primerJson.storingT = primer.getStoringT();
+        primerJson.supplier = primer.getSupplier().getSupplier();
+        primerJson.threeModification = primer.getThreeModification().getThreeModification();
+        primerJson.threeQuencher = primer.getThreeQuencher().getThreeQuencher();
+        primerJson.Tm = primer.getTm();
+        primerJson.typeOfPrimer = primer.getTypeOfPrimer().getTypeOfPrimer();
+
+        return primerJson;
     }
 
     @POST
@@ -218,7 +281,7 @@ public class PrimerResource {
     @UnitOfWork
     @RolesAllowed({Roles.RESEARCHER})
     public Formulation addFormulation(String name) {
-        return dao.addFormulation(name);
+        return pftDao.addFormulation(name);
     }
 
 
@@ -228,7 +291,7 @@ public class PrimerResource {
     @UnitOfWork
     @RolesAllowed({Roles.RESEARCHER})
     public PurificationMethod addPurificationMethod(String name) {
-        return dao.addPurificationMethod(name);
+        return pftDao.addPurificationMethod(name);
     }
 
     @POST
@@ -237,7 +300,7 @@ public class PrimerResource {
     @UnitOfWork
     @RolesAllowed({Roles.RESEARCHER})
     public PrimerApplication addPrimerApplication(String name) {
-        return dao.addPrimerApplication(name);
+        return pftDao.addPrimerApplication(name);
     }
 
     @POST
@@ -246,7 +309,7 @@ public class PrimerResource {
     @UnitOfWork
     @RolesAllowed({Roles.RESEARCHER})
     public FiveModification addFiveModification(String name) {
-        return dao.addFiveModification(name);
+        return pftDao.addFiveModification(name);
     }
 
     @POST
@@ -255,7 +318,7 @@ public class PrimerResource {
     @UnitOfWork
     @RolesAllowed({Roles.RESEARCHER})
     public ThreeModification addThreeModification(String name) {
-        return dao.addThreeModification(name);
+        return pftDao.addThreeModification(name);
     }
 
     @POST
@@ -264,7 +327,7 @@ public class PrimerResource {
     @UnitOfWork
     @RolesAllowed({Roles.RESEARCHER})
     public Project addProject(String name) {
-        return dao.addProject(name);
+        return pftDao.addProject(name);
     }
 
     @POST
@@ -273,7 +336,7 @@ public class PrimerResource {
     @UnitOfWork
     @RolesAllowed({Roles.RESEARCHER})
     public Supplier addSupplier(String name) {
-        return dao.addSupplier(name);
+        return pftDao.addSupplier(name);
     }
 
     @POST
@@ -282,7 +345,7 @@ public class PrimerResource {
     @UnitOfWork
     @RolesAllowed({Roles.RESEARCHER})
     public Manufacturer addManufacturer(String name) {
-        return dao.addManufacturer(name);
+        return pftDao.addManufacturer(name);
     }
 
     @POST
@@ -291,7 +354,7 @@ public class PrimerResource {
     @UnitOfWork
     @RolesAllowed({Roles.RESEARCHER})
     public Freezer addFreezer(String name) {
-        return dao.addFreezer(name);
+        return pftDao.addFreezer(name);
     }
 
     @POST
@@ -300,7 +363,7 @@ public class PrimerResource {
     @UnitOfWork
     @RolesAllowed({Roles.RESEARCHER})
     public Box addBox(String name) {
-        return dao.addBox(name);
+        return pftDao.addBox(name);
     }
 
     @POST
@@ -309,7 +372,7 @@ public class PrimerResource {
     @UnitOfWork
     @RolesAllowed({Roles.RESEARCHER})
     public Drawer addDrawer(String name) {
-        return dao.addDrawer(name);
+        return pftDao.addDrawer(name);
     }
 
     @POST
@@ -318,7 +381,7 @@ public class PrimerResource {
     @UnitOfWork
     @RolesAllowed({Roles.RESEARCHER})
     public ThreeQuencher addThreeQuencher(String name) {
-        return dao.addThreeQuencher(name);
+        return pftDao.addThreeQuencher(name);
     }
 
     @POST
@@ -327,7 +390,7 @@ public class PrimerResource {
     @UnitOfWork
     @RolesAllowed({Roles.RESEARCHER})
     public FiveDye addFiveDye(String name) {
-        return dao.addFiveDye(name);
+        return pftDao.addFiveDye(name);
     }
 
     @POST
@@ -336,7 +399,7 @@ public class PrimerResource {
     @UnitOfWork
     @RolesAllowed({Roles.RESEARCHER})
     public Organism addOrganism(String name) {
-        return dao.addOrganism(name);
+        return pftDao.addOrganism(name);
     }
 
     @POST
@@ -345,7 +408,7 @@ public class PrimerResource {
     @UnitOfWork
     @RolesAllowed({Roles.RESEARCHER})
     public Gen addGen(String name) {
-        return dao.addGen(name);
+        return pftDao.addGen(name);
     }
 
     @POST
@@ -354,7 +417,7 @@ public class PrimerResource {
     @UnitOfWork
     @RolesAllowed({Roles.RESEARCHER})
     public NcbiGenId addNcbiGenId(String name) {
-        return dao.addNcbiGenId(name);
+        return pftDao.addNcbiGenId(name);
     }
 
     @POST
@@ -363,7 +426,7 @@ public class PrimerResource {
     @UnitOfWork
     @RolesAllowed({Roles.RESEARCHER})
     public DesignerName addDesignerName(String name) {
-        return dao.addDesignerName(name);
+        return pftDao.addDesignerName(name);
     }
 
     @POST
@@ -372,7 +435,7 @@ public class PrimerResource {
     @UnitOfWork
     @RolesAllowed({Roles.RESEARCHER})
     public DesignerPublication addDesignerPublication(String name) {
-        return dao.addDesignerPublication(name);
+        return pftDao.addDesignerPublication(name);
     }
 
     @POST
@@ -381,7 +444,7 @@ public class PrimerResource {
     @UnitOfWork
     @RolesAllowed({Roles.RESEARCHER})
     public DesignerDatabase addDesignerDatabase(String name) {
-        return dao.addDesignerDatabase(name);
+        return pftDao.addDesignerDatabase(name);
     }
 
     @GET
@@ -389,7 +452,7 @@ public class PrimerResource {
     @UnitOfWork
     @RolesAllowed({Roles.ADMIN, Roles.TECHNICIAN, Roles.RESEARCHER, Roles.GUEST})
     public List<Primer> getAll(){
-        return dao.findAll();
+        return pDao.findAll();
     }
 
     public static class PrimerJSON implements Serializable {
@@ -414,7 +477,7 @@ public class PrimerResource {
         @JsonProperty
         public String purificationMethod;
         @JsonProperty
-        public Double amountAvailableMikroL;
+        public Double amountAvailable;
         @JsonProperty
         public Integer amountAvailablePacks;
         @JsonProperty
@@ -531,7 +594,7 @@ public class PrimerResource {
         @JsonProperty
         public List<TypeOfPrimer> typeOfPrimer;
 
-        public PrimerForeignTableJSON(PrimerDAO dao) {
+        public PrimerForeignTableJSON(PrimerForeignTablesDAO dao) {
             box = dao.findAllBox();
             designerDatabase = dao.findAllDesignerDatabase();
             designerName = dao.findAllDesignerName();

@@ -10,6 +10,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import java.util.ArrayList;
 import java.util.List;
 
 @Path("/users")
@@ -25,8 +26,13 @@ public class UserResource {
     @POST
     @Path("/fill")
     @UnitOfWork
-    public User fillUsers(){
-        return dao.create(new User("test","t",Roles.ADMIN));
+    public List<User> fillUsers() {
+        List<User> userList = new ArrayList<>();
+        userList.add(dao.create(new User("admin","admin", Roles.ADMIN)));
+        userList.add(dao.create(new User("technician","technician", Roles.TECHNICIAN)));
+        userList.add(dao.create(new User("researcher","researcher", Roles.RESEARCHER)));
+        userList.add(dao.create(new User("guest","guest", Roles.GUEST)));
+        return userList;
     }
 
     @GET

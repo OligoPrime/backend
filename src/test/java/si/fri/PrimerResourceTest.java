@@ -12,6 +12,7 @@ import si.fri.core.*;
 import si.fri.core.primer_enums.*;
 import si.fri.core.primer_foreign_tables.*;
 import si.fri.db.PrimerDAO;
+import si.fri.db.PrimerForeignTablesDAO;
 import si.fri.resources.PrimerResource;
 
 import java.text.ParseException;
@@ -25,9 +26,10 @@ import static org.mockito.Mockito.*;
 @ExtendWith(DropwizardExtensionsSupport.class)
 public class PrimerResourceTest {
 
-    private static final PrimerDAO dao = mock(PrimerDAO.class);
+    private static final PrimerDAO pDao = mock(PrimerDAO.class);
+    private static final PrimerForeignTablesDAO pftDao = mock(PrimerForeignTablesDAO.class);
     public static final ResourceExtension resources = ResourceExtension.builder()
-            .addResource(new PrimerResource(dao))
+            .addResource(new PrimerResource(pDao, pftDao))
             .build();
 
     private Primer primer;
@@ -53,13 +55,14 @@ public class PrimerResourceTest {
                 "komentar", "dokument link", "analiza 123", OrderStatus.RECEIVED,
                 new ThreeQuencher("TAMRA"), new FiveDye("NED"), date, null);
         primer.generateName();
-        when(dao.findById(1L)).thenReturn(Optional.ofNullable(primer));
+        when(pDao.findById(1L)).thenReturn(Optional.ofNullable(primer));
     }
 
     @AfterEach
     public void tearDown() {
         // we have to reset the mock after each test because of the @ClassRule
-        reset(dao);
+        reset(pDao);
+        reset(pftDao);
     }
 
     @Test
@@ -68,6 +71,6 @@ public class PrimerResourceTest {
         ObjectMapper mapper = new ObjectMapper();
         String primerString = mapper.writeValueAsString(primer);
         assertEquals(mapper.readTree(response), mapper.readTree(primerString));
-        verify(dao).findById(1L);
+        verify(pDao).findById(1L);
     }
 }

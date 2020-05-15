@@ -126,6 +126,60 @@ public class PrimerResource {
     }
 
     @POST
+    @Path("/update")
+    @UnitOfWork
+    @RolesAllowed({Roles.RESEARCHER})
+    public Primer updatePrimer(@QueryParam("id") long id, PrimerJSON primerJson) {
+        Primer primer = pDao.findById(id).get();
+        primer.setAmountAvailable(primerJson.amountAvailable);
+        primer.setAmountAvailablePacks(primerJson.amountAvailablePacks);
+        primer.setAmountAvailablePackType(AmountAvailablePackType.fromString(primerJson.amountAvailablePackType));
+        primer.setAnalysis(primerJson.analysis);
+        primer.setApplicationComment(primerJson.applicationComment);
+        primer.setAssayId(primerJson.assayId);
+        primer.setBox(pftDao.findBox(primerJson.box));
+        primer.setCheckSpecifityInBlast(primerJson.checkSpecifityInBlast);
+        primer.setComment(primerJson.comment);
+        primer.setConcentrationOrdered(primerJson.concentrationOrdered);
+        primer.setConcentrationOrderedUnit(ConcentrationOrderedUnit.fromString(primerJson.concentrationOrderedUnit));
+        primer.setDate(primerJson.date);
+        primer.setDesignerDatabase(pftDao.findDesignerDatabase(primerJson.designerDatabase));
+        primer.setDesignerName(pftDao.findDesignerName(primerJson.designerName));
+        primer.setDesignerPublication(pftDao.findDesignerPublication(primerJson.designerPublication));
+        primer.setDocument(primerJson.document);
+        primer.setDrawer(pftDao.findDrawer(primerJson.drawer));
+        primer.setFiveDye(pftDao.findFiveDye(primerJson.fiveDye));
+        primer.setFiveModification(pftDao.findFiveModification(primerJson.fiveModification));
+        primer.setFormulation(pftDao.findFormulation(primerJson.formulation));
+        primer.setFreezer(pftDao.findFreezer(primerJson.freezer));
+        primer.setGCPercent(primerJson.GCPercent);
+        primer.setGen(pftDao.findGen(primerJson.gen));
+        primer.setHumanGenomBuild(pftDao.findHumanGenomBuild(primerJson.humanGenomBuild));
+        primer.setLengthOfAmplicone(primerJson.lengthOfAmplicone);
+        primer.setManufacturer(pftDao.findManufacturer(primerJson.manufacturer));
+        primer.setName(primerJson.name);
+        primer.setNcbiGenId(pftDao.findNcbiGenId(primerJson.ncbiGenId));
+        primer.setOptimalTOfAnnealing(primerJson.optimalTOfAnnealing);
+        primer.setOrderStatus(OrderStatus.fromString(primerJson.orderStatus));
+        primer.setOrganism(pftDao.findOrganism(primerJson.organism));
+        primer.setOrientation(Orientation.fromString(primerJson.orientation));
+        primer.setPositionInReference(pftDao.findPositionInReference(primerJson.positionInReference));
+        primer.setPrimerApplication(pftDao.findPrimerApplication(primerJson.primerApplication));
+        primer.setProject(pftDao.findProject(primerJson.project));
+        primer.setPurificationMethod(pftDao.findPurificationMethod(primerJson.purificationMethod));
+        primer.setSequence(primerJson.sequence);
+        primer.setSize(Size.fromString(primerJson.size));
+        primer.setSondaSequence(primerJson.sondaSequence);
+        primer.setStoringT(primerJson.storingT);
+        primer.setSupplier(pftDao.findSupplier(primerJson.supplier));
+        primer.setThreeModification(pftDao.findThreeModification(primerJson.threeModification));
+        primer.setThreeQuencher(pftDao.findThreeQuencher(primerJson.threeQuencher));
+        primer.setTm(primerJson.Tm);
+        primer.setTypeOfPrimer(pftDao.findTypeOfPrimer(primerJson.typeOfPrimer));
+        return primer;
+    }
+
+    @POST
     @Path("/pair")
     @UnitOfWork
     @RolesAllowed({Roles.RESEARCHER})

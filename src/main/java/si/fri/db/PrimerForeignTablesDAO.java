@@ -1,7 +1,6 @@
 package si.fri.db;
 
 import io.dropwizard.hibernate.AbstractDAO;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import si.fri.core.Primer;
@@ -18,13 +17,18 @@ public class PrimerForeignTablesDAO extends AbstractDAO<Primer> {
         this.sessionFactory = factory;
     }
 
+
     public Freezer findFreezer(String name) {
         if (name == null || name.isEmpty()) return null;
         String hql = "SELECT f FROM Freezer f WHERE f.freezer = :freezerName";
         Query query = currentSession().createQuery(hql);
         query.setParameter("freezerName", name);
         List results = query.list();
-        return (Freezer) results.get(0);
+        if (results == null || results.isEmpty()) {
+            return addFreezer(name);
+        } else {
+            return (Freezer) results.get(0);
+        }
     }
 
     public Organism findOrganism(String name) {
@@ -33,7 +37,11 @@ public class PrimerForeignTablesDAO extends AbstractDAO<Primer> {
         Query query = currentSession().createQuery(hql);
         query.setParameter("organismName", name);
         List results = query.list();
-        return (Organism) results.get(0);
+        if (results == null || results.isEmpty()) {
+            return addOrganism(name);
+        } else {
+            return (Organism) results.get(0);
+        }
     }
 
     public Drawer findDrawer(String name) {
@@ -42,7 +50,11 @@ public class PrimerForeignTablesDAO extends AbstractDAO<Primer> {
         Query query = currentSession().createQuery(hql);
         query.setParameter("drawerName", name);
         List results = query.list();
-        return (Drawer) results.get(0);
+        if (results == null || results.isEmpty()) {
+            return addDrawer(name);
+        } else {
+            return (Drawer) results.get(0);
+        }
     }
 
     public Box findBox(String name) {
@@ -51,7 +63,11 @@ public class PrimerForeignTablesDAO extends AbstractDAO<Primer> {
         Query query = currentSession().createQuery(hql);
         query.setParameter("boxName", name);
         List results = query.list();
-        return (Box) results.get(0);
+        if (results == null || results.isEmpty()) {
+            return addBox(name);
+        } else {
+            return (Box) results.get(0);
+        }
     }
 
     public PositionInReference findPositionInReference(String name) {
@@ -60,7 +76,11 @@ public class PrimerForeignTablesDAO extends AbstractDAO<Primer> {
         Query query = currentSession().createQuery(hql);
         query.setParameter("positionInReferenceName", name);
         List results = query.list();
-        return (PositionInReference) results.get(0);
+        if (results == null || results.isEmpty()) {
+            return addPositionInReference(name);
+        } else {
+            return (PositionInReference) results.get(0);
+        }
     }
 
     public PurificationMethod findPurificationMethod(String name) {
@@ -69,7 +89,11 @@ public class PrimerForeignTablesDAO extends AbstractDAO<Primer> {
         Query query = currentSession().createQuery(hql);
         query.setParameter("purificationMethodName", name);
         List results = query.list();
-        return (PurificationMethod) results.get(0);
+        if (results == null || results.isEmpty()) {
+            return addPurificationMethod(name);
+        } else {
+            return (PurificationMethod) results.get(0);
+        }
     }
 
     public HumanGenomBuild findHumanGenomBuild(String name) {
@@ -78,7 +102,11 @@ public class PrimerForeignTablesDAO extends AbstractDAO<Primer> {
         Query query = currentSession().createQuery(hql);
         query.setParameter("humanGenomBuildName", name);
         List results = query.list();
-        return (HumanGenomBuild) results.get(0);
+        if (results == null || results.isEmpty()) {
+            return addHumanGenomBuild(name);
+        } else {
+            return (HumanGenomBuild) results.get(0);
+        }
     }
 
     public Formulation findFormulation(String name) {
@@ -87,7 +115,11 @@ public class PrimerForeignTablesDAO extends AbstractDAO<Primer> {
         Query query = currentSession().createQuery(hql);
         query.setParameter("formulationName", name);
         List results = query.list();
-        return (Formulation) results.get(0);
+        if (results == null || results.isEmpty()) {
+            return addFormulation(name);
+        } else {
+            return (Formulation) results.get(0);
+        }
     }
 
     public TypeOfPrimer findTypeOfPrimer(String name) {
@@ -96,7 +128,11 @@ public class PrimerForeignTablesDAO extends AbstractDAO<Primer> {
         Query query = currentSession().createQuery(hql);
         query.setParameter("typeOfPrimerName", name);
         List results = query.list();
-        return (TypeOfPrimer) results.get(0);
+        if (results == null || results.isEmpty()) {
+            return addTypeOfPrimer(name);
+        } else {
+            return (TypeOfPrimer) results.get(0);
+        }
     }
 
     public PrimerApplication findPrimerApplication(String name) {
@@ -105,7 +141,11 @@ public class PrimerForeignTablesDAO extends AbstractDAO<Primer> {
         Query query = currentSession().createQuery(hql);
         query.setParameter("primerApplicationName", name);
         List results = query.list();
-        return (PrimerApplication) results.get(0);
+        if (results == null || results.isEmpty()) {
+            return addPrimerApplication(name);
+        } else {
+            return (PrimerApplication) results.get(0);
+        }
     }
 
     public FiveModification findFiveModification(String name) {
@@ -114,7 +154,11 @@ public class PrimerForeignTablesDAO extends AbstractDAO<Primer> {
         Query query = currentSession().createQuery(hql);
         query.setParameter("fiveModificationName", name);
         List results = query.list();
-        return (FiveModification) results.get(0);
+        if (results == null || results.isEmpty()) {
+            return addFiveModification(name);
+        } else {
+            return (FiveModification) results.get(0);
+        }
     }
 
     public ThreeModification findThreeModification(String name) {
@@ -123,7 +167,11 @@ public class PrimerForeignTablesDAO extends AbstractDAO<Primer> {
         Query query = currentSession().createQuery(hql);
         query.setParameter("threeModificationName", name);
         List results = query.list();
-        return (ThreeModification) results.get(0);
+        if (results == null || results.isEmpty()) {
+            return addThreeModification(name);
+        } else {
+            return (ThreeModification) results.get(0);
+        }
     }
 
     public Project findProject(String name) {
@@ -132,7 +180,11 @@ public class PrimerForeignTablesDAO extends AbstractDAO<Primer> {
         Query query = currentSession().createQuery(hql);
         query.setParameter("projectName", name);
         List results = query.list();
-        return (Project) results.get(0);
+        if (results == null || results.isEmpty()) {
+            return addProject(name);
+        } else {
+            return (Project) results.get(0);
+        }
     }
 
     public Supplier findSupplier(String name) {
@@ -141,7 +193,11 @@ public class PrimerForeignTablesDAO extends AbstractDAO<Primer> {
         Query query = currentSession().createQuery(hql);
         query.setParameter("supplierName", name);
         List results = query.list();
-        return (Supplier) results.get(0);
+        if (results == null || results.isEmpty()) {
+            return addSupplier(name);
+        } else {
+            return (Supplier) results.get(0);
+        }
     }
 
     public Manufacturer findManufacturer(String name) {
@@ -150,7 +206,11 @@ public class PrimerForeignTablesDAO extends AbstractDAO<Primer> {
         Query query = currentSession().createQuery(hql);
         query.setParameter("manufacturerName", name);
         List results = query.list();
-        return (Manufacturer) results.get(0);
+        if (results == null || results.isEmpty()) {
+            return addManufacturer(name);
+        } else {
+            return (Manufacturer) results.get(0);
+        }
     }
 
     public ThreeQuencher findThreeQuencher(String name) {
@@ -159,7 +219,11 @@ public class PrimerForeignTablesDAO extends AbstractDAO<Primer> {
         Query query = currentSession().createQuery(hql);
         query.setParameter("threeQuencherName", name);
         List results = query.list();
-        return (ThreeQuencher) results.get(0);
+        if (results == null || results.isEmpty()) {
+            return addThreeQuencher(name);
+        } else {
+            return (ThreeQuencher) results.get(0);
+        }
     }
 
     public FiveDye findFiveDye(String name) {
@@ -168,7 +232,11 @@ public class PrimerForeignTablesDAO extends AbstractDAO<Primer> {
         Query query = currentSession().createQuery(hql);
         query.setParameter("fiveDyeName", name);
         List results = query.list();
-        return (FiveDye) results.get(0);
+        if (results == null || results.isEmpty()) {
+            return addFiveDye(name);
+        } else {
+            return (FiveDye) results.get(0);
+        }
     }
 
     public Gen findGen(String name) {
@@ -177,7 +245,11 @@ public class PrimerForeignTablesDAO extends AbstractDAO<Primer> {
         Query query = currentSession().createQuery(hql);
         query.setParameter("genName", name);
         List results = query.list();
-        return (Gen) results.get(0);
+        if (results == null || results.isEmpty()) {
+            return addGen(name);
+        } else {
+            return (Gen) results.get(0);
+        }
     }
 
     public NcbiGenId findNcbiGenId(String name) {
@@ -186,7 +258,11 @@ public class PrimerForeignTablesDAO extends AbstractDAO<Primer> {
         Query query = currentSession().createQuery(hql);
         query.setParameter("ncbiGenIdName", name);
         List results = query.list();
-        return (NcbiGenId) results.get(0);
+        if (results == null || results.isEmpty()) {
+            return addNcbiGenId(name);
+        } else {
+            return (NcbiGenId) results.get(0);
+        }
     }
 
     public DesignerName findDesignerName(String name) {
@@ -195,7 +271,11 @@ public class PrimerForeignTablesDAO extends AbstractDAO<Primer> {
         Query query = currentSession().createQuery(hql);
         query.setParameter("designerNameName", name);
         List results = query.list();
-        return (DesignerName) results.get(0);
+        if (results == null || results.isEmpty()) {
+            return addDesignerName(name);
+        } else {
+            return (DesignerName) results.get(0);
+        }
     }
 
     public DesignerPublication findDesignerPublication(String name) {
@@ -204,7 +284,11 @@ public class PrimerForeignTablesDAO extends AbstractDAO<Primer> {
         Query query = currentSession().createQuery(hql);
         query.setParameter("designerPublicationName", name);
         List results = query.list();
-        return (DesignerPublication) results.get(0);
+        if (results == null || results.isEmpty()) {
+            return addDesignerPublication(name);
+        } else {
+            return (DesignerPublication) results.get(0);
+        }
     }
 
     public DesignerDatabase findDesignerDatabase(String name) {
@@ -213,7 +297,11 @@ public class PrimerForeignTablesDAO extends AbstractDAO<Primer> {
         Query query = currentSession().createQuery(hql);
         query.setParameter("designerDatabaseName", name);
         List results = query.list();
-        return (DesignerDatabase) results.get(0);
+        if (results == null || results.isEmpty()) {
+            return addDesignerDatabase(name);
+        } else {
+            return (DesignerDatabase) results.get(0);
+        }
     }
 
     public List<Box> findAllBox() {
@@ -351,154 +439,132 @@ public class PrimerForeignTablesDAO extends AbstractDAO<Primer> {
     public Freezer addFreezer(String name) {
         Freezer freezer = new Freezer(name);
         currentSession().save(freezer);
-        currentSession().getTransaction().commit();
         return freezer;
     }
 
     public Organism addOrganism(String name) {
         Organism organism = new Organism(name);
         currentSession().save(organism);
-        currentSession().getTransaction().commit();
         return organism;
     }
 
     public Drawer addDrawer(String name) {
         Drawer drawer = new Drawer(name);
         currentSession().save(drawer);
-        currentSession().getTransaction().commit();
         return drawer;
     }
 
     public Box addBox(String name) {
         Box box = new Box(name);
         currentSession().save(box);
-        currentSession().getTransaction().commit();
         return box;
     }
 
     public PositionInReference addPositionInReference(String name) {
         PositionInReference positionInReference = new PositionInReference(name);
         currentSession().save(positionInReference);
-        currentSession().getTransaction().commit();
         return positionInReference;
     }
 
     public PurificationMethod addPurificationMethod(String name) {
         PurificationMethod purificationMethod = new PurificationMethod(name);
         currentSession().save(purificationMethod);
-        currentSession().getTransaction().commit();
         return purificationMethod;
     }
 
     public HumanGenomBuild addHumanGenomBuild(String name) {
         HumanGenomBuild humanGenomBuild = new HumanGenomBuild(name);
         currentSession().save(humanGenomBuild);
-        currentSession().getTransaction().commit();
         return humanGenomBuild;
     }
 
     public Formulation addFormulation(String name) {
         Formulation formulation = new Formulation(name);
         currentSession().save(formulation);
-        currentSession().getTransaction().commit();
         return formulation;
     }
 
     public TypeOfPrimer addTypeOfPrimer(String name) {
         TypeOfPrimer typeOfPrimer = new TypeOfPrimer(name);
         currentSession().save(typeOfPrimer);
-        currentSession().getTransaction().commit();
         return typeOfPrimer;
     }
 
     public PrimerApplication addPrimerApplication(String name) {
         PrimerApplication primerApplication = new PrimerApplication(name);
         currentSession().save(primerApplication);
-        currentSession().getTransaction().commit();
         return primerApplication;
     }
 
     public FiveModification addFiveModification(String name) {
         FiveModification fiveModification = new FiveModification(name);
         currentSession().save(fiveModification);
-        currentSession().getTransaction().commit();
         return fiveModification;
     }
 
     public ThreeModification addThreeModification(String name) {
         ThreeModification threeModification = new ThreeModification(name);
         currentSession().save(threeModification);
-        currentSession().getTransaction().commit();
         return threeModification;
     }
 
     public Project addProject(String name) {
         Project project = new Project(name);
         currentSession().save(project);
-        currentSession().getTransaction().commit();
         return project;
     }
 
     public Supplier addSupplier(String name) {
         Supplier supplier = new Supplier(name);
         currentSession().save(supplier);
-        currentSession().getTransaction().commit();
         return supplier;
     }
 
     public Manufacturer addManufacturer(String name) {
         Manufacturer manufacturer = new Manufacturer(name);
         currentSession().save(manufacturer);
-        currentSession().getTransaction().commit();
         return manufacturer;
     }
 
     public ThreeQuencher addThreeQuencher(String name) {
         ThreeQuencher threeQuencher = new ThreeQuencher(name);
         currentSession().save(threeQuencher);
-        currentSession().getTransaction().commit();
         return threeQuencher;
     }
 
     public FiveDye addFiveDye(String name) {
         FiveDye fiveDye = new FiveDye(name);
         currentSession().save(fiveDye);
-        currentSession().getTransaction().commit();
         return fiveDye;
     }
 
     public Gen addGen(String name) {
         Gen gen = new Gen(name);
         currentSession().save(gen);
-        currentSession().getTransaction().commit();
         return gen;
     }
 
     public NcbiGenId addNcbiGenId(String name) {
         NcbiGenId ncbiGenId = new NcbiGenId(name);
         currentSession().save(ncbiGenId);
-        currentSession().getTransaction().commit();
         return ncbiGenId;
     }
 
     public DesignerName addDesignerName(String name) {
         DesignerName designerName = new DesignerName(name);
         currentSession().save(designerName);
-        currentSession().getTransaction().commit();
         return designerName;
     }
 
     public DesignerPublication addDesignerPublication(String name) {
         DesignerPublication designerPublication = new DesignerPublication(name);
         currentSession().save(designerPublication);
-        currentSession().getTransaction().commit();
         return designerPublication;
     }
 
     public DesignerDatabase addDesignerDatabase(String name) {
         DesignerDatabase designerDatabase = new DesignerDatabase(name);
         currentSession().save(designerDatabase);
-        currentSession().getTransaction().commit();
         return designerDatabase;
     }
 }

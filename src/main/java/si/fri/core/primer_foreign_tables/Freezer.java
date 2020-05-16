@@ -8,7 +8,17 @@ import java.util.Set;
 
 @Entity
 @Table(name = "freezer")
-
+@NamedQueries(
+        {
+                @NamedQuery(
+                        name = "si.fri.core.Freezer.findAll",
+                        query = "SELECT p FROM User p"
+                ),
+                @NamedQuery(
+                        name = "si.fri.core.Freezer.getForName",
+                        query = "SELECT p FROM Freezer p WHERE p.freezer = :freezer"
+                )
+        })
 public class Freezer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -132,7 +132,7 @@ public class PrimerResource {
     @Path("/add")
     @Produces(MediaType.APPLICATION_JSON)
     @UnitOfWork
-    @RolesAllowed({Roles.RESEARCHER})
+    @RolesAllowed({Roles.RESEARCHER, Roles.ADMIN})
     public Primer addPrimer(@Auth User user, PrimerJSON p) {
         Primer primer = new Primer(p.name, p.sequence, Orientation.fromString(p.orientation), pftDao.findFreezer(p.freezer),
                 pftDao.findDrawer(p.drawer), pftDao.findBox(p.box), pftDao.findPositionInReference(p.positionInReference), p.Tm,

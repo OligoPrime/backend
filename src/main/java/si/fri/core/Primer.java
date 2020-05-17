@@ -77,7 +77,7 @@ public class Primer {
     private Double optimalTOfAnnealing;
 
     @ManyToOne(targetEntity = PurificationMethod.class)
-    @JoinColumn(name = "purificationMethod_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "purificationMethod_id", referencedColumnName = "id", nullable = true)
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "purificationMethod")
     @JsonIdentityReference(alwaysAsId = true)
     private PurificationMethod purificationMethod;

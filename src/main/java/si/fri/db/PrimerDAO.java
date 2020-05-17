@@ -34,6 +34,21 @@ public class PrimerDAO extends AbstractDAO<Primer> {
         return list((Query<Primer>) namedQuery("si.fri.core.Primer.findAll"));
     }
 
+    @SuppressWarnings("unchecked")
+    public List<Primer> findWanted() {
+        return list((Query<Primer>) namedQuery("si.fri.core.Primer.findWanted"));
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<Primer> findOrdered() {
+        return list((Query<Primer>) namedQuery("si.fri.core.Primer.findOrdered"));
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<Primer> findReceived() {
+        return list((Query<Primer>) namedQuery("si.fri.core.Primer.findReceived"));
+    }
+
     public void deletePrimer(long id) {
         String hql = "DELETE FROM Primer p WHERE p.id = :primerId";
         Query query = currentSession().createQuery(hql);

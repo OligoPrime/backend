@@ -15,7 +15,19 @@ import java.util.*;
                 @NamedQuery(
                         name = "si.fri.core.Primer.findAll",
                         query = "SELECT p FROM Primer p"
-                )
+                ),
+                @NamedQuery(
+                        name = "si.fri.core.Primer.findWanted",
+                        query = "SELECT p FROM Primer p WHERE p.orderStatus = 'WANTED'"
+                ),
+                @NamedQuery(
+                        name = "si.fri.core.Primer.findOrdered",
+                        query = "SELECT p FROM Primer p WHERE p.orderStatus = 'ORDERED'"
+                ),
+                @NamedQuery(
+                        name = "si.fri.core.Primer.findReceived",
+                        query = "SELECT p FROM Primer p WHERE p.orderStatus = 'RECEIVED'"
+                ),
         })
 public class Primer {
     @Id
@@ -31,7 +43,7 @@ public class Primer {
     @Column(length = 50)
     private String sequence;
 
-    // not sure if stays
+    @Enumerated(EnumType.STRING)
     private Orientation orientation;
 
     private Integer length;
@@ -74,6 +86,7 @@ public class Primer {
 
     private Integer amountAvailablePacks;
 
+    @Enumerated(EnumType.STRING)
     private AmountAvailablePackType amountAvailablePackType;
 
     @Temporal(TemporalType.DATE)
@@ -127,6 +140,7 @@ public class Primer {
     @Column(length = 50)
     private String assayId;
 
+    @Enumerated(EnumType.STRING)
     private Size size;
 
     @ManyToOne(targetEntity = PrimerApplication.class)
@@ -151,6 +165,7 @@ public class Primer {
 
     private Double concentrationOrdered;
 
+    @Enumerated(EnumType.STRING)
     private ConcentrationOrderedUnit concentrationOrderedUnit;
 
     private Boolean checkSpecifityInBlast;
@@ -197,6 +212,7 @@ public class Primer {
 
     private String analysis;
 
+    @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 
     @ManyToOne(targetEntity = ThreeQuencher.class)

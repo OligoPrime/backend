@@ -1,6 +1,7 @@
 package si.fri.core.primer_enums;
 
 public enum OrderStatus {
+    WANTED("wanted"),
     ORDERED("ordered"),
     RECEIVED("received");
 

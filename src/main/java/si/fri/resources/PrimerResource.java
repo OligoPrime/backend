@@ -30,6 +30,41 @@ public class PrimerResource {
         this.pftDao = pftDao;
     }
 
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @UnitOfWork
+    @RolesAllowed({Roles.ADMIN, Roles.TECHNICIAN, Roles.RESEARCHER, Roles.GUEST})
+    public List<Primer> getAll(){
+        return pDao.findAll();
+    }
+
+    @GET
+    @Path("/wanted")
+    @Produces(MediaType.APPLICATION_JSON)
+    @UnitOfWork
+    @RolesAllowed({Roles.ADMIN, Roles.TECHNICIAN, Roles.RESEARCHER, Roles.GUEST})
+    public List<Primer> getWanted(){
+        return pDao.findWanted();
+    }
+
+    @GET
+    @Path("/ordered")
+    @Produces(MediaType.APPLICATION_JSON)
+    @UnitOfWork
+    @RolesAllowed({Roles.ADMIN, Roles.TECHNICIAN, Roles.RESEARCHER, Roles.GUEST})
+    public List<Primer> getOrdered(){
+        return pDao.findOrdered();
+    }
+
+    @GET
+    @Path("/received")
+    @Produces(MediaType.APPLICATION_JSON)
+    @UnitOfWork
+    @RolesAllowed({Roles.ADMIN, Roles.TECHNICIAN, Roles.RESEARCHER, Roles.GUEST})
+    public List<Primer> getReceived(){
+        return pDao.findReceived();
+    }
+
     @POST
     @Path("/fill")
     @Produces(MediaType.APPLICATION_JSON)
@@ -128,6 +163,7 @@ public class PrimerResource {
     @POST
     @Path("/update")
     @UnitOfWork
+    @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed({Roles.RESEARCHER})
     public Primer updatePrimer(@QueryParam("id") long id, PrimerJSON primerJson) {
         Primer primer = pDao.findById(id).get();
@@ -499,14 +535,6 @@ public class PrimerResource {
     @RolesAllowed({Roles.RESEARCHER})
     public DesignerDatabase addDesignerDatabase(String name) {
         return pftDao.addDesignerDatabase(name);
-    }
-
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @UnitOfWork
-    @RolesAllowed({Roles.ADMIN, Roles.TECHNICIAN, Roles.RESEARCHER, Roles.GUEST})
-    public List<Primer> getAll(){
-        return pDao.findAll();
     }
 
     public static class PrimerJSON implements Serializable {

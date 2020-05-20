@@ -82,7 +82,7 @@ public class PrimerResource {
                     ConcentrationOrderedUnit.NANOMOL, true, pftDao.findDesignerName("designerName1"), pftDao.findDesignerPublication("designerPublication1"),
                     pftDao.findDesignerDatabase("designerDatabase1"), pftDao.findProject("project3"), pftDao.findSupplier("Omega"), pftDao.findManufacturer("BioSearch"),
                     "Tega je pa kr velik", "dokument link", "analiza 123", OrderStatus.RECEIVED,
-                    pftDao.findThreeQuencher("TAMRA"), pftDao.findFiveDye("NED"), new Date(), user));
+                    pftDao.findThreeQuencher("TAMRA"), pftDao.findFiveDye("NED"), new Date(), user), user);
         }
 
         Primer primer = new Primer("SuperPrimer3000", "testsequence", Orientation.REVERSE, pftDao.findFreezer("freezer2"),
@@ -95,7 +95,7 @@ public class PrimerResource {
                 pftDao.findDesignerDatabase("designerDatabase2"), pftDao.findProject("project3"), pftDao.findSupplier("Omega"), pftDao.findManufacturer("BioSearch"),
                 "Lačen sem", "dokument link", "analiza 123", OrderStatus.RECEIVED,
                 pftDao.findThreeQuencher("TAMRA"), pftDao.findFiveDye("NED"), new Date(), user);
-        pDao.create(primer);
+        pDao.create(primer, user);
 
         Primer primer2 = new Primer("MegaBestPrimer1Million", "tcidf", Orientation.REVERSE, pftDao.findFreezer("freezer1"),
                 pftDao.findDrawer("drawer3"), pftDao.findBox("box5"), pftDao.findPositionInReference("5'-promotor"), 65.2, 22.1, pftDao.findPurificationMethod("Cartridge"),
@@ -107,7 +107,7 @@ public class PrimerResource {
                 pftDao.findDesignerDatabase("designerDatabase3"), pftDao.findProject("project3"), pftDao.findSupplier("Omega"), pftDao.findManufacturer("BioSearch"),
                 "Tega sm dobil za rojstni dan", "dokument link", "analiza 123", OrderStatus.RECEIVED,
                 pftDao.findThreeQuencher("TAMRA"), pftDao.findFiveDye("NED"), new Date(), user);
-        pDao.create(primer2);
+        pDao.create(primer2, user);
 
         Primer primer3 = new Primer("PleaseUseME", "banana", Orientation.REVERSE, pftDao.findFreezer("freezer3"),
                 pftDao.findDrawer("drawer3"), pftDao.findBox("box5"), pftDao.findPositionInReference("5'-promotor"), 65.2, 22.1, pftDao.findPurificationMethod("Cartridge"),
@@ -119,7 +119,7 @@ public class PrimerResource {
                 pftDao.findDesignerDatabase("designerDatabase4"), pftDao.findProject("project3"), pftDao.findSupplier("Omega"), pftDao.findManufacturer("BioSearch"),
                 "Rad imam maline!", "dokument link", "analiza 123", OrderStatus.RECEIVED,
                 pftDao.findThreeQuencher("TAMRA"), pftDao.findFiveDye("NED"), new Date(), user);
-        pDao.create(primer3);
+        pDao.create(primer3, user);
 
         primer.pairWith(primer2);
         primer3.pairWith(primer);
@@ -147,14 +147,14 @@ public class PrimerResource {
                 pftDao.findDesignerDatabase(p.designerDatabase), pftDao.findProject(p.project), pftDao.findSupplier(p.supplier),
                 pftDao.findManufacturer(p.manufacturer), p.comment, p.document, p.analysis, OrderStatus.fromString(p.orderStatus),
                 pftDao.findThreeQuencher(p.threeQuencher), pftDao.findFiveDye(p.fiveDye), p.date, user);
-        primer = pDao.create(primer);
+        primer = pDao.create(primer, user);
         return primer;
     }
 
     @POST
     @Path("/delete")
     @UnitOfWork
-    @RolesAllowed({Roles.RESEARCHER,Roles.ADMIN})
+    @RolesAllowed({Roles.RESEARCHER, Roles.ADMIN})
     public Response deletePrimer(long id) {
         pDao.deletePrimer(id);
         return Response.ok("Successfully deleted primer.").build();
@@ -164,7 +164,7 @@ public class PrimerResource {
     @Path("/update")
     @UnitOfWork
     @Produces(MediaType.APPLICATION_JSON)
-    @RolesAllowed({Roles.RESEARCHER,Roles.ADMIN})
+    @RolesAllowed({Roles.RESEARCHER, Roles.ADMIN})
     public Primer updatePrimer(@QueryParam("id") long id, PrimerJSON primerJson) {
         Primer primer = pDao.findById(id).get();
         primer.setAmountAvailable(primerJson.amountAvailable);
@@ -212,13 +212,14 @@ public class PrimerResource {
         primer.setThreeQuencher(pftDao.findThreeQuencher(primerJson.threeQuencher));
         primer.setTm(primerJson.Tm);
         primer.setTypeOfPrimer(pftDao.findTypeOfPrimer(primerJson.typeOfPrimer));
+        primer.generateName();
         return primer;
     }
 
     @POST
     @Path("/pair")
     @UnitOfWork
-    @RolesAllowed({Roles.RESEARCHER,Roles.ADMIN})
+    @RolesAllowed({Roles.RESEARCHER, Roles.ADMIN})
     public Response pairPrimers(long[] idArr) {
         if (idArr[0] == idArr[1]) {
             return Response.status(Response.Status.BAD_REQUEST).entity("Cannot pair primer with itself.").build();
@@ -369,7 +370,7 @@ public class PrimerResource {
     @Path("/add-formulation")
     @Produces(MediaType.APPLICATION_JSON)
     @UnitOfWork
-    @RolesAllowed({Roles.RESEARCHER})
+    @RolesAllowed({Roles.RESEARCHER, Roles.ADMIN})
     public Formulation addFormulation(String name) {
         return pftDao.addFormulation(name);
     }
@@ -379,7 +380,7 @@ public class PrimerResource {
     @Path("/add-purificationmethod")
     @Produces(MediaType.APPLICATION_JSON)
     @UnitOfWork
-    @RolesAllowed({Roles.RESEARCHER})
+    @RolesAllowed({Roles.RESEARCHER, Roles.ADMIN})
     public PurificationMethod addPurificationMethod(String name) {
         return pftDao.addPurificationMethod(name);
     }
@@ -388,7 +389,7 @@ public class PrimerResource {
     @Path("/add-primerapplication")
     @Produces(MediaType.APPLICATION_JSON)
     @UnitOfWork
-    @RolesAllowed({Roles.RESEARCHER})
+    @RolesAllowed({Roles.RESEARCHER, Roles.ADMIN})
     public PrimerApplication addPrimerApplication(String name) {
         return pftDao.addPrimerApplication(name);
     }
@@ -397,7 +398,7 @@ public class PrimerResource {
     @Path("/add-fivemodification")
     @Produces(MediaType.APPLICATION_JSON)
     @UnitOfWork
-    @RolesAllowed({Roles.RESEARCHER})
+    @RolesAllowed({Roles.RESEARCHER, Roles.ADMIN})
     public FiveModification addFiveModification(String name) {
         return pftDao.addFiveModification(name);
     }
@@ -406,7 +407,7 @@ public class PrimerResource {
     @Path("/add-threemodification")
     @Produces(MediaType.APPLICATION_JSON)
     @UnitOfWork
-    @RolesAllowed({Roles.RESEARCHER})
+    @RolesAllowed({Roles.RESEARCHER, Roles.ADMIN})
     public ThreeModification addThreeModification(String name) {
         return pftDao.addThreeModification(name);
     }
@@ -415,7 +416,7 @@ public class PrimerResource {
     @Path("/add-project")
     @Produces(MediaType.APPLICATION_JSON)
     @UnitOfWork
-    @RolesAllowed({Roles.RESEARCHER})
+    @RolesAllowed({Roles.RESEARCHER, Roles.ADMIN})
     public Project addProject(String name) {
         return pftDao.addProject(name);
     }
@@ -424,7 +425,7 @@ public class PrimerResource {
     @Path("/add-supplier")
     @Produces(MediaType.APPLICATION_JSON)
     @UnitOfWork
-    @RolesAllowed({Roles.RESEARCHER})
+    @RolesAllowed({Roles.RESEARCHER, Roles.ADMIN})
     public Supplier addSupplier(String name) {
         return pftDao.addSupplier(name);
     }
@@ -433,7 +434,7 @@ public class PrimerResource {
     @Path("/add-manufacturer")
     @Produces(MediaType.APPLICATION_JSON)
     @UnitOfWork
-    @RolesAllowed({Roles.RESEARCHER})
+    @RolesAllowed({Roles.RESEARCHER, Roles.ADMIN})
     public Manufacturer addManufacturer(String name) {
         return pftDao.addManufacturer(name);
     }
@@ -442,7 +443,7 @@ public class PrimerResource {
     @Path("/add-freezer")
     @Produces(MediaType.APPLICATION_JSON)
     @UnitOfWork
-    @RolesAllowed({Roles.RESEARCHER})
+    @RolesAllowed({Roles.RESEARCHER, Roles.ADMIN})
     public Freezer addFreezer(String name) {
         return pftDao.addFreezer(name);
     }
@@ -451,7 +452,7 @@ public class PrimerResource {
     @Path("/add-box")
     @Produces(MediaType.APPLICATION_JSON)
     @UnitOfWork
-    @RolesAllowed({Roles.RESEARCHER})
+    @RolesAllowed({Roles.RESEARCHER, Roles.ADMIN})
     public Box addBox(String name) {
         return pftDao.addBox(name);
     }
@@ -460,7 +461,7 @@ public class PrimerResource {
     @Path("/add-drawer")
     @Produces(MediaType.APPLICATION_JSON)
     @UnitOfWork
-    @RolesAllowed({Roles.RESEARCHER})
+    @RolesAllowed({Roles.RESEARCHER, Roles.ADMIN})
     public Drawer addDrawer(String name) {
         return pftDao.addDrawer(name);
     }
@@ -469,7 +470,7 @@ public class PrimerResource {
     @Path("/add-threequencher")
     @Produces(MediaType.APPLICATION_JSON)
     @UnitOfWork
-    @RolesAllowed({Roles.RESEARCHER})
+    @RolesAllowed({Roles.RESEARCHER, Roles.ADMIN})
     public ThreeQuencher addThreeQuencher(String name) {
         return pftDao.addThreeQuencher(name);
     }
@@ -478,7 +479,7 @@ public class PrimerResource {
     @Path("/add-fivedye")
     @Produces(MediaType.APPLICATION_JSON)
     @UnitOfWork
-    @RolesAllowed({Roles.RESEARCHER})
+    @RolesAllowed({Roles.RESEARCHER, Roles.ADMIN})
     public FiveDye addFiveDye(String name) {
         return pftDao.addFiveDye(name);
     }
@@ -487,7 +488,7 @@ public class PrimerResource {
     @Path("/add-organism")
     @Produces(MediaType.APPLICATION_JSON)
     @UnitOfWork
-    @RolesAllowed({Roles.RESEARCHER})
+    @RolesAllowed({Roles.RESEARCHER, Roles.ADMIN})
     public Organism addOrganism(String name) {
         return pftDao.addOrganism(name);
     }
@@ -496,7 +497,7 @@ public class PrimerResource {
     @Path("/add-gen")
     @Produces(MediaType.APPLICATION_JSON)
     @UnitOfWork
-    @RolesAllowed({Roles.RESEARCHER})
+    @RolesAllowed({Roles.RESEARCHER, Roles.ADMIN})
     public Gen addGen(String name) {
         return pftDao.addGen(name);
     }
@@ -505,7 +506,7 @@ public class PrimerResource {
     @Path("/add-ncbigenid")
     @Produces(MediaType.APPLICATION_JSON)
     @UnitOfWork
-    @RolesAllowed({Roles.RESEARCHER})
+    @RolesAllowed({Roles.RESEARCHER, Roles.ADMIN})
     public NcbiGenId addNcbiGenId(String name) {
         return pftDao.addNcbiGenId(name);
     }
@@ -514,7 +515,7 @@ public class PrimerResource {
     @Path("/add-designername")
     @Produces(MediaType.APPLICATION_JSON)
     @UnitOfWork
-    @RolesAllowed({Roles.RESEARCHER})
+    @RolesAllowed({Roles.RESEARCHER, Roles.ADMIN})
     public DesignerName addDesignerName(String name) {
         return pftDao.addDesignerName(name);
     }
@@ -523,7 +524,7 @@ public class PrimerResource {
     @Path("/add-designerpublication")
     @Produces(MediaType.APPLICATION_JSON)
     @UnitOfWork
-    @RolesAllowed({Roles.RESEARCHER})
+    @RolesAllowed({Roles.RESEARCHER, Roles.ADMIN})
     public DesignerPublication addDesignerPublication(String name) {
         return pftDao.addDesignerPublication(name);
     }
@@ -532,7 +533,7 @@ public class PrimerResource {
     @Path("/add-designerdatabase")
     @Produces(MediaType.APPLICATION_JSON)
     @UnitOfWork
-    @RolesAllowed({Roles.RESEARCHER})
+    @RolesAllowed({Roles.RESEARCHER, Roles.ADMIN})
     public DesignerDatabase addDesignerDatabase(String name) {
         return pftDao.addDesignerDatabase(name);
     }

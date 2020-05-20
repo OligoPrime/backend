@@ -333,7 +333,6 @@ public class Primer {
         this.orderStatus = orderStatus;
         this.analysis = analysis;
         this.length = sequence.length();
-        // TODO: set user to currently logged in user
     }
 
     public void generateName() {

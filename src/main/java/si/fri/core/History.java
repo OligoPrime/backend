@@ -29,18 +29,24 @@ public class History {
     @JsonIdentityReference(alwaysAsId = true)
     private User user;
 
-    @Temporal(TemporalType.DATE)
     private Date timestamp;
 
     private String action;
+
+    @ManyToOne(targetEntity = Primer.class)
+    @JoinColumn(name = "primer_id", referencedColumnName = "id")
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "generatedName")
+    @JsonIdentityReference(alwaysAsId = true)
+    private Primer primer;
 
     public History() {
         // Jackson deserialization
     }
 
-    public History(User user, String action) {
+    public History(User user, String action, Primer primer) {
         this.user = user;
         this.action = action;
+        this.primer = primer;
         this.timestamp = new Date((new Date().getTime()));
     }
 
@@ -78,5 +84,14 @@ public class History {
 
     public void setAction(String action) {
         this.action = action;
+    }
+
+    @JsonProperty
+    public Primer getPrimer() {
+        return primer;
+    }
+
+    public void setPrimer(Primer primer) {
+        this.primer = primer;
     }
 }

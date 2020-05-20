@@ -5,13 +5,21 @@ import java.io.Serializable;
 import org.hibernate.EmptyInterceptor;
 import org.hibernate.Transaction;
 import org.hibernate.type.Type;
+import si.fri.db.HistoryDAO;
 
 public class AuditInterceptor extends EmptyInterceptor {
 
-    private String username;
+    private User user;
+    private HistoryDAO hDao;
+    private Primer primer;
+    int countDeleted = 0;
+    int countFlushDirty = 0;
+    int countSave = 0;
+    int countLoad = 0;
 
-    public AuditInterceptor(String username) {
-        this.username = username;
+    public AuditInterceptor(User user, HistoryDAO hDao) {
+        this.user = user;
+        this.hDao = hDao;
     }
 
     public void onDelete(Object entity,
@@ -19,8 +27,8 @@ public class AuditInterceptor extends EmptyInterceptor {
                          Object[] state,
                          String[] propertyNames,
                          Type[] types) {
-        // do nothing
-        System.out.println("DELETED");
+        primer = (Primer) entity;
+        countDeleted++;
     }
 
     public boolean onFlushDirty(Object entity,
@@ -29,7 +37,8 @@ public class AuditInterceptor extends EmptyInterceptor {
                                 Object[] previousState,
                                 String[] propertyNames,
                                 Type[] types) {
-        System.out.println("ONFLUSHDIRTY");
+        primer = (Primer) entity;
+        countFlushDirty++;
         return false;
     }
 
@@ -38,7 +47,8 @@ public class AuditInterceptor extends EmptyInterceptor {
                           Object[] state,
                           String[] propertyNames,
                           Type[] types) {
-        System.out.println("ONLOAD");
+        primer = (Primer) entity;
+        countLoad++;
         return false;
     }
 
@@ -47,13 +57,15 @@ public class AuditInterceptor extends EmptyInterceptor {
                           Object[] state,
                           String[] propertyNames,
                           Type[] types) {
-        System.out.println("ONSAVE");
+        countSave++;
         return false;
     }
 
     public void afterTransactionCompletion(Transaction tx) {
-        System.out.println("AFTERTRANSACTIONCOMPLETED");
-        System.out.printf("User: %s%n", username);
+        if (countSave > 0) {
+            History history = new History(user, "add", primer);
+            hDao.create(history);
+        }
     }
 
 }

@@ -22,10 +22,10 @@ public class Box {
     @JoinColumn(name = "box_id")
     private Set<Primer> primers;
 
-    @PrePersist
-    public void onPreRemove() {
-        new History(null, "Added box " + this.box);
-    }
+    //@PrePersist
+    //public void onPreRemove() {
+    //    new History();
+    //}
 
     public Box() {
         // Jackson deserialization

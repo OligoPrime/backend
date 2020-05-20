@@ -41,7 +41,7 @@ public class CsvResource {
 
     @POST
     @Path("/import")
-    @RolesAllowed({Roles.RESEARCHER})
+    @RolesAllowed({Roles.RESEARCHER, Roles.ADMIN})
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @UnitOfWork
     public Response uploadFile(
@@ -114,7 +114,7 @@ public class CsvResource {
                     pftDao.findDesignerDatabase(p.designerDatabase), pftDao.findProject(p.project), pftDao.findSupplier(p.supplier),
                     pftDao.findManufacturer(p.manufacturer), p.comment, p.document, p.analysis, OrderStatus.fromString(p.orderStatus),
                     pftDao.findThreeQuencher(p.threeQuencher), pftDao.findFiveDye(p.fiveDye), date, user);
-            pDao.create(primer);
+            pDao.create(primer, user);
         }
 
         return Response.ok("Successfully uploaded primers from CSV file.").build();

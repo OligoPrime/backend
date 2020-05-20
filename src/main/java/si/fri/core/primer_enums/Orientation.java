@@ -1,8 +1,8 @@
 package si.fri.core.primer_enums;
 
 public enum Orientation {
-    FORWARD("Forward"),
-    REVERSE("Reverse");
+    FORWARD("forward"),
+    REVERSE("reverse");
 
     private final String name;
 

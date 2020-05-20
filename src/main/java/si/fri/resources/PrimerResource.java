@@ -154,7 +154,7 @@ public class PrimerResource {
     @POST
     @Path("/delete")
     @UnitOfWork
-    @RolesAllowed({Roles.RESEARCHER})
+    @RolesAllowed({Roles.RESEARCHER,Roles.ADMIN})
     public Response deletePrimer(long id) {
         pDao.deletePrimer(id);
         return Response.ok("Successfully deleted primer.").build();
@@ -164,7 +164,7 @@ public class PrimerResource {
     @Path("/update")
     @UnitOfWork
     @Produces(MediaType.APPLICATION_JSON)
-    @RolesAllowed({Roles.RESEARCHER})
+    @RolesAllowed({Roles.RESEARCHER,Roles.ADMIN})
     public Primer updatePrimer(@QueryParam("id") long id, PrimerJSON primerJson) {
         Primer primer = pDao.findById(id).get();
         primer.setAmountAvailable(primerJson.amountAvailable);
@@ -218,7 +218,7 @@ public class PrimerResource {
     @POST
     @Path("/pair")
     @UnitOfWork
-    @RolesAllowed({Roles.RESEARCHER})
+    @RolesAllowed({Roles.RESEARCHER,Roles.ADMIN})
     public Response pairPrimers(long[] idArr) {
         if (idArr[0] == idArr[1]) {
             return Response.status(Response.Status.BAD_REQUEST).entity("Cannot pair primer with itself.").build();
@@ -232,7 +232,7 @@ public class PrimerResource {
         }
 
         primer1.get().pairWith(primer2.get());
-        return Response.ok("Successfully paired primers.").build();
+        return Response.ok("Successfully paired primers.").entity(idArr).build();
     }
 
     @GET

@@ -13,20 +13,26 @@ import java.util.Optional;
 public class PrimerDAO extends AbstractDAO<Primer> {
 
     private final SessionFactory sessionFactory;
+    private final HistoryDAO hDao;
 
-    public PrimerDAO(SessionFactory factory) {
+    public PrimerDAO(SessionFactory factory, HistoryDAO hDao) {
         super(factory);
         this.sessionFactory = factory;
+        this.hDao = hDao;
     }
 
     public Optional<Primer> findById(Long id) {
         return Optional.ofNullable(get(id));
     }
 
-    public Primer create(Primer primer) {
-        Primer p = persist(primer);
-        p.generateName();
-        return p;
+    public Primer create(Primer primer, User user) {
+        Session session = sessionFactory.withOptions().interceptor(new AuditInterceptor(user, hDao)).openSession();
+        session.beginTransaction();
+        session.saveOrUpdate(primer);
+        primer.generateName();
+        session.getTransaction().commit();
+        session.close();
+        return primer;
     }
 
     @SuppressWarnings("unchecked")

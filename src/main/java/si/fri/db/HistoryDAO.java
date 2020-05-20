@@ -23,6 +23,6 @@ public class HistoryDAO extends AbstractDAO<History> {
 
     @SuppressWarnings("unchecked")
     public List<History> findAll() {
-        return list((Query<History>) namedQuery("si.fri.core.Hello.findAll"));
+        return list((Query<History>) namedQuery("si.fri.core.History.findAll"));
     }
 }

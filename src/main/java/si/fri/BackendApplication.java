@@ -87,8 +87,8 @@ public class BackendApplication extends Application<BackendConfiguration> {
 
         final HelloDAO helloDAO = new HelloDAO(hibernate.getSessionFactory());
         final UserDAO userDAO = new UserDAO(hibernate.getSessionFactory());
-        final PrimerDAO primerDAO = new PrimerDAO(hibernate.getSessionFactory());
         final HistoryDAO historyDAO = new HistoryDAO(hibernate.getSessionFactory());
+        final PrimerDAO primerDAO = new PrimerDAO(hibernate.getSessionFactory(), historyDAO);
         final PrimerForeignTablesDAO primerForeignTablesDAO = new PrimerForeignTablesDAO(hibernate.getSessionFactory());
 
         final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);

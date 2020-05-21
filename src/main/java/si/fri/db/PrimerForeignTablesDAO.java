@@ -439,132 +439,154 @@ public class PrimerForeignTablesDAO extends AbstractDAO<Primer> {
     public Freezer addFreezer(String name) {
         Freezer freezer = new Freezer(name);
         currentSession().save(freezer);
+        currentSession().getTransaction().commit();
         return freezer;
     }
 
     public Organism addOrganism(String name) {
         Organism organism = new Organism(name);
         currentSession().save(organism);
+        currentSession().getTransaction().commit();
         return organism;
     }
 
     public Drawer addDrawer(String name) {
         Drawer drawer = new Drawer(name);
         currentSession().save(drawer);
+        currentSession().getTransaction().commit();
         return drawer;
     }
 
     public Box addBox(String name) {
         Box box = new Box(name);
         currentSession().save(box);
+        currentSession().getTransaction().commit();
         return box;
     }
 
     public PositionInReference addPositionInReference(String name) {
         PositionInReference positionInReference = new PositionInReference(name);
         currentSession().save(positionInReference);
+        currentSession().getTransaction().commit();
         return positionInReference;
     }
 
     public PurificationMethod addPurificationMethod(String name) {
         PurificationMethod purificationMethod = new PurificationMethod(name);
         currentSession().save(purificationMethod);
+        currentSession().getTransaction().commit();
         return purificationMethod;
     }
 
     public HumanGenomBuild addHumanGenomBuild(String name) {
         HumanGenomBuild humanGenomBuild = new HumanGenomBuild(name);
         currentSession().save(humanGenomBuild);
+        currentSession().getTransaction().commit();
         return humanGenomBuild;
     }
 
     public Formulation addFormulation(String name) {
         Formulation formulation = new Formulation(name);
         currentSession().save(formulation);
+        currentSession().getTransaction().commit();
         return formulation;
     }
 
     public TypeOfPrimer addTypeOfPrimer(String name) {
         TypeOfPrimer typeOfPrimer = new TypeOfPrimer(name);
         currentSession().save(typeOfPrimer);
+        currentSession().getTransaction().commit();
         return typeOfPrimer;
     }
 
     public PrimerApplication addPrimerApplication(String name) {
         PrimerApplication primerApplication = new PrimerApplication(name);
         currentSession().save(primerApplication);
+        currentSession().getTransaction().commit();
         return primerApplication;
     }
 
     public FiveModification addFiveModification(String name) {
         FiveModification fiveModification = new FiveModification(name);
         currentSession().save(fiveModification);
+        currentSession().getTransaction().commit();
         return fiveModification;
     }
 
     public ThreeModification addThreeModification(String name) {
         ThreeModification threeModification = new ThreeModification(name);
         currentSession().save(threeModification);
+        currentSession().getTransaction().commit();
         return threeModification;
     }
 
     public Project addProject(String name) {
         Project project = new Project(name);
         currentSession().save(project);
+        currentSession().getTransaction().commit();
         return project;
     }
 
     public Supplier addSupplier(String name) {
         Supplier supplier = new Supplier(name);
         currentSession().save(supplier);
+        currentSession().getTransaction().commit();
         return supplier;
     }
 
     public Manufacturer addManufacturer(String name) {
         Manufacturer manufacturer = new Manufacturer(name);
         currentSession().save(manufacturer);
+        currentSession().getTransaction().commit();
         return manufacturer;
     }
 
     public ThreeQuencher addThreeQuencher(String name) {
         ThreeQuencher threeQuencher = new ThreeQuencher(name);
         currentSession().save(threeQuencher);
+        currentSession().getTransaction().commit();
         return threeQuencher;
     }
 
     public FiveDye addFiveDye(String name) {
         FiveDye fiveDye = new FiveDye(name);
         currentSession().save(fiveDye);
+        currentSession().getTransaction().commit();
         return fiveDye;
     }
 
     public Gen addGen(String name) {
         Gen gen = new Gen(name);
         currentSession().save(gen);
+        currentSession().getTransaction().commit();
         return gen;
     }
 
     public NcbiGenId addNcbiGenId(String name) {
         NcbiGenId ncbiGenId = new NcbiGenId(name);
         currentSession().save(ncbiGenId);
+        currentSession().getTransaction().commit();
         return ncbiGenId;
     }
 
     public DesignerName addDesignerName(String name) {
         DesignerName designerName = new DesignerName(name);
         currentSession().save(designerName);
+        currentSession().getTransaction().commit();
         return designerName;
     }
 
     public DesignerPublication addDesignerPublication(String name) {
         DesignerPublication designerPublication = new DesignerPublication(name);
         currentSession().save(designerPublication);
+        currentSession().getTransaction().commit();
         return designerPublication;
     }
 
     public DesignerDatabase addDesignerDatabase(String name) {
         DesignerDatabase designerDatabase = new DesignerDatabase(name);
         currentSession().save(designerDatabase);
+        currentSession().getTransaction().commit();
         return designerDatabase;
     }
 }

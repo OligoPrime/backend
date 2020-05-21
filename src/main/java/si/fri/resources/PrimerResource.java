@@ -17,6 +17,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Path("/primers")
 @Produces(MediaType.APPLICATION_JSON)
@@ -633,73 +634,74 @@ public class PrimerResource {
 
     public static class PrimerForeignTableJSON {
         @JsonProperty
-        public List<Box> box;
+        public List<String> box;
         @JsonProperty
-        public List<DesignerDatabase> designerDatabase;
+        public List<String> designerDatabase;
         @JsonProperty
-        public List<DesignerName> designerName;
+        public List<String> designerName;
         @JsonProperty
-        public List<DesignerPublication> designerPublication;
+        public List<String> designerPublication;
         @JsonProperty
-        public List<Drawer> drawer;
+        public List<String> drawer;
         @JsonProperty
-        public List<FiveDye> fiveDye;
+        public List<String> fiveDye;
         @JsonProperty
-        public List<FiveModification> fiveModification;
+        public List<String> fiveModification;
         @JsonProperty
-        public List<Formulation> formulation;
+        public List<String> formulation;
         @JsonProperty
-        public List<Freezer> freezer;
+        public List<String> freezer;
         @JsonProperty
-        public List<Gen> gen;
+        public List<String> gen;
         @JsonProperty
-        public List<HumanGenomBuild> humanGenomBuild;
+        public List<String> humanGenomBuild;
         @JsonProperty
-        public List<Manufacturer> manufacturer;
+        public List<String> manufacturer;
         @JsonProperty
-        public List<NcbiGenId> ncbiGenId;
+        public List<String> ncbiGenId;
         @JsonProperty
-        public List<Organism> organism;
+        public List<String> organism;
         @JsonProperty
-        public List<PositionInReference> positionInReference;
+        public List<String> positionInReference;
         @JsonProperty
-        public List<PrimerApplication> primerApplication;
+        public List<String> primerApplication;
         @JsonProperty
-        public List<Project> project;
+        public List<String> project;
         @JsonProperty
-        public List<PurificationMethod> purificationMethod;
+        public List<String> purificationMethod;
         @JsonProperty
-        public List<Supplier> supplier;
+        public List<String> supplier;
         @JsonProperty
-        public List<ThreeModification> threeModification;
+        public List<String> threeModification;
         @JsonProperty
-        public List<ThreeQuencher> threeQuencher;
+        public List<String> threeQuencher;
         @JsonProperty
-        public List<TypeOfPrimer> typeOfPrimer;
+        public List<String> typeOfPrimer;
 
         public PrimerForeignTableJSON(PrimerForeignTablesDAO dao) {
-            box = dao.findAllBox();
-            designerDatabase = dao.findAllDesignerDatabase();
-            designerName = dao.findAllDesignerName();
-            designerPublication = dao.findAllDesignerPublication();
-            drawer = dao.findAllDrawer();
-            fiveDye = dao.findAllFiveDye();
-            fiveModification = dao.findAllFiveModification();
-            formulation = dao.findAllFormulation();
-            freezer = dao.findAllFreezer();
-            gen = dao.findAllGen();
-            humanGenomBuild = dao.findAllHumanGenomBuild();
-            manufacturer = dao.findAllManufacturer();
-            ncbiGenId = dao.findAllNcbiGenId();
-            organism = dao.findAllOrganism();
-            positionInReference = dao.findAllPositionInReference();
-            primerApplication = dao.findAllPrimerApplication();
-            project = dao.findAllProject();
-            purificationMethod = dao.findAllPurificationMethod();
-            supplier = dao.findAllSupplier();
-            threeModification = dao.findAllThreeModification();
-            threeQuencher = dao.findAllThreeQuencher();
-            typeOfPrimer = dao.findAllTypeOfPrimer();
+            // todo
+            box = dao.findAllBox().stream().map(Box::getBox).collect(Collectors.toList());
+            designerDatabase = dao.findAllDesignerDatabase().stream().map(DesignerDatabase::getDesignerDatabase).collect(Collectors.toList());
+            designerName = dao.findAllDesignerName().stream().map(DesignerName::getDesignerName).collect(Collectors.toList());
+            designerPublication = dao.findAllDesignerPublication().stream().map(DesignerPublication::getDesignerPublication).collect(Collectors.toList());
+            drawer = dao.findAllDrawer().stream().map(Drawer::getDrawer).collect(Collectors.toList());
+            fiveDye = dao.findAllFiveDye().stream().map(FiveDye::getFiveDye).collect(Collectors.toList());
+            fiveModification = dao.findAllFiveModification().stream().map(FiveModification::getFiveModification).collect(Collectors.toList());
+            formulation = dao.findAllFormulation().stream().map(Formulation::getFormulation).collect(Collectors.toList());
+            freezer = dao.findAllFreezer().stream().map(Freezer::getFreezer).collect(Collectors.toList());
+            gen = dao.findAllGen().stream().map(Gen::getGen).collect(Collectors.toList());
+            humanGenomBuild = dao.findAllHumanGenomBuild().stream().map(HumanGenomBuild::getHumanGenomBuild).collect(Collectors.toList());
+            manufacturer = dao.findAllManufacturer().stream().map(Manufacturer::getManufacturer).collect(Collectors.toList());
+            ncbiGenId = dao.findAllNcbiGenId().stream().map(NcbiGenId::getNcbiGenId).collect(Collectors.toList());
+            organism = dao.findAllOrganism().stream().map(Organism::getOrganism).collect(Collectors.toList());
+            positionInReference = dao.findAllPositionInReference().stream().map(PositionInReference::getPositionInReference).collect(Collectors.toList());
+            primerApplication = dao.findAllPrimerApplication().stream().map(PrimerApplication::getPrimerApplication).collect(Collectors.toList());
+            project = dao.findAllProject().stream().map(Project::getProject).collect(Collectors.toList());
+            purificationMethod = dao.findAllPurificationMethod().stream().map(PurificationMethod::getPurificationMethod).collect(Collectors.toList());
+            supplier = dao.findAllSupplier().stream().map(Supplier::getSupplier).collect(Collectors.toList());
+            threeModification = dao.findAllThreeModification().stream().map(ThreeModification::getThreeModification).collect(Collectors.toList());
+            threeQuencher = dao.findAllThreeQuencher().stream().map(ThreeQuencher::getThreeQuencher).collect(Collectors.toList());
+            typeOfPrimer = dao.findAllTypeOfPrimer().stream().map(TypeOfPrimer::getTypeOfPrimer).collect(Collectors.toList());
         }
     }
 }

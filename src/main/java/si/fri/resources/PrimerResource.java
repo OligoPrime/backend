@@ -10,6 +10,7 @@ import si.fri.db.PrimerDAO;
 import si.fri.db.PrimerForeignTablesDAO;
 
 import javax.annotation.security.RolesAllowed;
+import javax.management.relation.Role;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -679,7 +680,6 @@ public class PrimerResource {
         public List<String> typeOfPrimer;
 
         public PrimerForeignTableJSON(PrimerForeignTablesDAO dao) {
-            // todo
             box = dao.findAllBox().stream().map(Box::getBox).collect(Collectors.toList());
             designerDatabase = dao.findAllDesignerDatabase().stream().map(DesignerDatabase::getDesignerDatabase).collect(Collectors.toList());
             designerName = dao.findAllDesignerName().stream().map(DesignerName::getDesignerName).collect(Collectors.toList());

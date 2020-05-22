@@ -50,7 +50,18 @@ public class User implements Principal {
     public User(String username, String password, String role) {
         this.username = username;
 
-        List<byte []> salt_hash = hashPassword(password);
+        List<byte[]> salt_hash = hashPassword(password);
+        Objects.requireNonNull(salt_hash);
+        this.salt = salt_hash.get(0);
+        this.hash = salt_hash.get(1);
+        this.role = role;
+    }
+
+    public User(String username, String password, String role, String name, String workTitle) {
+        this.username = username;
+        this.name = name;
+        this.workTitle = workTitle;
+        List<byte[]> salt_hash = hashPassword(password);
         Objects.requireNonNull(salt_hash);
         this.salt = salt_hash.get(0);
         this.hash = salt_hash.get(1);
@@ -61,11 +72,11 @@ public class User implements Principal {
     }
 
 
-    public  byte[] getSalt() {
+    public byte[] getSalt() {
         return this.salt;
     }
 
-    public void setSalt( byte[] salt) {
+    public void setSalt(byte[] salt) {
         this.salt = salt;
     }
 
@@ -99,7 +110,7 @@ public class User implements Principal {
         return this.hash;
     }
 
-    public void setHash( byte[] hash) {
+    public void setHash(byte[] hash) {
         this.hash = hash;
     }
 
@@ -114,7 +125,7 @@ public class User implements Principal {
     @Override
     @JsonProperty
     public String getName() {
-        return username;
+        return name;
     }
 
     public void setName(String name) {

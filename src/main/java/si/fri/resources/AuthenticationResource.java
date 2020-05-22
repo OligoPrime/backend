@@ -39,6 +39,24 @@ public class AuthenticationResource {
 
     @POST
     @UnitOfWork
+    @Path("/isValid")
+    public Response isValid(String jwt) {
+        try {
+            Jws<Claims> jws = Jwts.parserBuilder()
+                    .setAllowedClockSkewSeconds(CLOCK_SKEW)
+                    .setSigningKey(key)
+                    .build()
+                    .parseClaimsJws(jwt);
+
+            return Response.ok().build();
+
+        } catch (JwtException e) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+    }
+
+    @POST
+    @UnitOfWork
     @Path("/refresh")
     public Response getJWT(String jwt) {
         try {

@@ -49,19 +49,19 @@ public class Primer {
     private Integer length;
 
     @ManyToOne(targetEntity = Freezer.class)
-    @JoinColumn(name = "freezer_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "freezer_id", referencedColumnName = "id", nullable = true)
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "freezer")
     @JsonIdentityReference(alwaysAsId = true)
     private Freezer freezer;
 
     @ManyToOne(targetEntity = Drawer.class)
-    @JoinColumn(name = "drawer_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "drawer_id", referencedColumnName = "id", nullable = true)
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "drawer")
     @JsonIdentityReference(alwaysAsId = true)
     private Drawer drawer;
 
     @ManyToOne(targetEntity = Box.class)
-    @JoinColumn(name = "box_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "box_id", referencedColumnName = "id", nullable = true)
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "box")
     @JsonIdentityReference(alwaysAsId = true)
     private Box box;
@@ -266,6 +266,14 @@ public class Primer {
                   DesignerDatabase designerDatabase, Project project, Supplier supplier, Manufacturer manufacturer,
                   String comment, String document, String analysis, OrderStatus orderStatus, ThreeQuencher threeQuencher,
                   FiveDye fiveDye, Date date, User user) {
+
+
+        //check that primer has location if RECIEVED
+        if(orderStatus.equals(OrderStatus.RECEIVED)){
+            if(freezer == null || drawer == null || box == null){
+                throw new IllegalArgumentException("Location must be specified! (freezer, drawer, box)");
+            }
+        }
 
         // check that required attributes are nonempty
         if (typeOfPrimer.getTypeOfPrimer().equals("TaqProbe")) {

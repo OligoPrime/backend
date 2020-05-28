@@ -2,6 +2,8 @@ package si.fri.core;
 
 
 import com.fasterxml.jackson.annotation.*;
+import org.hibernate.annotations.ResultCheckStyle;
+import org.hibernate.annotations.SQLDelete;
 import si.fri.core.primer_enums.*;
 import si.fri.core.primer_foreign_tables.*;
 
@@ -14,21 +16,22 @@ import java.util.*;
         {
                 @NamedQuery(
                         name = "si.fri.core.Primer.findAll",
-                        query = "SELECT p FROM Primer p"
+                        query = "SELECT p FROM Primer p WHERE p.deleted = false"
                 ),
                 @NamedQuery(
                         name = "si.fri.core.Primer.findWanted",
-                        query = "SELECT p FROM Primer p WHERE p.orderStatus = 'WANTED'"
+                        query = "SELECT p FROM Primer p WHERE p.orderStatus = 'WANTED' AND p.deleted = false"
                 ),
                 @NamedQuery(
                         name = "si.fri.core.Primer.findOrdered",
-                        query = "SELECT p FROM Primer p WHERE p.orderStatus = 'ORDERED'"
+                        query = "SELECT p FROM Primer p WHERE p.orderStatus = 'ORDERED' AND p.deleted = false"
                 ),
                 @NamedQuery(
                         name = "si.fri.core.Primer.findReceived",
-                        query = "SELECT p FROM Primer p WHERE p.orderStatus = 'RECEIVED'"
+                        query = "SELECT p FROM Primer p WHERE p.orderStatus = 'RECEIVED' AND p.deleted = false"
                 ),
         })
+@SQLDelete(sql = "UPDATE primers SET deleted = true WHERE id = ?", check = ResultCheckStyle.COUNT)
 public class Primer {
     @Id
     @Column(columnDefinition = "serial")
@@ -250,6 +253,9 @@ public class Primer {
     @JsonIgnore
     private Set<Primer> pairsOf = new HashSet<>();
 
+    @JsonIgnore
+    private boolean deleted;
+
     public Primer() {
         // Jackson deserialization
     }
@@ -341,6 +347,12 @@ public class Primer {
         this.orderStatus = orderStatus;
         this.analysis = analysis;
         this.length = sequence.length();
+        this.deleted = false;
+    }
+
+    @PreRemove
+    public void deletePrimer() {
+        this.deleted = true;
     }
 
     public void generateName() {
@@ -849,6 +861,14 @@ public class Primer {
     @JsonProperty
     public Set<Primer> getPairs() {
         return pairs;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 }
 

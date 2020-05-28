@@ -11,7 +11,7 @@ public class AuditInterceptor extends EmptyInterceptor {
 
     private User user;
     private HistoryDAO hDao;
-    private Primer primer;
+    private Primer primer = null;
     int countDeleted = 0;
     int countFlushDirty = 0;
     int countSave = 0;
@@ -27,8 +27,10 @@ public class AuditInterceptor extends EmptyInterceptor {
                          Object[] state,
                          String[] propertyNames,
                          Type[] types) {
-        primer = (Primer) entity;
-        countDeleted++;
+        if (entity instanceof Primer) {
+            primer = (Primer) entity;
+            countDeleted++;
+        }
     }
 
     public boolean onFlushDirty(Object entity,
@@ -37,8 +39,10 @@ public class AuditInterceptor extends EmptyInterceptor {
                                 Object[] previousState,
                                 String[] propertyNames,
                                 Type[] types) {
-        primer = (Primer) entity;
-        countFlushDirty++;
+        if (entity instanceof Primer) {
+            primer = (Primer) entity;
+            countFlushDirty++;
+        }
         return false;
     }
 
@@ -47,8 +51,10 @@ public class AuditInterceptor extends EmptyInterceptor {
                           Object[] state,
                           String[] propertyNames,
                           Type[] types) {
-        primer = (Primer) entity;
-        countLoad++;
+        if (entity instanceof Primer) {
+            primer = (Primer) entity;
+            countLoad++;
+        }
         return false;
     }
 
@@ -57,14 +63,24 @@ public class AuditInterceptor extends EmptyInterceptor {
                           Object[] state,
                           String[] propertyNames,
                           Type[] types) {
-        countSave++;
+        if (entity instanceof Primer) {
+            primer = (Primer) entity;
+            countSave++;
+        }
         return false;
     }
 
     public void afterTransactionCompletion(Transaction tx) {
-        if (countSave > 0) {
-            History history = new History(user, "add", primer);
-            hDao.create(history);
+        if (primer != null) {
+            if (countSave > 0) {
+                hDao.create(new History(user, "add", primer));
+            }
+            else if (countDeleted > 0) {
+                hDao.create(new History(user, "delete", primer));
+            }
+            else if (countFlushDirty > 0) {
+                hDao.create(new History(user, "update", primer));
+            }
         }
     }
 

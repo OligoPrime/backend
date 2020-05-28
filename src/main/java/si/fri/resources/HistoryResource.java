@@ -20,9 +20,19 @@ public class HistoryResource {
     }
 
     @GET
+    @Path("/all")
     @Timed
     @UnitOfWork
     public List<History> getAll() {
         return historyDAO.findAll();
     }
+
+    @GET
+    @Path("/user")
+    @Timed
+    @UnitOfWork
+    public List<History> getAll(@QueryParam("username") String username) {
+        return historyDAO.findByUser(username);
+    }
+
 }

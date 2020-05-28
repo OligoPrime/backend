@@ -25,4 +25,10 @@ public class HistoryDAO extends AbstractDAO<History> {
     public List<History> findAll() {
         return list((Query<History>) namedQuery("si.fri.core.History.findAll"));
     }
+
+    public List<History> findByUser(String username) {
+        Query query = currentSession().createQuery("SELECT h FROM History h WHERE h.user.username = :username");
+        query.setParameter("username", username);
+        return query.list();
+    }
 }

@@ -1,11 +1,13 @@
 package si.fri.resources;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.dropwizard.auth.Auth;
 import io.dropwizard.hibernate.UnitOfWork;
 import si.fri.core.Roles;
 import si.fri.core.User;
 import si.fri.db.UserDAO;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -49,18 +51,28 @@ public class UserResource {
         return Response.ok("Added user").build();
     }
 
+    @POST
+    @Path(("/delete"))
+    @Produces(MediaType.TEXT_PLAIN)
+    @UnitOfWork
+    @RolesAllowed({ Roles.ADMIN})
+    public Response delete( String username,@Auth User user){
+        dao.delete(username, user);
+        return Response.ok("Deleted user").build();
+    }
+
 
     @GET
     @Path(("/usernames"))
     @UnitOfWork
     public List<String> getAllUsernames(){
-        return dao.findAll().stream().map(User::getUsername).collect(Collectors.toList());
+        return dao.findAll().stream().filter(user -> !user.isRemoved()).map(User::getUsername).collect(Collectors.toList());
     }
 
     @GET
     @UnitOfWork
     public List<UserJSON> getAll(){
-        return dao.findAll().stream().map(UserJSON::new).collect(Collectors.toList());
+        return dao.findAll().stream().filter(user -> !user.isRemoved()).map(UserJSON::new).collect(Collectors.toList());
     }
 
     public static class NewUserJSON implements Serializable {

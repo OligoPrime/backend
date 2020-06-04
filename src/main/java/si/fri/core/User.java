@@ -39,6 +39,8 @@ public class User implements Principal {
     private String name;
     private String workTitle;
 
+    private boolean removed = false;
+
     @OneToMany
     @JoinColumn(name = "user_id")
     private Set<Primer> primers;
@@ -139,5 +141,13 @@ public class User implements Principal {
 
     public void setWorkTitle(String workTitle) {
         this.workTitle = workTitle;
+    }
+
+    public boolean isRemoved() {
+        return removed;
+    }
+
+    public void setRemoved(boolean removed) {
+        this.removed = removed;
     }
 }

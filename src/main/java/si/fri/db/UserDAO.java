@@ -1,17 +1,23 @@
 package si.fri.db;
 
 import io.dropwizard.hibernate.AbstractDAO;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
+import si.fri.core.AuditInterceptor;
 import si.fri.core.User;
 
-import javax.persistence.NoResultException;
 import java.util.List;
 import java.util.Optional;
 
 public class UserDAO extends AbstractDAO<User> {
-    public UserDAO(SessionFactory factory) {
+
+
+    private final HistoryDAO hDao;
+
+    public UserDAO(SessionFactory factory, HistoryDAO hDao) {
         super(factory);
+        this.hDao = hDao;
     }
 
     public Optional<User> findById(Long id) {
@@ -22,8 +28,19 @@ public class UserDAO extends AbstractDAO<User> {
         return persist(user);
     }
 
-    public Optional<User> getForUsername(String username){
-        return Optional.ofNullable((User) namedQuery("si.fri.core.User.getForUsername").setParameter("username",username).getSingleResult());
+    public void delete(String username, User user) {
+        User u = getForUsername(username).get();
+        u.setRemoved(true);
+        Session session = super.currentSession().getSessionFactory().withOptions().interceptor(new AuditInterceptor(user, hDao)).openSession();
+
+        session.beginTransaction();
+        session.merge(u);
+        session.getTransaction().commit();
+        session.close();
+    }
+
+    public Optional<User> getForUsername(String username) {
+        return Optional.ofNullable((User) namedQuery("si.fri.core.User.getForUsername").setParameter("username", username).getSingleResult());
     }
 
     @SuppressWarnings("unchecked")

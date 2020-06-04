@@ -136,10 +136,10 @@ public class PrimerResource {
     @RolesAllowed({Roles.RESEARCHER, Roles.ADMIN})
     public Primer addPrimer(@Auth User user, PrimerJSON p) {
         Primer primer = new Primer(p.name, p.sequence, Orientation.fromString(p.orientation), pftDao.findFreezer(p.freezer),
-                pftDao.findDrawer(p.drawer), pftDao.findBox(p.box), pftDao.findPositionInReference(p.positionInReference), p.Tm,
+                pftDao.findDrawer(p.drawer), pftDao.findBox(p.box), pftDao.findPositionInReference(p.positionInReference), p.tm,
                 p.optimalTOfAnnealing, pftDao.findPurificationMethod(p.purificationMethod), p.amountAvailable,
                 p.amountAvailablePacks, AmountAvailablePackType.fromString(p.amountAvailablePackType), p.lengthOfAmplicone,
-                p.storingT, p.GCPercent, pftDao.findOrganism(p.organism), pftDao.findGen(p.gen), pftDao.findNcbiGenId(p.ncbiGenId),
+                p.storingT, p.gcpercent, pftDao.findOrganism(p.organism), pftDao.findGen(p.gen), pftDao.findNcbiGenId(p.ncbiGenId),
                 pftDao.findHumanGenomBuild(p.humanGenomBuild), pftDao.findFormulation(p.formulation), pftDao.findTypeOfPrimer(p.typeOfPrimer),
                 p.sondaSequence, p.assayId, Size.fromString(p.size), pftDao.findPrimerApplication(p.primerApplication),
                 p.applicationComment, pftDao.findFiveModification(p.fiveModification), pftDao.findThreeModification(p.threeModification),
@@ -268,56 +268,7 @@ public class PrimerResource {
     @UnitOfWork
     @RolesAllowed({Roles.ADMIN, Roles.TECHNICIAN, Roles.RESEARCHER, Roles.GUEST})
     public PrimerJSON getPrimerJSONExample() {
-        Primer primer = getPrimer(1);
-        PrimerJSON primerJson = new PrimerJSON();
-
-        primerJson.amountAvailable = primer.getAmountAvailable();
-        primerJson.amountAvailablePacks = primer.getAmountAvailablePacks();
-        primerJson.amountAvailablePackType = primer.getAmountAvailablePackType().toString();
-        primerJson.analysis = primer.getAnalysis();
-        primerJson.applicationComment = primer.getApplicationComment();
-        primerJson.assayId = primer.getAssayId();
-        primerJson.box = primer.getBox().getBox();
-        primerJson.checkSpecifityInBlast = primer.isCheckSpecifityInBlast();
-        primerJson.comment = primer.getComment();
-        primerJson.concentrationOrdered = primer.getConcentrationOrdered();
-        primerJson.concentrationOrderedUnit = primer.getConcentrationOrderedUnit().toString();
-        primerJson.date = primer.getDate();
-        primerJson.designerDatabase = primer.getDesignerDatabase().getDesignerDatabase();
-        primerJson.designerName = primer.getDesignerName().getDesignerName();
-        primerJson.designerPublication = primer.getDesignerPublication().getDesignerPublication();
-        primerJson.document = primer.getDocument();
-        primerJson.drawer = primer.getDrawer().getDrawer();
-        primerJson.fiveDye = primer.getFiveDye().getFiveDye();
-        primerJson.fiveModification = primer.getFiveModification().getFiveModification();
-        primerJson.formulation = primer.getFormulation().getFormulation();
-        primerJson.freezer = primer.getFreezer().getFreezer();
-        primerJson.GCPercent = primer.getGCPercent();
-        primerJson.gen = primer.getGen().getGen();
-        primerJson.humanGenomBuild = primer.getHumanGenomBuild().getHumanGenomBuild();
-        primerJson.lengthOfAmplicone = primer.getLengthOfAmplicone();
-        primerJson.manufacturer = primer.getManufacturer().getManufacturer();
-        primerJson.name = primer.getName();
-        primerJson.ncbiGenId = primer.getNcbiGenId().getNcbiGenId();
-        primerJson.optimalTOfAnnealing = primer.getOptimalTOfAnnealing();
-        primerJson.orderStatus = primer.getOrderStatus().toString();
-        primerJson.organism = primer.getOrganism().getOrganism();
-        primerJson.orientation = primer.getOrientation().toString();
-        primerJson.positionInReference = primer.getPositionInReference().getPositionInReference();
-        primerJson.primerApplication = primer.getPrimerApplication().getPrimerApplication();
-        primerJson.project = primer.getProject().getProject();
-        primerJson.purificationMethod = primer.getPurificationMethod().getPurificationMethod();
-        primerJson.sequence = primer.getSequence();
-        primerJson.size = primer.getSize().toString();
-        primerJson.sondaSequence = primer.getSondaSequence();
-        primerJson.storingT = primer.getStoringT();
-        primerJson.supplier = primer.getSupplier().getSupplier();
-        primerJson.threeModification = primer.getThreeModification().getThreeModification();
-        primerJson.threeQuencher = primer.getThreeQuencher().getThreeQuencher();
-        primerJson.Tm = primer.getTm();
-        primerJson.typeOfPrimer = primer.getTypeOfPrimer().getTypeOfPrimer();
-
-        return primerJson;
+        return new PrimerJSON();
     }
 
     // TODO: maybe remove methods for adding if not needed
@@ -510,7 +461,7 @@ public class PrimerResource {
         @JsonProperty
         public String positionInReference;
         @JsonProperty
-        public Double Tm;
+        public Double tm;
         @JsonProperty
         public Double optimalTOfAnnealing;
         @JsonProperty
@@ -528,7 +479,7 @@ public class PrimerResource {
         @JsonProperty
         public String storingT;
         @JsonProperty
-        public Double GCPercent;
+        public Double gcpercent;
         @JsonProperty
         public String organism;
         @JsonProperty

@@ -13,13 +13,11 @@ import java.util.Optional;
 
 public class PrimerDAO extends AbstractDAO<Primer> {
 
-    private final SessionFactory sessionFactory;
     private final HistoryDAO hDao;
     private final PrimerForeignTablesDAO pftDao;
 
     public PrimerDAO(SessionFactory factory, HistoryDAO hDao, PrimerForeignTablesDAO pftDao) {
         super(factory);
-        this.sessionFactory = factory;
         this.hDao = hDao;
         this.pftDao = pftDao;
     }
@@ -49,7 +47,7 @@ public class PrimerDAO extends AbstractDAO<Primer> {
     }
 
     public Primer create(Primer primer, User user) {
-        Session session = sessionFactory.withOptions().interceptor(new AuditInterceptor(user, hDao)).openSession();
+        Session session = super.currentSession().getSessionFactory().withOptions().interceptor(new AuditInterceptor(user, hDao)).openSession();
         session.beginTransaction();
         session.saveOrUpdate(primer);
         primer.generateName();
@@ -58,13 +56,10 @@ public class PrimerDAO extends AbstractDAO<Primer> {
         return primer;
     }
 
-    public Primer update(long id, PrimerResource.PrimerJSON primerJson, User user) {
-        Session session = sessionFactory.withOptions().interceptor(new AuditInterceptor(user, hDao)).openSession();
-        session.beginTransaction();
+    public void update(long id, PrimerResource.PrimerJSON primerJson, User user) {
+        Session session = super.currentSession().getSessionFactory().withOptions().interceptor(new AuditInterceptor(user, hDao)).openSession();
 
-        Query query = session.createQuery("SELECT p FROM Primer p WHERE p.id = :pId");
-        query.setParameter("pId", id);
-        Primer primer = (Primer) query.list().get(0);
+        Primer primer = get(id);
 
         primer.setAmountAvailable(primerJson.amountAvailable);
         primer.setAmountAvailablePacks(primerJson.amountAvailablePacks);
@@ -87,7 +82,7 @@ public class PrimerDAO extends AbstractDAO<Primer> {
         primer.setFiveModification(pftDao.findFiveModification(primerJson.fiveModification));
         primer.setFormulation(pftDao.findFormulation(primerJson.formulation));
         primer.setFreezer(pftDao.findFreezer(primerJson.freezer));
-        primer.setGCPercent(primerJson.GCPercent);
+        primer.setGCPercent(primerJson.gcpercent);
         primer.setGen(pftDao.findGen(primerJson.gen));
         primer.setHumanGenomBuild(pftDao.findHumanGenomBuild(primerJson.humanGenomBuild));
         primer.setLengthOfAmplicone(primerJson.lengthOfAmplicone);
@@ -109,20 +104,21 @@ public class PrimerDAO extends AbstractDAO<Primer> {
         primer.setSupplier(pftDao.findSupplier(primerJson.supplier));
         primer.setThreeModification(pftDao.findThreeModification(primerJson.threeModification));
         primer.setThreeQuencher(pftDao.findThreeQuencher(primerJson.threeQuencher));
-        primer.setTm(primerJson.Tm);
+        primer.setTm(primerJson.tm);
         primer.setTypeOfPrimer(pftDao.findTypeOfPrimer(primerJson.typeOfPrimer));
-        primer.generateName();
+
+
+        session.beginTransaction();
+
+        session.merge(primer);
 
         session.getTransaction().commit();
         session.close();
-        return primer;
     }
 
     public void delete(long id, User user) {
-        Session session = sessionFactory.withOptions().interceptor(new AuditInterceptor(user, hDao)).openSession();
-        Query query = session.createQuery("SELECT p FROM Primer p WHERE p.id = :pId");
-        query.setParameter("pId", id);
-        Primer primer = (Primer) query.list().get(0);
+        Session session = super.currentSession().getSessionFactory().withOptions().interceptor(new AuditInterceptor(user, hDao)).openSession();
+        Primer primer = get(id);
         session.beginTransaction();
         session.remove(primer);
         session.getTransaction().commit();

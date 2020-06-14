@@ -116,12 +116,12 @@ public class PrimerDAO extends AbstractDAO<Primer> {
         session.close();
     }
 
-    public void updateAmount(long id, PrimerResource.PrimerJSON primerJson, User user) {
+    public void updateAmount(long id, double amountAvailable, User user) {
         Session session = super.currentSession().getSessionFactory().withOptions().interceptor(new AuditInterceptor(user, hDao)).openSession();
 
         Primer primer = get(id);
 
-        primer.setAmountAvailable(primerJson.amountAvailable);
+        primer.setAmountAvailable(amountAvailable);
 
         session.beginTransaction();
 

@@ -170,6 +170,15 @@ public class PrimerResource {
         return pDao.findById(id).get();
     }
 
+    @POST
+    @Path("/updateAmount")
+    @UnitOfWork
+    @RolesAllowed({Roles.RESEARCHER, Roles.ADMIN})
+    public Primer updatePrimerAmount(@Auth User user, @QueryParam("id") long id, @QueryParam("amount") double amount) {
+        pDao.updateAmount(id, amount, user);
+        return pDao.findById(id).get();
+    }
+
 
 
     @POST

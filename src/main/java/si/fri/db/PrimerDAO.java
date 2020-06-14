@@ -116,6 +116,21 @@ public class PrimerDAO extends AbstractDAO<Primer> {
         session.close();
     }
 
+    public void updateAmount(long id, PrimerResource.PrimerJSON primerJson, User user) {
+        Session session = super.currentSession().getSessionFactory().withOptions().interceptor(new AuditInterceptor(user, hDao)).openSession();
+
+        Primer primer = get(id);
+
+        primer.setAmountAvailable(primerJson.amountAvailable);
+
+        session.beginTransaction();
+
+        session.merge(primer);
+
+        session.getTransaction().commit();
+        session.close();
+    }
+
     public void delete(long id, User user) {
         Session session = super.currentSession().getSessionFactory().withOptions().interceptor(new AuditInterceptor(user, hDao)).openSession();
         Primer primer = get(id);

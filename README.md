@@ -10,8 +10,8 @@
 
 Make sure you have the latest version of Docker and Docker Compose installed.
 
-Then create a `docker-compose.yml` file and copy the below configuration. Change the username, password and optionally ports. 
-Do not change the name of the services.
+Then create a `docker-compose.yml` file and copy the below configuration. Change the username, password. 
+Do not change the name of the services or external ports.
 
 ```yaml
 version: '3'

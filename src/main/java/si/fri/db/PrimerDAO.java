@@ -133,7 +133,9 @@ public class PrimerDAO extends AbstractDAO<Primer> {
 
     public void delete(long id, User user) {
         Session session = super.currentSession().getSessionFactory().withOptions().interceptor(new AuditInterceptor(user, hDao)).openSession();
-        Primer primer = get(id);
+        Query query = session.createQuery("SELECT p FROM Primer p WHERE p.id = :pId");
+        query.setParameter("pId", id);
+        Primer primer = (Primer) query.list().get(0);
         session.beginTransaction();
         session.remove(primer);
         session.getTransaction().commit();

@@ -6,7 +6,6 @@ import com.opencsv.bean.CsvToBeanBuilder;
 import io.dropwizard.auth.Auth;
 import io.dropwizard.hibernate.UnitOfWork;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import si.fri.core.Primer;
@@ -59,7 +58,7 @@ public class CsvResource {
         CsvToBean<PrimerCSV> csvToBean = new CsvToBeanBuilder(new InputStreamReader(uploadedInputStream))
                 .withType(PrimerCSV.class)
                 .withIgnoreLeadingWhiteSpace(true)
-                .withSeparator(';')
+                .withSeparator(',')
                 .build();
 
         List<PrimerCSV> PrimerCSVList = new ArrayList<>();
@@ -120,32 +119,15 @@ public class CsvResource {
         return Response.ok("Successfully uploaded primers from CSV file.").build();
     }
 
-    // save uploaded file to new location
-    private void writeToFile(InputStream uploadedInputStream, String uploadedFileLocation) throws IOException {
-        int read;
-        final int BUFFER_LENGTH = 1024;
-        final byte[] buffer = new byte[BUFFER_LENGTH];
-        OutputStream out = new FileOutputStream(new File(uploadedFileLocation));
-        while ((read = uploadedInputStream.read(buffer)) != -1) {
-            out.write(buffer, 0, read);
-        }
-        out.flush();
-        out.close();
+    @GET
+    @Path("/sample")
+    @Produces(MediaType.APPLICATION_OCTET_STREAM)
+    public Response getFile() {
+        File file = new File("src/main/java/si/fri/resource_files/sample.csv");
+        return Response.ok(file, MediaType.APPLICATION_OCTET_STREAM)
+            .header("Content-Disposition", "attachment; filename=\"" + file.getName() + "\"")
+            .build();
     }
-
-    // read uploaded file into a String
-    private String writeToString(InputStream uploadedInputStream) throws IOException {
-        int read;
-        final int BUFFER_LENGTH = 1024;
-        final byte[] buffer = new byte[BUFFER_LENGTH];
-        StringWriter stringWriter = new StringWriter();
-        IOUtils.copy(uploadedInputStream, stringWriter, "UTF-8");
-        return stringWriter.toString();
-    }
-
-    //@GET("export")
-    //@UnitOfWork
-    // TODO
 
     public static class PrimerCSV {
         @CsvBindByName(column = "Name of Primer", required = true)
@@ -162,13 +144,13 @@ public class CsvResource {
         public String box;
         @CsvBindByName(column = "Position in Reference", required = true)
         public String positionInReference;
-        @CsvBindByName(column = "Tm (°C)")
+        @CsvBindByName(column = "Tm (degree Celsius)")
         public Double Tm;
-        @CsvBindByName(column = "Optimal T of Annealing (°C)")
+        @CsvBindByName(column = "Optimal T of Annealing (degree Celsius)")
         public Double optimalTOfAnnealing;
         @CsvBindByName(column = "Purification Method", required = true)
         public String purificationMethod;
-        @CsvBindByName(column = "Amount Available (µl)")
+        @CsvBindByName(column = "Amount Available (microliter)")
         public Double amountAvailableMikroL;
         @CsvBindByName(column = "Amount Available (Packs)")
         public Integer amountAvailablePacks;
@@ -178,7 +160,7 @@ public class CsvResource {
         public String date;
         @CsvBindByName(column = "Length of Amplicone")
         public Integer lengthOfAmplicone;
-        @CsvBindByName(column = "Storing T (°C)")
+        @CsvBindByName(column = "Storing T (degree Celsius)")
         public String storingT;
         @CsvBindByName(column = "GC (%)")
         public Double GCPercent;

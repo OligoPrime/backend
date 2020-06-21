@@ -39,11 +39,11 @@ public class UserResource {
     }
 
     @POST
-    @Path(("/add"))
+    @Path("/add")
     @Produces(MediaType.TEXT_PLAIN)
     @UnitOfWork
-    public Response add(NewUserJSON data){
-        if(data.username.isEmpty() ||data.password.isEmpty() || data.role.isEmpty()  || data.name.isEmpty()  || data.workTitle.isEmpty() ){
+    public Response add(NewUserJSON data) {
+        if (data.username.isEmpty() || data.password.isEmpty() || data.role.isEmpty()  || data.name.isEmpty()  || data.workTitle.isEmpty()) {
             throw new WebApplicationException(Response.Status.BAD_REQUEST);
         }
         User u = new User(data.username,data.password,data.role,data.name,data.workTitle);
@@ -52,26 +52,26 @@ public class UserResource {
     }
 
     @POST
-    @Path(("/delete"))
+    @Path("/delete")
     @Produces(MediaType.TEXT_PLAIN)
     @UnitOfWork
-    @RolesAllowed({ Roles.ADMIN})
-    public Response delete( String username,@Auth User user){
+    @RolesAllowed({Roles.ADMIN})
+    public Response delete(String username, @Auth User user) {
         dao.delete(username, user);
         return Response.ok("Deleted user").build();
     }
 
 
     @GET
-    @Path(("/usernames"))
+    @Path("/usernames")
     @UnitOfWork
-    public List<String> getAllUsernames(){
+    public List<String> getAllUsernames() {
         return dao.findAll().stream().filter(user -> !user.isRemoved()).map(User::getUsername).collect(Collectors.toList());
     }
 
     @GET
     @UnitOfWork
-    public List<UserJSON> getAll(){
+    public List<UserJSON> getAll() {
         return dao.findAll().stream().filter(user -> !user.isRemoved()).map(UserJSON::new).collect(Collectors.toList());
     }
 
@@ -98,7 +98,7 @@ public class UserResource {
         @JsonProperty
         String workTitle;
 
-        public UserJSON(User u){
+        public UserJSON(User u) {
             username = u.getUsername();
             role = u.getRole();
             name = u.getName();

@@ -17,11 +17,11 @@ import static si.fri.auth.Passwords.hashPassword;
         {
                 @NamedQuery(
                         name = "si.fri.core.User.findAll",
-                        query = "SELECT p FROM User p"
+                        query = "SELECT p FROM User p WHERE p.removed = false"
                 ),
                 @NamedQuery(
                         name = "si.fri.core.User.getForUsername",
-                        query = "SELECT p FROM User p WHERE p.username = :username"
+                        query = "SELECT p FROM User p WHERE p.username = :username AND p.removed = false"
                 )
         })
 public class User implements Principal {

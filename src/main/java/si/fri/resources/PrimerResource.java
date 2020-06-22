@@ -179,8 +179,6 @@ public class PrimerResource {
         return pDao.findById(id).get();
     }
 
-
-
     @POST
     @Path("/pair")
     @UnitOfWork
@@ -199,6 +197,16 @@ public class PrimerResource {
 
         primer1.get().pairWith(primer2.get());
         return Response.ok("Successfully paired primers.").entity(idArr).build();
+    }
+
+    @POST
+    @Path("/copy-as-wanted")
+    @UnitOfWork
+    @RolesAllowed({Roles.RESEARCHER, Roles.ADMIN})
+    public Primer copyPrimerAsWanted(@Auth User user, long id) {
+        Primer primer = pDao.copy(id, user);
+        primer.setOrderStatus(OrderStatus.WANTED);
+        return primer;
     }
 
     @GET

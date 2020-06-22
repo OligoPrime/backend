@@ -141,4 +141,18 @@ public class PrimerDAO extends AbstractDAO<Primer> {
         session.getTransaction().commit();
         session.close();
     }
+
+    public Primer copy(long id, User user) {
+        Primer p = get(id);
+        Primer pCopy = new Primer(p.getName(), p.getSequence(), p.getOrientation(), p.getFreezer(), p.getDrawer(),
+            p.getBox(), p.getPositionInReference(), p.getTm(), p.getOptimalTOfAnnealing(), p.getPurificationMethod(),
+            p.getAmountAvailable(), p.getAmountAvailablePacks(), p.getAmountAvailablePackType(), p.getLengthOfAmplicone(),
+            p.getStoringT(), p.getGCPercent(), p.getOrganism(), p.getGen(), p.getNcbiGenId(), p.getHumanGenomBuild(),
+            p.getFormulation(), p.getTypeOfPrimer(), p.getSondaSequence(), p.getAssayId(), p.getSize(), p.getPrimerApplication(),
+            p.getApplicationComment(), p.getFiveModification(), p.getThreeModification(), p.getConcentrationOrdered(),
+            p.getConcentrationOrderedUnit(), p.isCheckSpecifityInBlast(), p.getDesignerName(), p.getDesignerPublication(),
+            p.getDesignerDatabase(), p.getProject(), p.getSupplier(), p.getManufacturer(), p.getComment(), p.getDocument(),
+            p.getAnalysis(), p.getOrderStatus(), p.getThreeQuencher(), p.getFiveDye(), p.getDate(), user);
+        return create(pCopy, user);
+    }
 }

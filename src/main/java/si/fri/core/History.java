@@ -15,7 +15,7 @@ import java.util.Date;
         {
                 @NamedQuery(
                         name = "si.fri.core.History.findAll",
-                        query = "SELECT h FROM History h"
+                        query = "SELECT h FROM History h ORDER BY h.id DESC"
                 )
         })
 public class History {

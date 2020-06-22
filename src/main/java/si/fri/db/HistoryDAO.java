@@ -27,7 +27,7 @@ public class HistoryDAO extends AbstractDAO<History> {
     }
 
     public List<History> findByUser(String username) {
-        Query query = currentSession().createQuery("SELECT h FROM History h WHERE h.user.username = :username");
+        Query query = currentSession().createQuery("SELECT h FROM History h WHERE h.user.username = :username ORDER BY h.id DESC");
         query.setParameter("username", username);
         return query.list();
     }

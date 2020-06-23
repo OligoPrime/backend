@@ -2,6 +2,7 @@ package si.fri;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.dropwizard.auth.AuthValueFactoryProvider;
 import io.dropwizard.testing.junit5.DropwizardExtensionsSupport;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.AfterEach;
@@ -28,7 +29,9 @@ public class PrimerResourceTest {
 
     private static final PrimerDAO pDao = mock(PrimerDAO.class);
     private static final PrimerForeignTablesDAO pftDao = mock(PrimerForeignTablesDAO.class);
+
     public static final ResourceExtension resources = ResourceExtension.builder()
+            .addProvider(new AuthValueFactoryProvider.Binder<>(User.class))
             .addResource(new PrimerResource(pDao, pftDao))
             .build();
 

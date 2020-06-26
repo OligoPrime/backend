@@ -91,6 +91,7 @@ public class AuthenticationResource {
                     return Response.ok(Jwts.builder()
                             .setSubject(loginForm.username)
                             .setExpiration(Date.from(Instant.now().plusSeconds(TOKEN_DURATION)))
+                            .claim("role", user.getRole())
                             .signWith(key)
                             .compact())
                             .build();

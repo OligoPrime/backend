@@ -411,6 +411,10 @@ public class Primer {
         this.generatedName = generatedName;
     }
 
+    public void generateLength() {
+        this.length = sequence.length();
+    }
+
     public void pairWith(Primer primer) {
         this.pairs.add(primer);
         this.pairsOf.add(primer);

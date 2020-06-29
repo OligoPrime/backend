@@ -23,7 +23,13 @@ public class PrimerDAO extends AbstractDAO<Primer> {
     }
 
     public Optional<Primer> findById(Long id) {
-        return Optional.ofNullable(get(id));
+        Primer primer = get(id);
+        if (primer != null) {
+            if (primer.isDeleted()) {
+                primer = null;
+            }
+        }
+        return Optional.ofNullable(primer);
     }
 
     @SuppressWarnings("unchecked")
@@ -106,7 +112,8 @@ public class PrimerDAO extends AbstractDAO<Primer> {
         primer.setThreeQuencher(pftDao.findThreeQuencher(primerJson.threeQuencher));
         primer.setTm(primerJson.tm);
         primer.setTypeOfPrimer(pftDao.findTypeOfPrimer(primerJson.typeOfPrimer));
-
+        primer.generateName();
+        primer.generateLength();
 
         session.beginTransaction();
 

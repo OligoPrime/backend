@@ -1,6 +1,5 @@
 package si.fri;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -23,9 +22,7 @@ import javax.ws.rs.core.Response;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Collections;
-import java.util.Date;
-import java.util.Objects;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -218,7 +215,7 @@ public class IntegrationTest {
         fixEnums(expectedPrimer1);
 
         // add fields not present in primerJSON
-        int primer1Id = primer1.get("id").intValue();
+        long primer1Id = primer1.get("id").longValue();
         expectedPrimer1.put("id", primer1Id);
         expectedPrimer1.put("generatedName", "R-HS-ncbigenid123-" + primer1Id);
         expectedPrimer1.put("length", 12);
@@ -237,7 +234,7 @@ public class IntegrationTest {
         fixEnums(expectedPrimer2);
 
         // add fields not present in primerJSON
-        int primer2Id = primer2.get("id").intValue();
+        long primer2Id = primer2.get("id").longValue();
         expectedPrimer2.put("id", primer2Id);
         expectedPrimer2.put("generatedName", "F-G1-ncbigenid124-" + primer2Id);
         expectedPrimer2.put("length", 11);
@@ -267,5 +264,55 @@ public class IntegrationTest {
 
         assertThat(deletedPrimer).isNull();
     }
+
+    @Test
+    public void testPairPrimer() {
+        ObjectNode loginRequest = mapper.createObjectNode();
+        loginRequest.put("username", "test");
+        loginRequest.put("password", "t");
+        Response loginResponse = RULE.client().target("http://localhost:" + RULE.getLocalPort() + "/auth/login")
+                .request()
+                .post(Entity.json(loginRequest), Response.class);
+        String jwt = loginResponse.readEntity(String.class);
+
+        JsonNode primer1 = RULE.client().target("http://localhost:" + RULE.getLocalPort() + "/primers/add")
+                .request()
+                .header("Authorization", "Bearer " + jwt)
+                .post(Entity.json(primerJSON1), JsonNode.class);
+
+        JsonNode primer2 = RULE.client().target("http://localhost:" + RULE.getLocalPort() + "/primers/add")
+                .request()
+                .header("Authorization", "Bearer " + jwt)
+                .post(Entity.json(primerJSON2), JsonNode.class);
+
+        assertThat(mapper.convertValue(primer1.get("pairs"), ArrayList.class)).isEmpty();
+        assertThat(mapper.convertValue(primer2.get("pairs"), ArrayList.class)).isEmpty();
+
+        int primer1Id = primer1.get("id").intValue();
+        int primer2Id = primer2.get("id").intValue();
+        int[] idArr = new int[]{primer1Id, primer2Id};
+
+        Response pairResponse = RULE.client().target("http://localhost:" + RULE.getLocalPort() + "/primers/pair")
+                .request()
+                .header("Authorization", "Bearer " + jwt)
+                .post(Entity.json(idArr), Response.class);
+
+        primer1 = RULE.client().target("http://localhost:" + RULE.getLocalPort() + "/primers/get/" + primer1Id)
+                .request()
+                .header("Authorization", "Bearer " + jwt)
+                .get(JsonNode.class);
+
+        primer2 = RULE.client().target("http://localhost:" + RULE.getLocalPort() + "/primers/get/" + primer2Id)
+                .request()
+                .header("Authorization", "Bearer " + jwt)
+                .get(JsonNode.class);
+
+        List<Integer> expectedArr1 = Arrays.asList(primer2Id);
+        List<Integer> expectedArr2 = Arrays.asList(primer1Id);
+
+        assertThat(mapper.convertValue(primer1.get("pairs"), ArrayList.class)).isEqualTo(expectedArr1);
+        assertThat(mapper.convertValue(primer2.get("pairs"), ArrayList.class)).isEqualTo(expectedArr2);
+    }
+
 
 }

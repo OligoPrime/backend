@@ -1,5 +1,6 @@
 package si.fri;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -36,6 +37,7 @@ public class IntegrationTest {
 
     private final ObjectMapper mapper = new ObjectMapper();
     private PrimerResource.PrimerJSON primerJSON1, primerJSON2;
+    private String jwt;
 
     @BeforeEach
     public void setup() throws ParseException {
@@ -136,6 +138,14 @@ public class IntegrationTest {
         primerJSON2.orderStatus = "wanted";
         primerJSON2.threeQuencher = "MGBNFQ";
         primerJSON2.fiveDye = "GFAM";
+
+        ObjectNode loginRequest = mapper.createObjectNode();
+        loginRequest.put("username", "test");
+        loginRequest.put("password", "t");
+        Response loginResponse = RULE.client().target("http://localhost:" + RULE.getLocalPort() + "/auth/login")
+                .request()
+                .post(Entity.json(loginRequest), Response.class);
+        jwt = loginResponse.readEntity(String.class);
     }
 
     private void fixEnums(ObjectNode expectedPrimer) {
@@ -165,14 +175,6 @@ public class IntegrationTest {
                 .post(Entity.json(null), Hello.class);
         assertThat(saying.getContent()).isEqualTo("Hello, this is backend!");
 
-        ObjectNode loginRequest = mapper.createObjectNode();
-        loginRequest.put("username", "test");
-        loginRequest.put("password", "t");
-        Response loginResponse = RULE.client().target("http://localhost:" + RULE.getLocalPort() + "/auth/login")
-                .request()
-                .post(Entity.json(loginRequest), Response.class);
-        String jwt = loginResponse.readEntity(String.class);
-
         JsonNode hellos = RULE.client().target("http://localhost:" + RULE.getLocalPort() + "/hello")
                 .request()
                 .header("Authorization", "Bearer " + jwt)
@@ -198,14 +200,6 @@ public class IntegrationTest {
 
     @Test
     public void testAddUpdateGetDeletePrimer() throws JSONException {
-        ObjectNode loginRequest = mapper.createObjectNode();
-        loginRequest.put("username", "test");
-        loginRequest.put("password", "t");
-        Response loginResponse = RULE.client().target("http://localhost:" + RULE.getLocalPort() + "/auth/login")
-                .request()
-                .post(Entity.json(loginRequest), Response.class);
-        String jwt = loginResponse.readEntity(String.class);
-
         JsonNode primer1 = RULE.client().target("http://localhost:" + RULE.getLocalPort() + "/primers/add")
                 .request()
                 .header("Authorization", "Bearer " + jwt)
@@ -267,14 +261,6 @@ public class IntegrationTest {
 
     @Test
     public void testPairPrimer() {
-        ObjectNode loginRequest = mapper.createObjectNode();
-        loginRequest.put("username", "test");
-        loginRequest.put("password", "t");
-        Response loginResponse = RULE.client().target("http://localhost:" + RULE.getLocalPort() + "/auth/login")
-                .request()
-                .post(Entity.json(loginRequest), Response.class);
-        String jwt = loginResponse.readEntity(String.class);
-
         JsonNode primer1 = RULE.client().target("http://localhost:" + RULE.getLocalPort() + "/primers/add")
                 .request()
                 .header("Authorization", "Bearer " + jwt)
@@ -307,12 +293,63 @@ public class IntegrationTest {
                 .header("Authorization", "Bearer " + jwt)
                 .get(JsonNode.class);
 
-        List<Integer> expectedArr1 = Arrays.asList(primer2Id);
-        List<Integer> expectedArr2 = Arrays.asList(primer1Id);
+        List<Integer> expectedArr1 = Collections.singletonList(primer2Id);
+        List<Integer> expectedArr2 = Collections.singletonList(primer1Id);
 
         assertThat(mapper.convertValue(primer1.get("pairs"), ArrayList.class)).isEqualTo(expectedArr1);
         assertThat(mapper.convertValue(primer2.get("pairs"), ArrayList.class)).isEqualTo(expectedArr2);
     }
 
+    @Test
+    public void testHistory() throws JsonProcessingException, JSONException {
+        JsonNode history = RULE.client().target("http://localhost:" + RULE.getLocalPort() + "/history/all")
+                .request()
+                .header("Authorization", "Bearer " + jwt)
+                .get(JsonNode.class);
 
+        int lastId = history.get(0).get("id").intValue();
+        // first history element should have the highest id
+        assertThat(lastId).isEqualTo(history.size());
+
+        JsonNode primer = RULE.client().target("http://localhost:" + RULE.getLocalPort() + "/primers/add")
+                .request()
+                .header("Authorization", "Bearer " + jwt)
+                .post(Entity.json(primerJSON1), JsonNode.class);
+
+        int primerId = primer.get("id").intValue();
+
+        primer = RULE.client().target("http://localhost:" + RULE.getLocalPort() + "/primers/update")
+                .queryParam("id", primerId)
+                .request()
+                .header("Authorization", "Bearer " + jwt)
+                .post(Entity.json(primerJSON2), JsonNode.class);
+
+        RULE.client().target("http://localhost:" + RULE.getLocalPort() + "/primers/delete")
+                .request()
+                .header("Authorization", "Bearer " + jwt)
+                .post(Entity.json(primerId), Response.class);
+
+        history = RULE.client().target("http://localhost:" + RULE.getLocalPort() + "/history/all")
+                .request()
+                .header("Authorization", "Bearer " + jwt)
+                .get(JsonNode.class);
+
+        ObjectNode expectedHistory = mapper.createObjectNode();
+        expectedHistory.put("id", lastId + 1);
+        expectedHistory.put("user", "test");
+        expectedHistory.put("timestamp", history.get(2).get("timestamp"));
+        expectedHistory.put("action", "add");
+        expectedHistory.put("primer", "F-G1-ncbigenid124-" + primerId);
+        JSONAssert.assertEquals(expectedHistory.toString(), history.get(2).toString(), false);
+
+        expectedHistory.put("id", lastId + 2);
+        expectedHistory.put("timestamp", history.get(1).get("timestamp"));
+        expectedHistory.put("action", "update");
+        JSONAssert.assertEquals(expectedHistory.toString(), history.get(1).toString(), false);
+
+        expectedHistory.put("id", lastId + 3);
+        expectedHistory.put("timestamp", history.get(0).get("timestamp"));
+        expectedHistory.put("action", "delete");
+        JSONAssert.assertEquals(expectedHistory.toString(), history.get(0).toString(), false);
+    }
 }

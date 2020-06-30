@@ -8,6 +8,10 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.dropwizard.testing.ResourceHelpers;
 import io.dropwizard.testing.junit5.DropwizardAppExtension;
 import io.dropwizard.testing.junit5.DropwizardExtensionsSupport;
+import org.glassfish.jersey.media.multipart.FormDataMultiPart;
+import org.glassfish.jersey.media.multipart.MultiPart;
+import org.glassfish.jersey.media.multipart.MultiPartFeature;
+import org.glassfish.jersey.media.multipart.file.FileDataBodyPart;
 import org.json.JSONException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,6 +25,8 @@ import si.fri.resources.PrimerResource;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Response;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -318,7 +324,7 @@ public class IntegrationTest {
 
         int primerId = primer.get("id").intValue();
 
-        primer = RULE.client().target("http://localhost:" + RULE.getLocalPort() + "/primers/update")
+        RULE.client().target("http://localhost:" + RULE.getLocalPort() + "/primers/update")
                 .queryParam("id", primerId)
                 .request()
                 .header("Authorization", "Bearer " + jwt)
@@ -351,5 +357,40 @@ public class IntegrationTest {
         expectedHistory.put("timestamp", history.get(0).get("timestamp"));
         expectedHistory.put("action", "delete");
         JSONAssert.assertEquals(expectedHistory.toString(), history.get(0).toString(), false);
+    }
+
+    @Test
+    public void testCsv() throws FileNotFoundException, JSONException {
+        FileDataBodyPart filePart = new FileDataBodyPart("file", new File("src/test/resources/csv/test.csv"));
+
+        MultiPart multipartEntity = new FormDataMultiPart().bodyPart(filePart);
+
+        Response csvResponse = RULE.client().register(MultiPartFeature.class)
+                .target("http://localhost:" + RULE.getLocalPort() + "/csv/import")
+                .request()
+                .header("Authorization", "Bearer " + jwt)
+                .post(Entity.entity(multipartEntity, multipartEntity.getMediaType()), Response.class);
+
+        assertThat(csvResponse.readEntity(String.class)).isEqualTo("Successfully uploaded primers from CSV file.");
+
+        JsonNode primers = RULE.client().target("http://localhost:" + RULE.getLocalPort() + "/primers")
+                .request()
+                .header("Authorization", "Bearer " + jwt)
+                .get(JsonNode.class);
+
+        JsonNode primer = primers.get(primers.size() - 1);
+
+        ObjectNode expectedPrimer = mapper.valueToTree(primerJSON1);
+        fixEnums(expectedPrimer);
+
+        // add fields not present in primerJSON
+        long primerId = primer.get("id").longValue();
+        expectedPrimer.put("id", primerId);
+        expectedPrimer.put("generatedName", "R-HS-ncbigenid123-" + primerId);
+        expectedPrimer.put("length", 12);
+        expectedPrimer.put("user", "test");
+        expectedPrimer.put("pairs", mapper.convertValue(Collections.emptyList(), JsonNode.class));
+
+        JSONAssert.assertEquals(primer.toString(), expectedPrimer.toString(), false);
     }
 }

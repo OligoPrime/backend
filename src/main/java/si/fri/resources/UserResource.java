@@ -34,6 +34,7 @@ public class UserResource {
         userList.add(dao.create(new User("admin","admin", Roles.ADMIN)));
         userList.add(dao.create(new User("technician","technician", Roles.TECHNICIAN)));
         userList.add(dao.create(new User("researcher","researcher", Roles.RESEARCHER)));
+        userList.add(dao.create(new User("student","student", Roles.STUDENT)));
         userList.add(dao.create(new User("guest","guest", Roles.GUEST)));
         return userList;
     }

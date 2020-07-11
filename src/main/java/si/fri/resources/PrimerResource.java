@@ -34,7 +34,7 @@ public class PrimerResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @UnitOfWork
-    @RolesAllowed({Roles.ADMIN, Roles.TECHNICIAN, Roles.RESEARCHER, Roles.GUEST})
+    @RolesAllowed({Roles.ADMIN, Roles.TECHNICIAN, Roles.RESEARCHER, Roles.STUDENT, Roles.GUEST})
     public List<Primer> getAll(){
         return pDao.findAll();
     }
@@ -43,7 +43,7 @@ public class PrimerResource {
     @Path("/wanted")
     @Produces(MediaType.APPLICATION_JSON)
     @UnitOfWork
-    @RolesAllowed({Roles.ADMIN, Roles.TECHNICIAN, Roles.RESEARCHER, Roles.GUEST})
+    @RolesAllowed({Roles.ADMIN, Roles.TECHNICIAN, Roles.RESEARCHER, Roles.STUDENT, Roles.GUEST})
     public List<Primer> getWanted(){
         return pDao.findWanted();
     }
@@ -52,7 +52,7 @@ public class PrimerResource {
     @Path("/ordered")
     @Produces(MediaType.APPLICATION_JSON)
     @UnitOfWork
-    @RolesAllowed({Roles.ADMIN, Roles.TECHNICIAN, Roles.RESEARCHER, Roles.GUEST})
+    @RolesAllowed({Roles.ADMIN, Roles.TECHNICIAN, Roles.RESEARCHER, Roles.STUDENT, Roles.GUEST})
     public List<Primer> getOrdered(){
         return pDao.findOrdered();
     }
@@ -61,7 +61,7 @@ public class PrimerResource {
     @Path("/received")
     @Produces(MediaType.APPLICATION_JSON)
     @UnitOfWork
-    @RolesAllowed({Roles.ADMIN, Roles.TECHNICIAN, Roles.RESEARCHER, Roles.GUEST})
+    @RolesAllowed({Roles.ADMIN, Roles.TECHNICIAN, Roles.RESEARCHER, Roles.STUDENT, Roles.GUEST})
     public List<Primer> getReceived(){
         return pDao.findReceived();
     }
@@ -173,7 +173,7 @@ public class PrimerResource {
     @POST
     @Path("/updateAmount")
     @UnitOfWork
-    @RolesAllowed({Roles.RESEARCHER, Roles.ADMIN})
+    @RolesAllowed({Roles.RESEARCHER, Roles.TECHNICIAN, Roles.STUDENT, Roles.ADMIN})
     public Primer updatePrimerAmount(@Auth User user, @QueryParam("id") long id, @QueryParam("amount") double amount) {
         pDao.updateAmount(id, amount, user);
         return pDao.findById(id).get();

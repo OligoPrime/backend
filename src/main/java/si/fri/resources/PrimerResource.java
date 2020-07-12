@@ -213,7 +213,7 @@ public class PrimerResource {
     @Path("/get/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @UnitOfWork
-    @RolesAllowed({Roles.ADMIN, Roles.TECHNICIAN, Roles.RESEARCHER, Roles.GUEST})
+    @RolesAllowed({Roles.ADMIN, Roles.TECHNICIAN, Roles.RESEARCHER, Roles.STUDENT, Roles.GUEST})
     public Primer getPrimer(@PathParam("id") long id) {
         Optional<Primer> primer = pDao.findById(id);
         return primer.orElse(null);

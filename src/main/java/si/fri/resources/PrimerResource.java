@@ -165,18 +165,18 @@ public class PrimerResource {
     @Path("/update")
     @UnitOfWork
     @RolesAllowed({Roles.RESEARCHER, Roles.ADMIN})
-    public Primer updatePrimer(@Auth User user, @QueryParam("id") long id, PrimerJSON primerJson) {
+    public Optional<Primer> updatePrimer(@Auth User user, @QueryParam("id") long id, PrimerJSON primerJson) {
         pDao.update(id, primerJson, user);
-        return pDao.findById(id).get();
+        return pDao.findById(id);
     }
 
     @POST
-    @Path("/updateAmount")
+    @Path("/updateAmountCommentAnalysisi")
     @UnitOfWork
     @RolesAllowed({Roles.RESEARCHER, Roles.TECHNICIAN, Roles.STUDENT, Roles.ADMIN})
-    public Primer updatePrimerAmount(@Auth User user, @QueryParam("id") long id, @QueryParam("amount") double amount) {
-        pDao.updateAmount(id, amount, user);
-        return pDao.findById(id).get();
+    public Optional<Primer> updateAmountCommentAnalysisi(@Auth User user, @QueryParam("id") long id, PrimerJSON primerJson) {
+        pDao.updateAmountCommentAnalysisi(id, primerJson.amountAvailable, primerJson.comment, primerJson.analysis, user);
+        return pDao.findById(id);
     }
 
     @POST
@@ -492,6 +492,7 @@ public class PrimerResource {
         @JsonProperty
         public String amountAvailablePackType;
         @JsonProperty
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
         public Date date;
         @JsonProperty
         public Integer lengthOfAmplicone;

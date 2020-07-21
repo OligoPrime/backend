@@ -8,6 +8,7 @@ database:
   # the username
   user: ${DB_USER}
 
+
   # the password
   password: ${DB_PW}
 

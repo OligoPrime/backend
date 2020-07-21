@@ -58,12 +58,12 @@ public class CsvResource {
         CsvToBean<PrimerCSV> csvToBean = new CsvToBeanBuilder(new InputStreamReader(uploadedInputStream))
                 .withType(PrimerCSV.class)
                 .withIgnoreLeadingWhiteSpace(true)
-                .withSeparator(',')
+                .withSeparator(';')
                 .build();
 
         List<PrimerCSV> PrimerCSVList = new ArrayList<>();
 
-        for (PrimerCSV primerCsv : csvToBean) {
+        for (PrimerCSV primerCsv : csvToBean.parse()) {
             if (primerCsv.typeOfPrimer.equals("TaqProbe")) {
                 if (primerCsv.sequence == null) {
                     throw new IllegalArgumentException("Attribute 'sequence' must not be empty!");

@@ -123,12 +123,14 @@ public class PrimerDAO extends AbstractDAO<Primer> {
         session.close();
     }
 
-    public void updateAmount(long id, double amountAvailable, User user) {
+    public void updateAmountCommentAnalysisi(long id, double amountAvailable, String comment, String analysis, User user) {
         Session session = super.currentSession().getSessionFactory().withOptions().interceptor(new AuditInterceptor(user, hDao)).openSession();
 
         Primer primer = get(id);
 
         primer.setAmountAvailable(amountAvailable);
+        primer.setComment(comment);
+        primer.setAnalysis(analysis);
 
         session.beginTransaction();
 

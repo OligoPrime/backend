@@ -52,25 +52,25 @@ public class Primer {
     private Integer length;
 
     @ManyToOne(targetEntity = Freezer.class)
-    @JoinColumn(name = "freezer_id", referencedColumnName = "id", nullable = true)
+    @JoinColumn(name = "freezer_id", referencedColumnName = "id")
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "freezer")
     @JsonIdentityReference(alwaysAsId = true)
     private Freezer freezer;
 
     @ManyToOne(targetEntity = Drawer.class)
-    @JoinColumn(name = "drawer_id", referencedColumnName = "id", nullable = true)
+    @JoinColumn(name = "drawer_id", referencedColumnName = "id")
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "drawer")
     @JsonIdentityReference(alwaysAsId = true)
     private Drawer drawer;
 
     @ManyToOne(targetEntity = Box.class)
-    @JoinColumn(name = "box_id", referencedColumnName = "id", nullable = true)
+    @JoinColumn(name = "box_id", referencedColumnName = "id")
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "box")
     @JsonIdentityReference(alwaysAsId = true)
     private Box box;
 
     @ManyToOne(targetEntity = PositionInReference.class)
-    @JoinColumn(name = "positionInReference_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "positionInReference_id", referencedColumnName = "id")
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "positionInReference")
     @JsonIdentityReference(alwaysAsId = true)
     private PositionInReference positionInReference;
@@ -80,7 +80,7 @@ public class Primer {
     private Double optimalTOfAnnealing;
 
     @ManyToOne(targetEntity = PurificationMethod.class)
-    @JoinColumn(name = "purificationMethod_id", referencedColumnName = "id", nullable = true)
+    @JoinColumn(name = "purificationMethod_id", referencedColumnName = "id")
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "purificationMethod")
     @JsonIdentityReference(alwaysAsId = true)
     private PurificationMethod purificationMethod;
@@ -102,13 +102,13 @@ public class Primer {
     private Double GCPercent;
 
     @ManyToOne(targetEntity = Organism.class)
-    @JoinColumn(name = "organism_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "organism_id", referencedColumnName = "id")
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "organism")
     @JsonIdentityReference(alwaysAsId = true)
     private Organism organism;
 
     @ManyToOne(targetEntity = Gen.class)
-    @JoinColumn(name = "gen_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "gen_id", referencedColumnName = "id")
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "gen")
     @JsonIdentityReference(alwaysAsId = true)
     private Gen gen;
@@ -126,13 +126,13 @@ public class Primer {
     private HumanGenomBuild humanGenomBuild;
 
     @ManyToOne(targetEntity = Formulation.class)
-    @JoinColumn(name = "formulation_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "formulation_id", referencedColumnName = "id")
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "formulation")
     @JsonIdentityReference(alwaysAsId = true)
     private Formulation formulation;
 
     @ManyToOne(targetEntity = TypeOfPrimer.class)
-    @JoinColumn(name = "typeOfPrimer_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "typeOfPrimer_id", referencedColumnName = "id")
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "typeOfPrimer")
     @JsonIdentityReference(alwaysAsId = true)
     private TypeOfPrimer typeOfPrimer;
@@ -147,7 +147,7 @@ public class Primer {
     private Size size;
 
     @ManyToOne(targetEntity = PrimerApplication.class)
-    @JoinColumn(name = "primerApplication_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "primerApplication_id", referencedColumnName = "id")
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "primerApplication")
     @JsonIdentityReference(alwaysAsId = true)
     private PrimerApplication primerApplication;
@@ -155,13 +155,13 @@ public class Primer {
     private String applicationComment;
 
     @ManyToOne(targetEntity = FiveModification.class)
-    @JoinColumn(name = "fiveModification_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "fiveModification_id", referencedColumnName = "id")
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "fiveModification")
     @JsonIdentityReference(alwaysAsId = true)
     private FiveModification fiveModification;
 
     @ManyToOne(targetEntity = ThreeModification.class)
-    @JoinColumn(name = "threeModification_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "threeModification_id", referencedColumnName = "id")
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "threeModification")
     @JsonIdentityReference(alwaysAsId = true)
     private ThreeModification threeModification;
@@ -274,31 +274,31 @@ public class Primer {
                   FiveDye fiveDye, Date date, User user) {
 
 
-        //check that primer has location if RECIEVED
-        if(orderStatus.equals(OrderStatus.RECEIVED)){
-            if(freezer == null || drawer == null || box == null){
-                throw new IllegalArgumentException("Location must be specified! (freezer, drawer, box)");
-            }
-        }
-
-        // check that required attributes are nonempty
-        if (typeOfPrimer.getTypeOfPrimer().equals("TaqProbe")) {
-            if (sequence == null) {
-                throw new IllegalArgumentException("Attribute 'sequence' must not be empty!");
-            }
-            else if (sequence.isEmpty()) {
-                throw new IllegalArgumentException("Attribute 'sequence' must not be empty!");
-            }
-            if (assayId == null) {
-                throw new IllegalArgumentException("Attribute 'assayId' must not be empty!");
-            }
-            else if (assayId.isEmpty()) {
-                throw new IllegalArgumentException("Attribute 'assayId' must not be empty!");
-            }
-            if (size == null) {
-                throw new IllegalArgumentException("Attribute 'size' must not be empty!");
-            }
-        }
+//        //check that primer has location if RECIEVED
+//        if(orderStatus.equals(OrderStatus.RECEIVED)){
+//            if(freezer == null || drawer == null || box == null){
+//                throw new IllegalArgumentException("Location must be specified! (freezer, drawer, box)");
+//            }
+//        }
+//
+//        // check that required attributes are nonempty
+//        if (typeOfPrimer.getTypeOfPrimer().equals("TaqProbe")) {
+//            if (sequence == null) {
+//                throw new IllegalArgumentException("Attribute 'sequence' must not be empty!");
+//            }
+//            else if (sequence.isEmpty()) {
+//                throw new IllegalArgumentException("Attribute 'sequence' must not be empty!");
+//            }
+//            if (assayId == null) {
+//                throw new IllegalArgumentException("Attribute 'assayId' must not be empty!");
+//            }
+//            else if (assayId.isEmpty()) {
+//                throw new IllegalArgumentException("Attribute 'assayId' must not be empty!");
+//            }
+//            if (size == null) {
+//                throw new IllegalArgumentException("Attribute 'size' must not be empty!");
+//            }
+//        }
 
         this.name = name;
         this.sequence = sequence;

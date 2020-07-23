@@ -14,7 +14,7 @@ public class PurificationMethod {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(nullable = false, unique = true)
+    @Column( unique = true)
     private String purificationMethod;
 
     @OneToMany

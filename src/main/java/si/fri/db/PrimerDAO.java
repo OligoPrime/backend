@@ -43,7 +43,8 @@ public class PrimerDAO extends AbstractDAO<Primer> {
     }
 
     @SuppressWarnings("unchecked")
-    public List<Primer> findOrdered() {
+    public List<Primer>
+    findOrdered() {
         return list((Query<Primer>) namedQuery("si.fri.core.Primer.findOrdered"));
     }
 

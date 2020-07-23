@@ -20,7 +20,6 @@ public class PrimerForeignTablesDAO extends AbstractDAO<Primer> {
 
 
     public Freezer findFreezer(String name) {
-        if (name == null || name.isEmpty()) return null;
         String hql = "SELECT f FROM Freezer f WHERE f.freezer = :freezerName";
         Query query = currentSession().createQuery(hql);
         query.setParameter("freezerName", name);
@@ -33,7 +32,6 @@ public class PrimerForeignTablesDAO extends AbstractDAO<Primer> {
     }
 
     public Organism findOrganism(String name) {
-        if (name == null || name.isEmpty()) return null;
         String hql = "SELECT o FROM Organism o WHERE o.organism = :organismName";
         Query query = currentSession().createQuery(hql);
         query.setParameter("organismName", name);
@@ -46,7 +44,6 @@ public class PrimerForeignTablesDAO extends AbstractDAO<Primer> {
     }
 
     public Drawer findDrawer(String name) {
-        if (name == null || name.isEmpty()) return null;
         String hql = "SELECT d FROM Drawer d WHERE d.drawer = :drawerName";
         Query query = currentSession().createQuery(hql);
         query.setParameter("drawerName", name);
@@ -59,7 +56,6 @@ public class PrimerForeignTablesDAO extends AbstractDAO<Primer> {
     }
 
     public Box findBox(String name) {
-        if (name == null || name.isEmpty()) return null;
         String hql = "SELECT b FROM Box b WHERE b.box = :boxName";
         Query query = currentSession().createQuery(hql);
         query.setParameter("boxName", name);
@@ -72,7 +68,6 @@ public class PrimerForeignTablesDAO extends AbstractDAO<Primer> {
     }
 
     public PositionInReference findPositionInReference(String name) {
-        if (name == null || name.isEmpty()) return null;
         String hql = "SELECT p FROM PositionInReference p WHERE p.positionInReference = :positionInReferenceName";
         Query query = currentSession().createQuery(hql);
         query.setParameter("positionInReferenceName", name);
@@ -85,7 +80,6 @@ public class PrimerForeignTablesDAO extends AbstractDAO<Primer> {
     }
 
     public PurificationMethod findPurificationMethod(String name) {
-        if (name == null || name.isEmpty()) return null;
         String hql = "SELECT p FROM PurificationMethod p WHERE p.purificationMethod = :purificationMethodName";
         Query query = currentSession().createQuery(hql);
         query.setParameter("purificationMethodName", name);
@@ -98,7 +92,6 @@ public class PrimerForeignTablesDAO extends AbstractDAO<Primer> {
     }
 
     public HumanGenomBuild findHumanGenomBuild(String name) {
-        if (name == null || name.isEmpty()) return null;
         String hql = "SELECT h FROM HumanGenomBuild h WHERE h.humanGenomBuild = :humanGenomBuildName";
         Query query = currentSession().createQuery(hql);
         query.setParameter("humanGenomBuildName", name);
@@ -111,7 +104,6 @@ public class PrimerForeignTablesDAO extends AbstractDAO<Primer> {
     }
 
     public Formulation findFormulation(String name) {
-        if (name == null || name.isEmpty()) return null;
         String hql = "SELECT f FROM Formulation f WHERE f.formulation = :formulationName";
         Query query = currentSession().createQuery(hql);
         query.setParameter("formulationName", name);
@@ -124,7 +116,6 @@ public class PrimerForeignTablesDAO extends AbstractDAO<Primer> {
     }
 
     public TypeOfPrimer findTypeOfPrimer(String name) {
-        if (name == null || name.isEmpty()) return null;
         String hql = "SELECT t FROM TypeOfPrimer t WHERE t.typeOfPrimer = :typeOfPrimerName";
         Query query = currentSession().createQuery(hql);
         query.setParameter("typeOfPrimerName", name);
@@ -137,7 +128,6 @@ public class PrimerForeignTablesDAO extends AbstractDAO<Primer> {
     }
 
     public PrimerApplication findPrimerApplication(String name) {
-        if (name == null || name.isEmpty()) return null;
         String hql = "SELECT p FROM PrimerApplication p WHERE p.primerApplication = :primerApplicationName";
         Query query = currentSession().createQuery(hql);
         query.setParameter("primerApplicationName", name);
@@ -150,7 +140,6 @@ public class PrimerForeignTablesDAO extends AbstractDAO<Primer> {
     }
 
     public FiveModification findFiveModification(String name) {
-        if (name == null || name.isEmpty()) return null;
         String hql = "SELECT f FROM FiveModification f WHERE f.fiveModification = :fiveModificationName";
         Query query = currentSession().createQuery(hql);
         query.setParameter("fiveModificationName", name);
@@ -163,7 +152,6 @@ public class PrimerForeignTablesDAO extends AbstractDAO<Primer> {
     }
 
     public ThreeModification findThreeModification(String name) {
-        if (name == null || name.isEmpty()) return null;
         String hql = "SELECT t FROM ThreeModification t WHERE t.threeModification = :threeModificationName";
         Query query = currentSession().createQuery(hql);
         query.setParameter("threeModificationName", name);
@@ -176,7 +164,6 @@ public class PrimerForeignTablesDAO extends AbstractDAO<Primer> {
     }
 
     public Project findProject(String name) {
-        if (name == null || name.isEmpty()) return null;
         String hql = "SELECT p FROM Project p WHERE p.project = :projectName";
         Query query = currentSession().createQuery(hql);
         query.setParameter("projectName", name);
@@ -189,7 +176,6 @@ public class PrimerForeignTablesDAO extends AbstractDAO<Primer> {
     }
 
     public Supplier findSupplier(String name) {
-        if (name == null || name.isEmpty()) return null;
         String hql = "SELECT s FROM Supplier s WHERE s.supplier = :supplierName";
         Query query = currentSession().createQuery(hql);
         query.setParameter("supplierName", name);
@@ -202,7 +188,6 @@ public class PrimerForeignTablesDAO extends AbstractDAO<Primer> {
     }
 
     public Manufacturer findManufacturer(String name) {
-        if (name == null || name.isEmpty()) return null;
         String hql = "SELECT m FROM Manufacturer m WHERE m.manufacturer = :manufacturerName";
         Query query = currentSession().createQuery(hql);
         query.setParameter("manufacturerName", name);
@@ -215,7 +200,6 @@ public class PrimerForeignTablesDAO extends AbstractDAO<Primer> {
     }
 
     public ThreeQuencher findThreeQuencher(String name) {
-        if (name == null || name.isEmpty()) return null;
         String hql = "SELECT t FROM ThreeQuencher t WHERE t.threeQuencher = :threeQuencherName";
         Query query = currentSession().createQuery(hql);
         query.setParameter("threeQuencherName", name);
@@ -228,7 +212,6 @@ public class PrimerForeignTablesDAO extends AbstractDAO<Primer> {
     }
 
     public FiveDye findFiveDye(String name) {
-        if (name == null || name.isEmpty()) return null;
         String hql = "SELECT f FROM FiveDye f WHERE f.fiveDye = :fiveDyeName";
         Query query = currentSession().createQuery(hql);
         query.setParameter("fiveDyeName", name);
@@ -241,7 +224,6 @@ public class PrimerForeignTablesDAO extends AbstractDAO<Primer> {
     }
 
     public Gen findGen(String name) {
-        if (name == null || name.isEmpty()) return null;
         String hql = "SELECT g FROM Gen g WHERE g.gen = :genName";
         Query query = currentSession().createQuery(hql);
         query.setParameter("genName", name);
@@ -254,7 +236,6 @@ public class PrimerForeignTablesDAO extends AbstractDAO<Primer> {
     }
 
     public NcbiGenId findNcbiGenId(String name) {
-        if (name == null || name.isEmpty()) return null;
         String hql = "SELECT n FROM NcbiGenId n WHERE n.ncbiGenId = :ncbiGenIdName";
         Query query = currentSession().createQuery(hql);
         query.setParameter("ncbiGenIdName", name);
@@ -267,7 +248,6 @@ public class PrimerForeignTablesDAO extends AbstractDAO<Primer> {
     }
 
     public DesignerName findDesignerName(String name) {
-        if (name == null || name.isEmpty()) return null;
         String hql = "SELECT d FROM DesignerName d WHERE d.designerName = :designerNameName";
         Query query = currentSession().createQuery(hql);
         query.setParameter("designerNameName", name);
@@ -280,7 +260,6 @@ public class PrimerForeignTablesDAO extends AbstractDAO<Primer> {
     }
 
     public DesignerPublication findDesignerPublication(String name) {
-        if (name == null || name.isEmpty()) return null;
         String hql = "SELECT d FROM DesignerPublication d WHERE d.designerPublication = :designerPublicationName";
         Query query = currentSession().createQuery(hql);
         query.setParameter("designerPublicationName", name);
@@ -293,7 +272,6 @@ public class PrimerForeignTablesDAO extends AbstractDAO<Primer> {
     }
 
     public DesignerDatabase findDesignerDatabase(String name) {
-        if (name == null || name.isEmpty()) return null;
         String hql = "SELECT d FROM DesignerDatabase d WHERE d.designerDatabase = :designerDatabaseName";
         Query query = currentSession().createQuery(hql);
         query.setParameter("designerDatabaseName", name);

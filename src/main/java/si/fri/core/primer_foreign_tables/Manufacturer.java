@@ -14,7 +14,7 @@ public class Manufacturer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(nullable = false, unique = true)
+    @Column( unique = true)
     private String manufacturer;
 
     @OneToMany

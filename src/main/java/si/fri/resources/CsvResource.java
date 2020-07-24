@@ -123,7 +123,7 @@ public class CsvResource {
     @Path("/sample")
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
     public Response getFile() {
-        File file = new File("src/main/java/si/fri/resource_files/sample.csv");
+        File file = new File("./src/main/java/si/fri/resource_files/sample.csv");
         return Response.ok(file, MediaType.APPLICATION_OCTET_STREAM)
             .header("Content-Disposition", "attachment; filename=\"" + file.getName() + "\"")
             .build();

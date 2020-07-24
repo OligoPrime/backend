@@ -36,7 +36,7 @@ import java.util.logging.Logger;
 
 public class BackendApplication extends Application<BackendConfiguration> {
 
-    private final HibernateBundle<BackendConfiguration> hibernate = new HibernateBundle<BackendConfiguration>(Hello.class, User.class,
+    private final HibernateBundle<BackendConfiguration> hibernate = new HibernateBundle<BackendConfiguration>(User.class,
             Primer.class, PositionInReference.class, PurificationMethod.class, Freezer.class, Drawer.class, Box.class,
             Organism.class, HumanGenomBuild.class, Formulation.class, TypeOfPrimer.class, PrimerApplication.class,
             FiveModification.class, ThreeModification.class, Project.class, Manufacturer.class, Supplier.class,
@@ -85,7 +85,6 @@ public class BackendApplication extends Application<BackendConfiguration> {
                     final Environment environment) {
         configureCors(environment);
 
-        final HelloDAO helloDAO = new HelloDAO(hibernate.getSessionFactory());
         final HistoryDAO historyDAO = new HistoryDAO(hibernate.getSessionFactory());
         final UserDAO userDAO = new UserDAO(hibernate.getSessionFactory(), historyDAO);
         final PrimerForeignTablesDAO primerForeignTablesDAO = new PrimerForeignTablesDAO(hibernate.getSessionFactory());
@@ -111,11 +110,6 @@ public class BackendApplication extends Application<BackendConfiguration> {
         environment.jersey().register(new AuthValueFactoryProvider.Binder<>(User.class));
         environment.jersey().register(RolesAllowedDynamicFeature.class);
 
-        environment.jersey().register(new HelloResource(
-                configuration.getTemplate(),
-                configuration.getDefaultName(),
-                helloDAO
-        ));
         environment.jersey().register(new UserResource(userDAO));
         environment.jersey().register(new PrimerResource(primerDAO, primerForeignTablesDAO));
         environment.jersey().register(new HistoryResource(historyDAO));

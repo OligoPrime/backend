@@ -3,7 +3,6 @@ package si.fri;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.dropwizard.testing.ResourceHelpers;
 import io.dropwizard.testing.junit5.DropwizardAppExtension;
@@ -17,7 +16,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.skyscreamer.jsonassert.JSONAssert;
-import si.fri.core.Hello;
 import si.fri.core.Primer;
 import si.fri.core.primer_enums.*;
 import si.fri.resources.PrimerResource;
@@ -44,12 +42,13 @@ public class IntegrationTest {
     private final ObjectMapper mapper = new ObjectMapper();
     private PrimerResource.PrimerJSON primerJSON1, primerJSON2;
     private String jwt;
+    private Date date, date2;
 
     @BeforeEach
     public void setup() throws ParseException {
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-        Date date = format.parse("31/12/2019");
-        Date date2 = format.parse("4/20/1969");
+        date  = format.parse("31/12/2019");
+        date2 = format.parse("4/20/1969");
 
         primerJSON1 = new PrimerResource.PrimerJSON();
         primerJSON1.name = "testname";
@@ -163,48 +162,6 @@ public class IntegrationTest {
     }
 
     @Test
-    public void testHello() throws JSONException {
-        Hello saying = RULE.client().target("http://localhost:" + RULE.getLocalPort() + "/hello")
-                .queryParam("name", "Doctor Robotnik")
-                .request()
-                .post(Entity.json(null), Hello.class);
-        assertThat(saying.getContent()).isEqualTo("Hello, this is Doctor Robotnik!");
-
-        saying = RULE.client().target("http://localhost:" + RULE.getLocalPort() + "/hello")
-                .queryParam("name", "Thomas A. Anderson")
-                .request()
-                .post(Entity.json(null), Hello.class);
-        assertThat(saying.getContent()).isEqualTo("Hello, this is Thomas A. Anderson!");
-
-        saying = RULE.client().target("http://localhost:" + RULE.getLocalPort() + "/hello")
-                .request()
-                .post(Entity.json(null), Hello.class);
-        assertThat(saying.getContent()).isEqualTo("Hello, this is backend!");
-
-        JsonNode hellos = RULE.client().target("http://localhost:" + RULE.getLocalPort() + "/hello")
-                .request()
-                .header("Authorization", "Bearer " + jwt)
-                .get(JsonNode.class);
-
-        ObjectNode hello1 = mapper.createObjectNode();
-        hello1.put("id", 1);
-        hello1.put("content", "Hello, this is Doctor Robotnik!");
-        ObjectNode hello2 = mapper.createObjectNode();
-        hello2.put("id", 2);
-        hello2.put("content", "Hello, this is Thomas A. Anderson!");
-        ObjectNode hello3 = mapper.createObjectNode();
-        hello3.put("id", 3);
-        hello3.put("content", "Hello, this is backend!");
-
-        ArrayNode helloArray = mapper.createArrayNode();
-        helloArray.add(hello1);
-        helloArray.add(hello2);
-        helloArray.add(hello3);
-
-        JSONAssert.assertEquals(helloArray.toString(), hellos.toString(), false);
-    }
-
-    @Test
     public void testAddUpdateGetDeletePrimer() throws JSONException {
         JsonNode primer1 = RULE.client().target("http://localhost:" + RULE.getLocalPort() + "/primers/add")
                 .request()
@@ -221,6 +178,7 @@ public class IntegrationTest {
         expectedPrimer1.put("length", 12);
         expectedPrimer1.put("user", "test");
         expectedPrimer1.put("pairs", mapper.convertValue(Collections.emptyList(), JsonNode.class));
+        expectedPrimer1.put("date", date.getTime());
 
         JSONAssert.assertEquals(primer1.toString(), expectedPrimer1.toString(), false);
 
@@ -240,6 +198,7 @@ public class IntegrationTest {
         expectedPrimer2.put("length", 11);
         expectedPrimer2.put("user", "test");
         expectedPrimer2.put("pairs", mapper.convertValue(Collections.emptyList(), JsonNode.class));
+        expectedPrimer2.put("date", date2.getTime());
 
         JSONAssert.assertEquals(primer2.toString(), expectedPrimer2.toString(), false);
 
@@ -390,6 +349,7 @@ public class IntegrationTest {
         expectedPrimer.put("length", 12);
         expectedPrimer.put("user", "test");
         expectedPrimer.put("pairs", mapper.convertValue(Collections.emptyList(), JsonNode.class));
+        expectedPrimer.put("date", date.getTime());
 
         JSONAssert.assertEquals(primer.toString(), expectedPrimer.toString(), false);
     }

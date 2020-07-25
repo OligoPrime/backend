@@ -58,7 +58,7 @@ public class CsvResource {
         CsvToBean<PrimerCSV> csvToBean = new CsvToBeanBuilder(new InputStreamReader(uploadedInputStream))
                 .withType(PrimerCSV.class)
                 .withIgnoreLeadingWhiteSpace(true)
-                .withSeparator(';')
+                .withSeparator(',')
                 .build();
 
         List<PrimerCSV> PrimerCSVList = new ArrayList<>();

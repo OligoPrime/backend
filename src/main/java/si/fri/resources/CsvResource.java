@@ -19,12 +19,12 @@ import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.io.*;
+import java.io.File;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @Path("/csv")
 @Produces(MediaType.APPLICATION_JSON)
@@ -46,7 +46,7 @@ public class CsvResource {
     public Response uploadFile(
             @FormDataParam("file") InputStream uploadedInputStream,
             @FormDataParam("file") FormDataContentDisposition fileDetail,
-            @Auth User user) throws IOException {
+            @Auth User user) {
 
         String fileName = fileDetail.getFileName();
 
@@ -61,38 +61,8 @@ public class CsvResource {
                 .withSeparator(',')
                 .build();
 
-        List<PrimerCSV> PrimerCSVList = new ArrayList<>();
-
-        for (PrimerCSV primerCsv : csvToBean.parse()) {
-            if (primerCsv.typeOfPrimer.equals("TaqProbe")) {
-                if (primerCsv.sequence == null) {
-                    throw new IllegalArgumentException("Attribute 'sequence' must not be empty!");
-                }
-                else if (primerCsv.sequence.isEmpty()) {
-                    throw new IllegalArgumentException("Attribute 'sequence' must not be empty!");
-                }
-                if (primerCsv.assayId == null) {
-                    throw new IllegalArgumentException("Attribute 'assayId' must not be empty!");
-                }
-                else if (primerCsv.assayId.isEmpty()) {
-                    throw new IllegalArgumentException("Attribute 'assayId' must not be empty!");
-                }
-                if (primerCsv.size == null) {
-                    throw new IllegalArgumentException("Attribute 'size' must not be empty!");
-                }
-            }
-            SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
-            try {
-                format.parse(primerCsv.date);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-
-            PrimerCSVList.add(primerCsv);
-        }
-
-        for (PrimerCSV p : PrimerCSVList) {
-            SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+        for (PrimerCSV p : csvToBean.parse()) {
+            SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
             Date date = null;
             try {
                 date = format.parse(p.date);
@@ -123,10 +93,10 @@ public class CsvResource {
     @Path("/sample")
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
     public Response getFile() {
-        File file = new File("./src/main/java/si/fri/resource_files/sample.csv");
-        return Response.ok(file, MediaType.APPLICATION_OCTET_STREAM)
-            .header("Content-Disposition", "attachment; filename=\"" + file.getName() + "\"")
-            .build();
+        File sampleCsv = new File(ClassLoader.getSystemResource("sample.csv").getFile());
+        return Response.ok(sampleCsv, MediaType.APPLICATION_OCTET_STREAM)
+                .header("Content-Disposition", "attachment; filename=\"" + sampleCsv.getName() + "\"")
+                .build();
     }
 
     public static class PrimerCSV {

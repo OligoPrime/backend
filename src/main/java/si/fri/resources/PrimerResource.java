@@ -92,9 +92,9 @@ public class PrimerResource {
     @Path("/delete")
     @UnitOfWork
     @RolesAllowed({Roles.RESEARCHER, Roles.ADMIN})
-    public Response deletePrimer(@Auth User user, long id) {
-        pDao.delete(id, user);
-        return Response.ok("Successfully deleted primer.").build();
+    public Response deletePrimer(@Auth User user, List<Long> ids) {
+        pDao.delete(ids, user);
+        return Response.ok().build();
     }
 
     @POST
@@ -119,8 +119,17 @@ public class PrimerResource {
     @Path("/link")
     @UnitOfWork
     @RolesAllowed({Roles.RESEARCHER, Roles.ADMIN})
-    public Response setLink(@Auth User user, Set<Long> ids) {
+    public Response link(@Auth User user, Set<Long> ids) {
         pDao.linkAllWithAll(ids, user);
+        return Response.ok().build();
+    }
+
+    @POST
+    @Path("/unlink")
+    @UnitOfWork
+    @RolesAllowed({Roles.RESEARCHER, Roles.ADMIN})
+    public Response unlink(@Auth User user, Set<Long> ids) {
+        pDao.unlink(ids, user);
         return Response.ok().build();
     }
 

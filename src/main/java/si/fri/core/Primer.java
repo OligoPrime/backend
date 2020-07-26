@@ -239,7 +239,7 @@ public class Primer {
     private User user;
 
     @ElementCollection
-    private Set<Long> linked = new HashSet<>();
+    private Set<Long> linked;
 
     @JsonIgnore
     private boolean deleted;

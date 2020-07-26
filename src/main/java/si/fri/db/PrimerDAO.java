@@ -10,6 +10,7 @@ import si.fri.core.User;
 import si.fri.core.primer_enums.*;
 import si.fri.resources.PrimerResource;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -145,15 +146,12 @@ public class PrimerDAO extends AbstractDAO<Primer> {
         session.close();
     }
 
-    public void delete(long id, User user) {
-        Session session = super.currentSession().getSessionFactory().withOptions().interceptor(new AuditInterceptor(user, hDao)).openSession();
-        Query query = session.createQuery("SELECT p FROM Primer p WHERE p.id = :pId");
-        query.setParameter("pId", id);
-        Primer primer = (Primer) query.list().get(0);
-        session.beginTransaction();
-        session.remove(primer);
-        session.getTransaction().commit();
-        session.close();
+    public void delete(List<Long> ids, User user) {
+        try (Session session = super.currentSession().getSessionFactory().withOptions().interceptor(new AuditInterceptor(user, hDao)).openSession()) {
+            session.beginTransaction();
+            ids.stream().map(this::findById).filter(Optional::isPresent).map(Optional::get).forEach(session::remove);
+            session.getTransaction().commit();
+        }
     }
 
     public Primer copy(long id, User user) {
@@ -189,7 +187,19 @@ public class PrimerDAO extends AbstractDAO<Primer> {
         }
     }
 
-    public Optional<List<Primer>> getLinkedPrimers(Long id){
+    public void unlink(Set<Long> ids, User user){
+        try (Session session = super.currentSession().getSessionFactory().withOptions().interceptor(new AuditInterceptor(user, hDao)).openSession()) {
+            Set<Primer> filteredPrimers = ids.stream().map(this::findById).filter(Optional::isPresent).map(Optional::get).collect(Collectors.toSet());
+            session.beginTransaction();
+            for (Primer primer : filteredPrimers) {
+                primer.setLinked(new HashSet<>());
+                session.merge(primer);
+            }
+            session.getTransaction().commit();
+        }
+    }
+
+    public Optional<List<Primer>> getLinkedPrimers(Long id) {
         return findById(id).map(value -> value.getLinked().stream().map(this::findById).filter(Optional::isPresent).map(Optional::get).collect(Collectors.toList()));
     }
 }

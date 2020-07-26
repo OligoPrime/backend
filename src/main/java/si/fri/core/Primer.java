@@ -8,7 +8,9 @@ import si.fri.core.primer_enums.*;
 import si.fri.core.primer_foreign_tables.*;
 
 import javax.persistence.*;
-import java.util.*;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "primers")
@@ -219,13 +221,13 @@ public class Primer {
     private OrderStatus orderStatus;
 
     @ManyToOne(targetEntity = ThreeQuencher.class)
-    @JoinColumn(name = "threeQuencher_id", referencedColumnName = "id",nullable=true)
+    @JoinColumn(name = "threeQuencher_id", referencedColumnName = "id", nullable = true)
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "threeQuencher")
     @JsonIdentityReference(alwaysAsId = true)
     private ThreeQuencher threeQuencher;
 
     @ManyToOne(targetEntity = FiveDye.class)
-    @JoinColumn(name = "fiveDye_id", referencedColumnName = "id",nullable=true)
+    @JoinColumn(name = "fiveDye_id", referencedColumnName = "id", nullable = true)
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "fiveDye")
     @JsonIdentityReference(alwaysAsId = true)
     private FiveDye fiveDye;
@@ -236,22 +238,8 @@ public class Primer {
     @JsonIdentityReference(alwaysAsId = true)
     private User user;
 
-    @ManyToMany
-    @JoinTable(name="primerPairs",
-            joinColumns=@JoinColumn(name="primer1_id"),
-            inverseJoinColumns=@JoinColumn(name="primer2_id")
-    )
-    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-    @JsonIdentityReference(alwaysAsId = true)
-    private Set<Primer> pairs = new HashSet<>();
-
-    @ManyToMany
-    @JoinTable(name="primerPairs",
-            joinColumns=@JoinColumn(name="primer2_id"),
-            inverseJoinColumns=@JoinColumn(name="primer1_id")
-    )
-    @JsonIgnore
-    private Set<Primer> pairsOf = new HashSet<>();
+    @ElementCollection
+    private Set<Long> linked = new HashSet<>();
 
     @JsonIgnore
     private boolean deleted;
@@ -273,32 +261,6 @@ public class Primer {
                   String comment, String document, String analysis, OrderStatus orderStatus, ThreeQuencher threeQuencher,
                   FiveDye fiveDye, Date date, User user) {
 
-
-//        //check that primer has location if RECIEVED
-//        if(orderStatus.equals(OrderStatus.RECEIVED)){
-//            if(freezer == null || drawer == null || box == null){
-//                throw new IllegalArgumentException("Location must be specified! (freezer, drawer, box)");
-//            }
-//        }
-//
-//        // check that required attributes are nonempty
-//        if (typeOfPrimer.getTypeOfPrimer().equals("TaqProbe")) {
-//            if (sequence == null) {
-//                throw new IllegalArgumentException("Attribute 'sequence' must not be empty!");
-//            }
-//            else if (sequence.isEmpty()) {
-//                throw new IllegalArgumentException("Attribute 'sequence' must not be empty!");
-//            }
-//            if (assayId == null) {
-//                throw new IllegalArgumentException("Attribute 'assayId' must not be empty!");
-//            }
-//            else if (assayId.isEmpty()) {
-//                throw new IllegalArgumentException("Attribute 'assayId' must not be empty!");
-//            }
-//            if (size == null) {
-//                throw new IllegalArgumentException("Attribute 'size' must not be empty!");
-//            }
-//        }
 
         this.name = name;
         this.sequence = sequence;
@@ -362,11 +324,9 @@ public class Primer {
 
         if (orientation == Orientation.REVERSE) {
             generatedName += "R";
-        }
-        else if (orientation == Orientation.FORWARD) {
+        } else if (orientation == Orientation.FORWARD) {
             generatedName += "F";
-        }
-        else {
+        } else {
             generatedName += "X";
         }
 
@@ -397,11 +357,9 @@ public class Primer {
 
         if (ncbiGenId == null) {
             generatedName += "XXX";
-        }
-        else if (ncbiGenId.getNcbiGenId().isEmpty()) {
+        } else if (ncbiGenId.getNcbiGenId().isEmpty()) {
             generatedName += "XXX";
-        }
-        else {
+        } else {
             generatedName += ncbiGenId.getNcbiGenId();
         }
         generatedName += delimiter;
@@ -413,11 +371,6 @@ public class Primer {
 
     public void generateLength() {
         this.length = sequence.length();
-    }
-
-    public void pairWith(Primer primer) {
-        this.pairs.add(primer);
-        this.pairsOf.add(primer);
     }
 
     @JsonProperty
@@ -528,7 +481,6 @@ public class Primer {
         this.optimalTOfAnnealing = optimalTOfAnnealing;
     }
 
-
     public PurificationMethod getPurificationMethod() {
         return purificationMethod;
     }
@@ -550,7 +502,6 @@ public class Primer {
     public Integer getAmountAvailablePacks() {
         return amountAvailablePacks;
     }
-
 
     public void setAmountAvailablePacks(Integer amountAvailablePacks) {
         this.amountAvailablePacks = amountAvailablePacks;
@@ -736,7 +687,6 @@ public class Primer {
         this.concentrationOrderedUnit = concentrationOrderedUnit;
     }
 
-
     public Boolean isCheckSpecifityInBlast() {
         return checkSpecifityInBlast;
     }
@@ -863,8 +813,12 @@ public class Primer {
     }
 
     @JsonProperty
-    public Set<Primer> getPairs() {
-        return pairs;
+    public Set<Long> getLinked() {
+        return linked;
+    }
+
+    public void setLinked(Set<Long> linked) {
+        this.linked = linked;
     }
 
     public boolean isDeleted() {

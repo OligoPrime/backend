@@ -4,12 +4,16 @@ import io.dropwizard.hibernate.AbstractDAO;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
-import si.fri.core.*;
+import si.fri.core.AuditInterceptor;
+import si.fri.core.Primer;
+import si.fri.core.User;
 import si.fri.core.primer_enums.*;
 import si.fri.resources.PrimerResource;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class PrimerDAO extends AbstractDAO<Primer> {
 
@@ -43,8 +47,7 @@ public class PrimerDAO extends AbstractDAO<Primer> {
     }
 
     @SuppressWarnings("unchecked")
-    public List<Primer>
-    findOrdered() {
+    public List<Primer> findOrdered() {
         return list((Query<Primer>) namedQuery("si.fri.core.Primer.findOrdered"));
     }
 
@@ -54,6 +57,7 @@ public class PrimerDAO extends AbstractDAO<Primer> {
     }
 
     public Primer create(Primer primer, User user) {
+        primer.setDeleted(false);
         Session session = super.currentSession().getSessionFactory().withOptions().interceptor(new AuditInterceptor(user, hDao)).openSession();
         session.beginTransaction();
         session.saveOrUpdate(primer);
@@ -155,14 +159,37 @@ public class PrimerDAO extends AbstractDAO<Primer> {
     public Primer copy(long id, User user) {
         Primer p = get(id);
         Primer pCopy = new Primer(p.getName(), p.getSequence(), p.getOrientation(), p.getFreezer(), p.getDrawer(),
-            p.getBox(), p.getPositionInReference(), p.getTm(), p.getOptimalTOfAnnealing(), p.getPurificationMethod(),
-            p.getAmountAvailable(), p.getAmountAvailablePacks(), p.getAmountAvailablePackType(), p.getLengthOfAmplicone(),
-            p.getStoringT(), p.getGCPercent(), p.getOrganism(), p.getGen(), p.getNcbiGenId(), p.getHumanGenomBuild(),
-            p.getFormulation(), p.getTypeOfPrimer(), p.getSondaSequence(), p.getAssayId(), p.getSize(), p.getPrimerApplication(),
-            p.getApplicationComment(), p.getFiveModification(), p.getThreeModification(), p.getConcentrationOrdered(),
-            p.getConcentrationOrderedUnit(), p.isCheckSpecifityInBlast(), p.getDesignerName(), p.getDesignerPublication(),
-            p.getDesignerDatabase(), p.getProject(), p.getSupplier(), p.getManufacturer(), p.getComment(), p.getDocument(),
-            p.getAnalysis(), p.getOrderStatus(), p.getThreeQuencher(), p.getFiveDye(), p.getDate(), user);
+                p.getBox(), p.getPositionInReference(), p.getTm(), p.getOptimalTOfAnnealing(), p.getPurificationMethod(),
+                p.getAmountAvailable(), p.getAmountAvailablePacks(), p.getAmountAvailablePackType(), p.getLengthOfAmplicone(),
+                p.getStoringT(), p.getGCPercent(), p.getOrganism(), p.getGen(), p.getNcbiGenId(), p.getHumanGenomBuild(),
+                p.getFormulation(), p.getTypeOfPrimer(), p.getSondaSequence(), p.getAssayId(), p.getSize(), p.getPrimerApplication(),
+                p.getApplicationComment(), p.getFiveModification(), p.getThreeModification(), p.getConcentrationOrdered(),
+                p.getConcentrationOrderedUnit(), p.isCheckSpecifityInBlast(), p.getDesignerName(), p.getDesignerPublication(),
+                p.getDesignerDatabase(), p.getProject(), p.getSupplier(), p.getManufacturer(), p.getComment(), p.getDocument(),
+                p.getAnalysis(), p.getOrderStatus(), p.getThreeQuencher(), p.getFiveDye(), p.getDate(), user);
         return create(pCopy, user);
+    }
+
+    public void linkAllWithAll(Set<Long> ids, User user) {
+        try (Session session = super.currentSession().getSessionFactory().withOptions().interceptor(new AuditInterceptor(user, hDao)).openSession()) {
+            Set<Primer> filteredPrimers = ids.stream().map(this::findById).filter(Optional::isPresent).map(Optional::get).collect(Collectors.toSet());
+
+            session.beginTransaction();
+            for (Primer primer : filteredPrimers) {
+                Set<Long> linked = primer.getLinked();
+                for (Primer other : filteredPrimers) {
+                    if (other.getId() != primer.getId()) {
+                        linked.add(other.getId());
+                    }
+                }
+                primer.setLinked(linked);
+                session.merge(primer);
+            }
+            session.getTransaction().commit();
+        }
+    }
+
+    public Optional<List<Primer>> getLinkedPrimers(Long id){
+        return findById(id).map(value -> value.getLinked().stream().map(this::findById).filter(Optional::isPresent).map(Optional::get).collect(Collectors.toList()));
     }
 }

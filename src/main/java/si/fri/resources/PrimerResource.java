@@ -14,9 +14,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Path("/primers")
@@ -66,68 +64,6 @@ public class PrimerResource {
         return pDao.findReceived();
     }
 
-    @POST
-    @Path("/fill")
-    @Produces(MediaType.APPLICATION_JSON)
-    @UnitOfWork
-    @RolesAllowed({Roles.ADMIN})
-    public Primer fillPrimers(@Auth User user) {
-
-        for (int i = 0; i < 600; i++) {
-            pDao.create(new Primer("COVID-19", "testsequence", Orientation.REVERSE, pftDao.findFreezer("freezer3"),
-                    pftDao.findDrawer("drawer3"), pftDao.findBox("box5"), pftDao.findPositionInReference("5'-promotor"), 65.2, 22.1, pftDao.findPurificationMethod("Cartridge"),
-                    42.3, 30, AmountAvailablePackType.PLATE, 30,
-                    "42.2", 34.3, pftDao.findOrganism("Homo sapiens"), pftDao.findGen("gen1"), pftDao.findNcbiGenId("ncbiGenId1"), pftDao.findHumanGenomBuild("NCBI Build 36.1"),
-                    pftDao.findFormulation("Resuspended in TRIS"), pftDao.findTypeOfPrimer("M13/pUC primer"), "sondaseq123", "assayid123", Size.M, pftDao.findPrimerApplication("Sanger Sequencing"),
-                    "application comment 123",  pftDao.findFiveModification("Aldehyde Modifier"), pftDao.findThreeModification("Biotin TEG"), 40.0,
-                    ConcentrationOrderedUnit.NANOMOL, true, pftDao.findDesignerName("designerName1"), pftDao.findDesignerPublication("designerPublication1"),
-                    pftDao.findDesignerDatabase("designerDatabase1"), pftDao.findProject("project3"), pftDao.findSupplier("Omega"), pftDao.findManufacturer("BioSearch"),
-                    "Tega je pa kr velik", "dokument link", "analiza 123", OrderStatus.RECEIVED,
-                    pftDao.findThreeQuencher("TAMRA"), pftDao.findFiveDye("NED"), new Date(), user), user);
-        }
-
-        Primer primer = new Primer("SuperPrimer3000", "testsequence", Orientation.REVERSE, pftDao.findFreezer("freezer2"),
-                pftDao.findDrawer("drawer3"), pftDao.findBox("box5"), pftDao.findPositionInReference("5'-promotor"), 65.2, 22.1, pftDao.findPurificationMethod("Cartridge"),
-                42.3, 30, AmountAvailablePackType.PLATE, 30,
-                "42.2", 34.3, pftDao.findOrganism("Homo sapiens"), pftDao.findGen("gen2"), pftDao.findNcbiGenId("ncbiGenId2"), pftDao.findHumanGenomBuild("NCBI Build 36.1"),
-                pftDao.findFormulation("Resuspended in TRIS"), pftDao.findTypeOfPrimer("M13/pUC primer"), "sondaseq123", "assayid123", Size.M, pftDao.findPrimerApplication("Sanger Sequencing"),
-                "application comment 123",  pftDao.findFiveModification("Aldehyde Modifier"), pftDao.findThreeModification("Biotin TEG"), 40.0,
-                ConcentrationOrderedUnit.NANOMOL, true, pftDao.findDesignerName("designerName2"), pftDao.findDesignerPublication("designerPublication2"),
-                pftDao.findDesignerDatabase("designerDatabase2"), pftDao.findProject("project3"), pftDao.findSupplier("Omega"), pftDao.findManufacturer("BioSearch"),
-                "Lačen sem", "dokument link", "analiza 123", OrderStatus.RECEIVED,
-                pftDao.findThreeQuencher("TAMRA"), pftDao.findFiveDye("NED"), new Date(), user);
-        pDao.create(primer, user);
-
-        Primer primer2 = new Primer("MegaBestPrimer1Million", "tcidf", Orientation.REVERSE, pftDao.findFreezer("freezer1"),
-                pftDao.findDrawer("drawer3"), pftDao.findBox("box5"), pftDao.findPositionInReference("5'-promotor"), 65.2, 22.1, pftDao.findPurificationMethod("Cartridge"),
-                42.3, 30, AmountAvailablePackType.PLATE, 30,
-                "42.2", 34.3, pftDao.findOrganism("Homo sapiens"), pftDao.findGen("gen3"), pftDao.findNcbiGenId("ncbiGenId3"), pftDao.findHumanGenomBuild("NCBI Build 36.1"),
-                pftDao.findFormulation("Resuspended in TRIS"), pftDao.findTypeOfPrimer("M13/pUC primer"), "sondaseq123", "assayid123", Size.M, pftDao.findPrimerApplication("Sanger Sequencing"),
-                "application comment 123",  pftDao.findFiveModification("Aldehyde Modifier"), pftDao.findThreeModification("Biotin TEG"), 40.0,
-                ConcentrationOrderedUnit.NANOMOL, true, pftDao.findDesignerName("designerName3"), pftDao.findDesignerPublication("designerPublication3"),
-                pftDao.findDesignerDatabase("designerDatabase3"), pftDao.findProject("project3"), pftDao.findSupplier("Omega"), pftDao.findManufacturer("BioSearch"),
-                "Tega sm dobil za rojstni dan", "dokument link", "analiza 123", OrderStatus.RECEIVED,
-                pftDao.findThreeQuencher("TAMRA"), pftDao.findFiveDye("NED"), new Date(), user);
-        pDao.create(primer2, user);
-
-        Primer primer3 = new Primer("PleaseUseME", "banana", Orientation.REVERSE, pftDao.findFreezer("freezer3"),
-                pftDao.findDrawer("drawer3"), pftDao.findBox("box5"), pftDao.findPositionInReference("5'-promotor"), 65.2, 22.1, pftDao.findPurificationMethod("Cartridge"),
-                42.3, 30, AmountAvailablePackType.PLATE, 30,
-                "42.2", 34.3, pftDao.findOrganism("Homo sapiens"), pftDao.findGen("gen4"), pftDao.findNcbiGenId("ncbiGenId4"), pftDao.findHumanGenomBuild("NCBI Build 36.1"),
-                pftDao.findFormulation("Resuspended in TRIS"), pftDao.findTypeOfPrimer("M13/pUC primer"), "sondaseq123", "assayid123", Size.M, pftDao.findPrimerApplication("Sanger Sequencing"),
-                "application comment 123",  pftDao.findFiveModification("Aldehyde Modifier"), pftDao.findThreeModification("Biotin TEG"), 40.0,
-                ConcentrationOrderedUnit.NANOMOL, true, pftDao.findDesignerName("designerName4"), pftDao.findDesignerPublication("designerPublication4"),
-                pftDao.findDesignerDatabase("designerDatabase4"), pftDao.findProject("project3"), pftDao.findSupplier("Omega"), pftDao.findManufacturer("BioSearch"),
-                "Rad imam maline!", "dokument link", "analiza 123", OrderStatus.RECEIVED,
-                pftDao.findThreeQuencher("TAMRA"), pftDao.findFiveDye("NED"), new Date(), user);
-        pDao.create(primer3, user);
-
-        primer.pairWith(primer2);
-        primer3.pairWith(primer);
-        primer3.pairWith(primer2);
-
-        return primer3;
-    }
 
     @POST
     @Path("/add")
@@ -180,23 +116,20 @@ public class PrimerResource {
     }
 
     @POST
-    @Path("/pair")
+    @Path("/link")
     @UnitOfWork
     @RolesAllowed({Roles.RESEARCHER, Roles.ADMIN})
-    public Response pairPrimers(long[] idArr) {
-        if (idArr[0] == idArr[1]) {
-            return Response.status(Response.Status.BAD_REQUEST).entity("Cannot pair primer with itself.").build();
-        }
+    public Response setLink(@Auth User user, Set<Long> ids) {
+        pDao.linkAllWithAll(ids, user);
+        return Response.ok().build();
+    }
 
-        Optional<Primer> primer1 = pDao.findById(idArr[0]);
-        Optional<Primer> primer2 = pDao.findById(idArr[1]);
-
-        if (!primer1.isPresent() || !primer2.isPresent()) {
-            return Response.status(Response.Status.NOT_FOUND).entity("Couldn't find primers with specified id.").build();
-        }
-
-        primer1.get().pairWith(primer2.get());
-        return Response.ok("Successfully paired primers.").entity(idArr).build();
+    @GET
+    @Path("/links")
+    @UnitOfWork
+    @RolesAllowed({Roles.RESEARCHER, Roles.ADMIN, Roles.TECHNICIAN,Roles.STUDENT,Roles.GUEST})
+    public Optional<List<Primer>> getLinks(Long ids) {
+        return pDao.getLinkedPrimers(ids);
     }
 
     @POST
@@ -318,7 +251,6 @@ public class PrimerResource {
         @JsonProperty
         public String amountAvailablePackType;
         @JsonProperty
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
         public Date date;
         @JsonProperty
         public Integer lengthOfAmplicone;

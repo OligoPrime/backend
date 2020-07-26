@@ -137,8 +137,8 @@ public class PrimerResource {
     @Path("/links")
     @UnitOfWork
     @RolesAllowed({Roles.RESEARCHER, Roles.ADMIN, Roles.TECHNICIAN,Roles.STUDENT,Roles.GUEST})
-    public Optional<List<Primer>> getLinks(Long ids) {
-        return pDao.getLinkedPrimers(ids);
+    public Optional<List<Primer>> getLinks(@QueryParam("id") Long id) {
+        return pDao.getLinkedPrimers(id);
     }
 
     @POST

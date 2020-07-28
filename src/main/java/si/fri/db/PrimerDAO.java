@@ -129,6 +129,20 @@ public class PrimerDAO extends AbstractDAO<Primer> {
         session.close();
     }
 
+    public void update(List<Long> ids, OrderStatus orderStatus, User user) {
+        try (Session session = super.currentSession().getSessionFactory().withOptions().interceptor(new AuditInterceptor(user, hDao)).openSession()) {
+
+            session.beginTransaction();
+
+            ids.stream().map(this::findById).filter(Optional::isPresent).map(Optional::get).forEach(primer -> {
+                primer.setOrderStatus(orderStatus);
+                session.merge(primer);
+            });
+
+            session.getTransaction().commit();
+        }
+    }
+
     public void updateAmountCommentAnalysisi(long id, double amountAvailable, String comment, String analysis, User user) {
         Session session = super.currentSession().getSessionFactory().withOptions().interceptor(new AuditInterceptor(user, hDao)).openSession();
 
@@ -148,8 +162,13 @@ public class PrimerDAO extends AbstractDAO<Primer> {
 
     public void delete(List<Long> ids, User user) {
         try (Session session = super.currentSession().getSessionFactory().withOptions().interceptor(new AuditInterceptor(user, hDao)).openSession()) {
+
             session.beginTransaction();
-            ids.stream().map(this::findById).filter(Optional::isPresent).map(Optional::get).forEach(session::remove);
+            ids.stream().map(id -> {
+                Primer p = session.get(Primer.class, id);
+                return p != null ? Optional.of(p) : Optional.empty();
+            }).filter(Optional::isPresent).map(Optional::get).forEach(session::remove);
+
             session.getTransaction().commit();
         }
     }
@@ -187,7 +206,7 @@ public class PrimerDAO extends AbstractDAO<Primer> {
         }
     }
 
-    public void unlink(Set<Long> ids, User user){
+    public void unlink(Set<Long> ids, User user) {
         try (Session session = super.currentSession().getSessionFactory().withOptions().interceptor(new AuditInterceptor(user, hDao)).openSession()) {
             Set<Primer> filteredPrimers = ids.stream().map(this::findById).filter(Optional::isPresent).map(Optional::get).collect(Collectors.toSet());
             session.beginTransaction();

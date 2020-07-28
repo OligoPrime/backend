@@ -26,7 +26,8 @@ public class DesignerDatabase {
     }
 
     public DesignerDatabase(String designerDatabase) {
-        this.designerDatabase = designerDatabase;
+        if (designerDatabase == null)
+            this.designerDatabase = designerDatabase;
     }
 
     @JsonProperty

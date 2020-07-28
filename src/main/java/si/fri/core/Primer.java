@@ -9,7 +9,6 @@ import si.fri.core.primer_foreign_tables.*;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -269,45 +268,45 @@ public class Primer {
         this.drawer = drawer;
         this.box = box;
         this.positionInReference = positionInReference;
-        this.Tm = Tm;
-        this.optimalTOfAnnealing = optimalTOfAnnealing;
+        this.Tm = Tm == null ? 0 : Tm;
+        this.optimalTOfAnnealing = optimalTOfAnnealing == null ? 0 : optimalTOfAnnealing;
         this.purificationMethod = purificationMethod;
-        this.amountAvailable = amountAvailable;
-        this.amountAvailablePacks = amountAvailablePacks;
+        this.amountAvailable = amountAvailable == null ? 0 : amountAvailable;
+        this.amountAvailablePacks = amountAvailablePacks == null ? 0 : amountAvailablePacks;
         this.amountAvailablePackType = amountAvailablePackType;
-        this.lengthOfAmplicone = lengthOfAmplicone;
-        this.storingT = storingT;
-        this.GCPercent = GCPercent;
+        this.lengthOfAmplicone = lengthOfAmplicone == null ? 0 : lengthOfAmplicone;
+        this.storingT = storingT == null || storingT.equals("") ? "No value" : storingT;
+        this.GCPercent = GCPercent == null ? 0 : GCPercent;
         this.organism = organism;
         this.gen = gen;
         this.ncbiGenId = ncbiGenId;
         this.humanGenomBuild = humanGenomBuild;
         this.formulation = formulation;
         this.typeOfPrimer = typeOfPrimer;
-        this.sondaSequence = sondaSequence;
-        this.assayId = assayId;
+        this.sondaSequence = sondaSequence == null || sondaSequence.equals("") ? "No value" : sondaSequence;
+        this.assayId = assayId == null || assayId.equals("") ? "No value" : assayId;
         this.size = size;
         this.primerApplication = primerApplication;
-        this.applicationComment = applicationComment;
+        this.applicationComment = applicationComment == null || applicationComment.equals("") ? "No value" : applicationComment;
         this.fiveModification = fiveModification;
         this.threeModification = threeModification;
-        this.concentrationOrdered = concentrationOrdered;
+        this.concentrationOrdered = concentrationOrdered == null ? 0 : concentrationOrdered;
         this.concentrationOrderedUnit = concentrationOrderedUnit;
-        this.checkSpecifityInBlast = checkSpecifityInBlast;
+        this.checkSpecifityInBlast = checkSpecifityInBlast == null ? false : checkSpecifityInBlast;
         this.designerName = designerName;
         this.designerPublication = designerPublication;
         this.designerDatabase = designerDatabase;
         this.project = project;
         this.supplier = supplier;
         this.manufacturer = manufacturer;
-        this.comment = comment;
-        this.document = document;
+        this.comment = comment == null || comment.equals("") ? "No value" : comment;
+        this.document = document == null || document.equals("") ? "No value" : document;
         this.threeQuencher = threeQuencher;
         this.fiveDye = fiveDye;
         this.date = date;
         this.user = user;
         this.orderStatus = orderStatus;
-        this.analysis = analysis;
+        this.analysis = analysis == null || analysis.equals("") ? "No value" : analysis;
         this.length = sequence.length();
         this.deleted = false;
     }
@@ -322,50 +321,53 @@ public class Primer {
         String delimiter = "-";
         String generatedName = "";
 
-        if (orientation == Orientation.REVERSE) {
-            generatedName += "R";
-        } else if (orientation == Orientation.FORWARD) {
-            generatedName += "F";
-        } else {
-            generatedName += "X";
+        try {
+            if (orientation == Orientation.REVERSE) {
+                generatedName += "R";
+            } else if (orientation == Orientation.FORWARD) {
+                generatedName += "F";
+            } else {
+                generatedName += "X";
+            }
+
+            generatedName += delimiter;
+
+            String organismName = organism.getOrganism();
+            switch (organismName) {
+                case "Escherichia coli TG1":
+                    generatedName += "G1";
+                    break;
+                case "Escherichia coli WK6":
+                    generatedName += "K6";
+                    break;
+                case "Homo sapiens":
+                    generatedName += "HS";
+                    break;
+                case "Mus musculus":
+                    generatedName += "MM";
+                    break;
+                case "Rattus norvegicus domestica":
+                    generatedName += "RN";
+                    break;
+                default:
+                    generatedName += "XX";
+                    break;
+            }
+            generatedName += delimiter;
+
+            if (ncbiGenId == null) {
+                generatedName += "XXX";
+            } else if (ncbiGenId.getNcbiGenId().isEmpty()) {
+                generatedName += "XXX";
+            } else {
+                generatedName += ncbiGenId.getNcbiGenId();
+            }
+            generatedName += delimiter;
+
+            generatedName += String.valueOf(id);
+        } catch (Exception ignored) {
+
         }
-
-        generatedName += delimiter;
-
-        String organismName = organism.getOrganism();
-        switch (organismName) {
-            case "Escherichia coli TG1":
-                generatedName += "G1";
-                break;
-            case "Escherichia coli WK6":
-                generatedName += "K6";
-                break;
-            case "Homo sapiens":
-                generatedName += "HS";
-                break;
-            case "Mus musculus":
-                generatedName += "MM";
-                break;
-            case "Rattus norvegicus domestica":
-                generatedName += "RN";
-                break;
-            default:
-                generatedName += "XX";
-                break;
-        }
-        generatedName += delimiter;
-
-        if (ncbiGenId == null) {
-            generatedName += "XXX";
-        } else if (ncbiGenId.getNcbiGenId().isEmpty()) {
-            generatedName += "XXX";
-        } else {
-            generatedName += ncbiGenId.getNcbiGenId();
-        }
-        generatedName += delimiter;
-
-        generatedName += String.valueOf(id);
-
         this.generatedName = generatedName;
     }
 

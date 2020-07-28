@@ -58,11 +58,11 @@ public class CsvResource {
         CsvToBean<PrimerCSV> csvToBean = new CsvToBeanBuilder(new InputStreamReader(uploadedInputStream))
                 .withType(PrimerCSV.class)
                 .withIgnoreLeadingWhiteSpace(true)
-                .withSeparator(',')
+                .withSeparator(';')
                 .build();
 
         for (PrimerCSV p : csvToBean.parse()) {
-            SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+            SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
             Date date = null;
             try {
                 date = format.parse(p.date);
@@ -93,32 +93,32 @@ public class CsvResource {
     @Path("/sample")
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
     public Response getFile() {
-        File sampleCsv = new File(ClassLoader.getSystemResource("sample.csv").getFile());
+        File sampleCsv = new File(getClass().getClassLoader().getResource("WEB_INF/sample.csv").getFile());
         return Response.ok(sampleCsv, MediaType.APPLICATION_OCTET_STREAM)
                 .header("Content-Disposition", "attachment; filename=\"" + sampleCsv.getName() + "\"")
                 .build();
     }
 
     public static class PrimerCSV {
-        @CsvBindByName(column = "Name of Primer", required = true)
+        @CsvBindByName(column = "Name of Primer")
         public String name;
         @CsvBindByName(column = "Sequence")
         public String sequence;
         @CsvBindByName(column = "Orientation")
         public String orientation;
-        @CsvBindByName(column = "Freezer", required = true)
+        @CsvBindByName(column = "Freezer")
         public String freezer;
-        @CsvBindByName(column = "Drawer", required = true)
+        @CsvBindByName(column = "Drawer")
         public String drawer;
-        @CsvBindByName(column = "Box", required = true)
+        @CsvBindByName(column = "Box")
         public String box;
-        @CsvBindByName(column = "Position in Reference", required = true)
+        @CsvBindByName(column = "Position in Reference")
         public String positionInReference;
         @CsvBindByName(column = "Tm (degree Celsius)")
         public Double Tm;
         @CsvBindByName(column = "Optimal T of Annealing (degree Celsius)")
         public Double optimalTOfAnnealing;
-        @CsvBindByName(column = "Purification Method", required = true)
+        @CsvBindByName(column = "Purification Method")
         public String purificationMethod;
         @CsvBindByName(column = "Amount Available (microliter)")
         public Double amountAvailableMikroL;
@@ -134,17 +134,17 @@ public class CsvResource {
         public String storingT;
         @CsvBindByName(column = "GC (%)")
         public Double GCPercent;
-        @CsvBindByName(column = "Organism", required = true)
+        @CsvBindByName(column = "Organism")
         public String organism;
-        @CsvBindByName(column = "Gen", required = true)
+        @CsvBindByName(column = "Gen")
         public String gen;
         @CsvBindByName(column = "Ncbi Gen ID")
         public String ncbiGenId;
         @CsvBindByName(column = "Human Genom Build")
         public String humanGenomBuild;
-        @CsvBindByName(column = "Formulation", required = true)
+        @CsvBindByName(column = "Formulation")
         public String formulation;
-        @CsvBindByName(column = "Type of Primer", required = true)
+        @CsvBindByName(column = "Type of Primer")
         public String typeOfPrimer;
         @CsvBindByName(column = "Sonda Sequence")
         public String sondaSequence;
@@ -152,13 +152,13 @@ public class CsvResource {
         public String assayId;
         @CsvBindByName(column = "Size")
         public String size;
-        @CsvBindByName(column = "Application", required = true)
+        @CsvBindByName(column = "Application")
         public String primerApplication;
         @CsvBindByName(column = "Application Comment")
         public String applicationComment;
-        @CsvBindByName(column = "5' Modification", required = true)
+        @CsvBindByName(column = "5' Modification")
         public String fiveModification;
-        @CsvBindByName(column = "3' Modification", required = true)
+        @CsvBindByName(column = "3' Modification")
         public String threeModification;
         @CsvBindByName(column = "Concentration Ordered")
         public Double concentrationOrdered;

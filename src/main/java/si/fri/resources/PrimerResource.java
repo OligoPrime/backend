@@ -1,9 +1,11 @@
 package si.fri.resources;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.dropwizard.auth.Auth;
 import io.dropwizard.hibernate.UnitOfWork;
-import si.fri.core.*;
+import si.fri.core.Primer;
+import si.fri.core.Roles;
+import si.fri.core.User;
 import si.fri.core.primer_enums.*;
 import si.fri.core.primer_foreign_tables.*;
 import si.fri.db.PrimerDAO;
@@ -14,7 +16,10 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.Serializable;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Path("/primers")
@@ -104,6 +109,15 @@ public class PrimerResource {
     public Optional<Primer> updatePrimer(@Auth User user, @QueryParam("id") long id, PrimerJSON primerJson) {
         pDao.update(id, primerJson, user);
         return pDao.findById(id);
+    }
+
+    @POST
+    @Path("/update/orderStatus/{orderStatus}")
+    @UnitOfWork
+    @RolesAllowed({Roles.RESEARCHER, Roles.ADMIN})
+    public Response updatePrimer(@Auth User user, List<Long> ids, @PathParam("orderStatus") String orderStatus) {
+        pDao.update(ids, OrderStatus.fromString(orderStatus), user);
+        return Response.ok().build();
     }
 
     @POST

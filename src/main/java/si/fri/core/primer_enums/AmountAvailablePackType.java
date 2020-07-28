@@ -1,7 +1,8 @@
 package si.fri.core.primer_enums;
 
 public enum AmountAvailablePackType {
-    TUBE("tube","µl"),
+    TUBE("tube", "µl"),
+    NONE("No value", "No unit"),
     PLATE("plate", "number of wells");
 
     private final String name;
@@ -18,6 +19,8 @@ public enum AmountAvailablePackType {
     }
 
     public static AmountAvailablePackType fromString(String name) {
+        if (name == null || name.equalsIgnoreCase(""))
+            return NONE;
         for (AmountAvailablePackType o : AmountAvailablePackType.values()) {
             if (o.name.equalsIgnoreCase(name)) {
                 return o;

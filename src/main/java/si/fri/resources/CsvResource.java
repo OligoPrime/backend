@@ -19,7 +19,6 @@ import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.ParseException;
@@ -93,9 +92,8 @@ public class CsvResource {
     @Path("/sample")
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
     public Response getFile() {
-        File sampleCsv = new File(getClass().getClassLoader().getResource("WEB_INF/sample.csv").getFile());
-        return Response.ok(sampleCsv, MediaType.APPLICATION_OCTET_STREAM)
-                .header("Content-Disposition", "attachment; filename=\"" + sampleCsv.getName() + "\"")
+        return Response.ok(getClass().getClassLoader().getResourceAsStream("WEB_INF/sample.csv"), MediaType.APPLICATION_OCTET_STREAM)
+                .header("Content-Disposition", "attachment; filename=\"sample.csv\"")
                 .build();
     }
 

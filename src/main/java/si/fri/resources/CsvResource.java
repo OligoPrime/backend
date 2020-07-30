@@ -1,8 +1,8 @@
 package si.fri.resources;
 
-import com.opencsv.bean.CsvBindByName;
-import com.opencsv.bean.CsvToBean;
-import com.opencsv.bean.CsvToBeanBuilder;
+import com.opencsv.bean.*;
+import com.opencsv.exceptions.CsvDataTypeMismatchException;
+import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 import io.dropwizard.auth.Auth;
 import io.dropwizard.hibernate.UnitOfWork;
 import org.apache.commons.io.FilenameUtils;
@@ -19,10 +19,11 @@ import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 @Path("/csv")
@@ -92,9 +93,83 @@ public class CsvResource {
     @Path("/sample")
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
     public Response getFile() {
-        return Response.ok(getClass().getClassLoader().getResourceAsStream("WEB_INF/sample.csv"), MediaType.APPLICATION_OCTET_STREAM)
-                .header("Content-Disposition", "attachment; filename=\"sample.csv\"")
-                .build();
+        try {
+            Writer writer = new FileWriter("sample.csv");
+
+            // mapping of columns with their positions
+            ColumnPositionMappingStrategy<PrimerCSV> mappingStrategy = new ColumnPositionMappingStrategy<PrimerCSV>();
+            // Set mappingStrategy type to Product Type
+            mappingStrategy.setType(PrimerCSV.class);
+
+            StatefulBeanToCsvBuilder<PrimerCSV> builder = new StatefulBeanToCsvBuilder<PrimerCSV>(writer);
+
+            StatefulBeanToCsv<PrimerCSV> beanWriter = builder.withMappingStrategy(mappingStrategy)
+                    .withSeparator(';').build();
+            // Writing data to csv file
+
+
+            PrimerCSV primerCSV = new PrimerCSV();
+            primerCSV.name = "karkoli";
+            primerCSV.sequence = "karkoli";
+            primerCSV.orientation = Orientation.FORWARD.toString();
+            primerCSV.amountAvailableMikroL = 0.0;
+            primerCSV.amountAvailablePacks = 0;
+            primerCSV.amountAvailablePackType = AmountAvailablePackType.TUBE.toString();
+            primerCSV.analysis = "karkoli";
+            primerCSV.applicationComment = "karkoli";
+            primerCSV.assayId = "karkoli";
+            primerCSV.box = "karkoli";
+            primerCSV.freezer = "karkoli";
+            primerCSV.drawer = "karkoli";
+            primerCSV.positionInReference = "karkoli";
+            primerCSV.Tm = 0.0;
+            primerCSV.optimalTOfAnnealing = 0.0;
+            primerCSV.purificationMethod = "karkoli";
+            LocalDate localDate = LocalDate.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+            primerCSV.date = localDate.format(formatter);
+            primerCSV.lengthOfAmplicone = 0;
+            primerCSV.storingT = "karkoli";
+            primerCSV.GCPercent = 0.0;
+            primerCSV.organism = "karkoli";
+            primerCSV.gen = "karkoli";
+            primerCSV.ncbiGenId = "karkoli";
+            primerCSV.humanGenomBuild = "karkoli";
+            primerCSV.formulation = "karkoli";
+            primerCSV.typeOfPrimer = "karkoli";
+            primerCSV.sondaSequence = "karkoli";
+            primerCSV.size = Size.NONE.toString();
+            primerCSV.primerApplication = "karkoli";
+            primerCSV.threeModification = "karkoli";
+            primerCSV.fiveModification = "karkoli";
+            primerCSV.threeQuencher = "karkoli";
+            primerCSV.fiveDye = "karkoli";
+            primerCSV.concentrationOrdered = 0.0;
+            primerCSV.concentrationOrderedUnit = ConcentrationOrderedUnit.MIKROM.toString();
+            primerCSV.checkSpecifityInBlast = false;
+            primerCSV.designerName = "karkoli";
+            primerCSV.designerPublication = "karkoli";
+            primerCSV.designerDatabase = "karkoli";
+            primerCSV.project = "karkoli";
+            primerCSV.supplier = "karkoli";
+            primerCSV.manufacturer = "karkoli";
+            primerCSV.comment = "karkoli";
+            primerCSV.document = "karkoli";
+            primerCSV.orderStatus = OrderStatus.RECEIVED.toString();
+
+            beanWriter.write(primerCSV);
+            writer.close();
+
+//            File f = new File("sample.csv");
+//
+//            return Response.ok(f, MediaType.APPLICATION_OCTET_STREAM)
+//                    .header("Content-Disposition", "attachment; filename=\"sample.csv\"")
+//                    .build();
+            return Response.ok().build();
+        } catch (IOException | CsvRequiredFieldEmptyException | CsvDataTypeMismatchException e) {
+            e.printStackTrace();
+        }
+        return Response.serverError().build();
     }
 
     public static class PrimerCSV {

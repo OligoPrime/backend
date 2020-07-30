@@ -4,12 +4,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.dropwizard.auth.AuthValueFactoryProvider;
 import io.dropwizard.testing.junit5.DropwizardExtensionsSupport;
-import org.junit.jupiter.api.Test;
+import io.dropwizard.testing.junit5.ResourceExtension;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import io.dropwizard.testing.junit5.ResourceExtension;
-import si.fri.core.*;
+import si.fri.core.Primer;
+import si.fri.core.User;
 import si.fri.core.primer_enums.*;
 import si.fri.core.primer_foreign_tables.*;
 import si.fri.db.PrimerDAO;
@@ -20,6 +21,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
@@ -53,7 +55,7 @@ public class PrimerResourceTest {
                 "42.2", 34.3, new Organism("Homo sapiens"), new Gen("gen123"), new NcbiGenId("ncbigenid123"), new HumanGenomBuild("NCBI Build 36.1"),
                 new Formulation("Resuspended in TRIS"), new TypeOfPrimer("M13/pUC primer"), "sondaseq123", "assayid123", Size.M, new PrimerApplication("Sanger Sequencing"),
                 "application comment 123", new FiveModification("Aldehyde Modifier"), new ThreeModification("Biotin TEG"), 40.0,
-                ConcentrationOrderedUnit.NANOMOL, true, new DesignerName("designer123"), new DesignerPublication("publication123"),
+                ConcentrationOrderedUnit.NANOM, true, new DesignerName("designer123"), new DesignerPublication("publication123"),
                 new DesignerDatabase("database123"), new Project("project3"), new Supplier("Omega"), new Manufacturer("BioSearch"),
                 "komentar", "dokument link", "analiza 123", OrderStatus.RECEIVED,
                 new ThreeQuencher("TAMRA"), new FiveDye("NED"), date, null);

@@ -1,7 +1,6 @@
 package si.fri.core.primer_enums;
 
 public enum ConcentrationOrderedUnit {
-    NANOMOL("nmol"),
     MIKROM("µM"),
     NONE("No value"),
     NANOM("nM");

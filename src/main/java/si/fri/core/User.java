@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import java.security.Principal;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -41,6 +42,9 @@ public class User implements Principal {
 
     private boolean removed = false;
 
+    @ElementCollection
+    private Set<Long> favourites;
+
     @OneToMany
     @JoinColumn(name = "user_id")
     private Set<Primer> primers;
@@ -57,6 +61,7 @@ public class User implements Principal {
         this.salt = salt_hash.get(0);
         this.hash = salt_hash.get(1);
         this.role = role;
+        this.favourites = new HashSet<>();
     }
 
     public User(String username, String password, String role, String name, String workTitle) {
@@ -68,11 +73,27 @@ public class User implements Principal {
         this.salt = salt_hash.get(0);
         this.hash = salt_hash.get(1);
         this.role = role;
+        this.favourites = new HashSet<>();
     }
 
     public User() {
     }
 
+    public Set<Long> getFavourites() {
+        return favourites;
+    }
+
+    public void setFavourites(Set<Long> linked) {
+        this.favourites = linked;
+    }
+
+    public Set<History> getHistory() {
+        return history;
+    }
+
+    public void setHistory(Set<History> history) {
+        this.history = history;
+    }
 
     public byte[] getSalt() {
         return this.salt;

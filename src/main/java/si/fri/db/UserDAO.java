@@ -10,6 +10,7 @@ import si.fri.core.User;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 
 import static si.fri.auth.Passwords.hashPassword;
 
@@ -46,13 +47,44 @@ public class UserDAO extends AbstractDAO<User> {
         }
     }
 
+    public void addToFavourites(Set<Long> ids, User user) {
+        try (Session session = super.currentSession().getSessionFactory().withOptions().interceptor(new AuditInterceptor(user, hDao)).openSession()) {
+            User u = session.get(User.class, user.getId());
+            if (u != null) {
+                Set<Long> favourites = u.getFavourites();
+                favourites.addAll(ids);
+                u.setFavourites(favourites);
+
+                session.beginTransaction();
+                session.merge(u);
+                session.getTransaction().commit();
+            }
+        }
+    }
+
+    public void removeFavourites(Set<Long> ids, User user) {
+        try (Session session = super.currentSession().getSessionFactory().withOptions().interceptor(new AuditInterceptor(user, hDao)).openSession()) {
+            User u = session.get(User.class, user.getId());
+            if (u != null) {
+                Set<Long> favourites = u.getFavourites();
+                favourites.removeAll(ids);
+                u.setFavourites(favourites);
+
+                session.beginTransaction();
+                session.merge(u);
+                session.getTransaction().commit();
+            }
+        }
+    }
+
     public void delete(String username, User user) {
         Optional<User> u = getForUsername(username);
         if (u.isPresent()) {
             User user1 = u.get();
-            try (Session session = super.currentSession().getSessionFactory().withOptions().interceptor(new AuditInterceptor(user, hDao)).openSession()) {
+            try (Session session = super.currentSession().getSession()) {
 
                 user1.setRemoved(true);
+
                 session.beginTransaction();
                 session.merge(user1);
                 session.getTransaction().commit();
@@ -69,4 +101,5 @@ public class UserDAO extends AbstractDAO<User> {
     public List<User> findAll() {
         return list((Query<User>) namedQuery("si.fri.core.User.findAll"));
     }
+
 }

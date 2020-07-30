@@ -13,17 +13,22 @@ import io.dropwizard.hibernate.HibernateBundle;
 import io.dropwizard.hibernate.UnitOfWorkAwareProxyFactory;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
-import org.glassfish.jersey.logging.LoggingFeature;
-import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.eclipse.jetty.servlets.CrossOriginFilter;
+import org.glassfish.jersey.logging.LoggingFeature;
+import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 import si.fri.auth.SimpleAuthenticator;
 import si.fri.auth.SimpleAuthorizer;
-import si.fri.core.*;
+import si.fri.core.History;
+import si.fri.core.Primer;
+import si.fri.core.User;
 import si.fri.core.primer_foreign_tables.*;
-import si.fri.db.*;
+import si.fri.db.HistoryDAO;
+import si.fri.db.PrimerDAO;
+import si.fri.db.PrimerForeignTablesDAO;
+import si.fri.db.UserDAO;
 import si.fri.health.BasicHealthCheck;
 import si.fri.resources.*;
 
@@ -110,7 +115,7 @@ public class BackendApplication extends Application<BackendConfiguration> {
         environment.jersey().register(new AuthValueFactoryProvider.Binder<>(User.class));
         environment.jersey().register(RolesAllowedDynamicFeature.class);
 
-        environment.jersey().register(new UserResource(userDAO));
+        environment.jersey().register(new UserResource(userDAO, primerDAO));
         environment.jersey().register(new PrimerResource(primerDAO, primerForeignTablesDAO));
         environment.jersey().register(new HistoryResource(historyDAO));
         environment.jersey().register(new CsvResource(primerDAO, primerForeignTablesDAO));

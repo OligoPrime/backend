@@ -11,10 +11,7 @@ import si.fri.core.User;
 import si.fri.core.primer_enums.*;
 import si.fri.resources.PrimerResource;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class PrimerDAO extends AbstractDAO<Primer> {
@@ -36,6 +33,10 @@ public class PrimerDAO extends AbstractDAO<Primer> {
             }
         }
         return Optional.ofNullable(primer);
+    }
+
+    public List<Primer> findByIds(Set<Long> ids) {
+        return ids.stream().map(super::get).filter(Objects::nonNull).collect(Collectors.toList());
     }
 
     @SuppressWarnings("unchecked")
@@ -136,23 +137,23 @@ public class PrimerDAO extends AbstractDAO<Primer> {
     }
 
     public void updateTechnician(long id, PrimerResource.PrimerJSON primerJson, User user) {
-        Session session = super.currentSession().getSessionFactory().withOptions().interceptor(new AuditInterceptor(user, hDao)).openSession();
+        try (Session session = super.currentSession().getSessionFactory().withOptions().interceptor(new AuditInterceptor(user, hDao)).openSession()) {
 
-        Primer primer = session.get(Primer.class, id);
-        if (primer != null) {
-            primer.setFormulation(pftDao.findFormulation(primerJson.formulation));
-            primer.setAmountAvailable(primerJson.amountAvailable);
-            primer.setAmountAvailablePacks(primerJson.amountAvailablePacks);
-            primer.setComment(primerJson.comment);
-            primer.setAnalysis(primerJson.analysis);
+            Primer primer = session.get(Primer.class, id);
+            if (primer != null) {
+                primer.setFormulation(pftDao.findFormulation(primerJson.formulation));
+                primer.setAmountAvailable(primerJson.amountAvailable);
+                primer.setAmountAvailablePacks(primerJson.amountAvailablePacks);
+                primer.setComment(primerJson.comment);
+                primer.setAnalysis(primerJson.analysis);
 
-            session.beginTransaction();
+                session.beginTransaction();
 
-            session.merge(primer);
+                session.merge(primer);
 
-            session.getTransaction().commit();
-            session.close();
+                session.getTransaction().commit();
 
+            }
         }
 
     }
@@ -172,20 +173,20 @@ public class PrimerDAO extends AbstractDAO<Primer> {
     }
 
     public void updateAmountCommentAnalysisi(long id, double amountAvailable, String comment, String analysis, User user) {
-        Session session = super.currentSession().getSessionFactory().withOptions().interceptor(new AuditInterceptor(user, hDao)).openSession();
+        try (Session session = super.currentSession().getSessionFactory().withOptions().interceptor(new AuditInterceptor(user, hDao)).openSession()) {
 
-        Primer primer = get(id);
+            Primer primer = get(id);
 
-        primer.setAmountAvailable(amountAvailable);
-        primer.setComment(comment);
-        primer.setAnalysis(analysis);
+            primer.setAmountAvailable(amountAvailable);
+            primer.setComment(comment);
+            primer.setAnalysis(analysis);
 
-        session.beginTransaction();
+            session.beginTransaction();
 
-        session.merge(primer);
+            session.merge(primer);
 
-        session.getTransaction().commit();
-        session.close();
+            session.getTransaction().commit();
+        }
     }
 
     public void delete(List<Long> ids, User user) {
@@ -249,4 +250,6 @@ public class PrimerDAO extends AbstractDAO<Primer> {
     public Optional<List<Primer>> getLinkedPrimers(Long id) {
         return findById(id).map(value -> value.getLinked().stream().map(this::findById).filter(Optional::isPresent).map(Optional::get).collect(Collectors.toList()));
     }
+
+
 }

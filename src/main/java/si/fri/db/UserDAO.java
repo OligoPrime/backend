@@ -8,7 +8,10 @@ import si.fri.core.AuditInterceptor;
 import si.fri.core.User;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+
+import static si.fri.auth.Passwords.hashPassword;
 
 public class UserDAO extends AbstractDAO<User> {
 
@@ -28,15 +31,34 @@ public class UserDAO extends AbstractDAO<User> {
         return persist(user);
     }
 
-    public void delete(String username, User user) {
-        User u = getForUsername(username).get();
-        u.setRemoved(true);
-        Session session = super.currentSession().getSessionFactory().withOptions().interceptor(new AuditInterceptor(user, hDao)).openSession();
+    public void updatePassword(User user, String newPassword) {
+        try (Session session = super.currentSession().getSessionFactory().withOptions().interceptor(new AuditInterceptor(user, hDao)).openSession()) {
+            List<byte[]> salt_hash = Objects.requireNonNull(hashPassword(newPassword));
 
-        session.beginTransaction();
-        session.merge(u);
-        session.getTransaction().commit();
-        session.close();
+            User u = session.get(User.class, user.getId());
+            if (u != null) {
+                u.setSalt(salt_hash.get(0));
+                u.setHash(salt_hash.get(1));
+            }
+            session.beginTransaction();
+            session.merge(u);
+            session.getTransaction().commit();
+        }
+    }
+
+    public void delete(String username, User user) {
+        Optional<User> u = getForUsername(username);
+        if (u.isPresent()) {
+            User user1 = u.get();
+            try (Session session = super.currentSession().getSessionFactory().withOptions().interceptor(new AuditInterceptor(user, hDao)).openSession()) {
+
+                user1.setRemoved(true);
+                session.beginTransaction();
+                session.merge(user1);
+                session.getTransaction().commit();
+                session.close();
+            }
+        }
     }
 
     public Optional<User> getForUsername(String username) {

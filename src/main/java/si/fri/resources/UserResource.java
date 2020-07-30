@@ -70,6 +70,7 @@ public class UserResource {
         return dao.findAll().stream().filter(user -> !user.isRemoved()).map(User::getUsername).collect(Collectors.toList());
     }
 
+
     @GET
     @UnitOfWork
     public List<UserJSON> getAll() {

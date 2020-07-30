@@ -6,6 +6,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import si.fri.core.AuditInterceptor;
 import si.fri.core.Primer;
+import si.fri.core.Roles;
 import si.fri.core.User;
 import si.fri.core.primer_enums.*;
 import si.fri.resources.PrimerResource;
@@ -59,12 +60,17 @@ public class PrimerDAO extends AbstractDAO<Primer> {
 
     public Primer create(Primer primer, User user) {
         primer.setDeleted(false);
-        Session session = super.currentSession().getSessionFactory().withOptions().interceptor(new AuditInterceptor(user, hDao)).openSession();
-        session.beginTransaction();
-        session.saveOrUpdate(primer);
         primer.generateName();
-        session.getTransaction().commit();
-        session.close();
+        if (user.getRole().equalsIgnoreCase(Roles.TECHNICIAN)) {
+            if (primer.getOrderStatus().equals(OrderStatus.RECEIVED)) {
+                primer.setOrderStatus(OrderStatus.WANTED);
+            }
+        }
+        try (Session session = super.currentSession().getSessionFactory().withOptions().interceptor(new AuditInterceptor(user, hDao)).openSession()) {
+            session.beginTransaction();
+            session.saveOrUpdate(primer);
+            session.getTransaction().commit();
+        }
         return primer;
     }
 
@@ -127,6 +133,28 @@ public class PrimerDAO extends AbstractDAO<Primer> {
 
         session.getTransaction().commit();
         session.close();
+    }
+
+    public void updateTechnician(long id, PrimerResource.PrimerJSON primerJson, User user) {
+        Session session = super.currentSession().getSessionFactory().withOptions().interceptor(new AuditInterceptor(user, hDao)).openSession();
+
+        Primer primer = session.get(Primer.class, id);
+        if (primer != null) {
+            primer.setFormulation(pftDao.findFormulation(primerJson.formulation));
+            primer.setAmountAvailable(primerJson.amountAvailable);
+            primer.setAmountAvailablePacks(primerJson.amountAvailablePacks);
+            primer.setComment(primerJson.comment);
+            primer.setAnalysis(primerJson.analysis);
+
+            session.beginTransaction();
+
+            session.merge(primer);
+
+            session.getTransaction().commit();
+            session.close();
+
+        }
+
     }
 
     public void update(List<Long> ids, OrderStatus orderStatus, User user) {

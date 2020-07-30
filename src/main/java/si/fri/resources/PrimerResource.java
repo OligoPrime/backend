@@ -74,7 +74,7 @@ public class PrimerResource {
     @Path("/add")
     @Produces(MediaType.APPLICATION_JSON)
     @UnitOfWork
-    @RolesAllowed({Roles.RESEARCHER, Roles.ADMIN})
+    @RolesAllowed({Roles.RESEARCHER, Roles.ADMIN, Roles.TECHNICIAN})
     public Primer addPrimer(@Auth User user, PrimerJSON p) {
         Primer primer = new Primer(p.name, p.sequence, Orientation.fromString(p.orientation), pftDao.findFreezer(p.freezer),
                 pftDao.findDrawer(p.drawer), pftDao.findBox(p.box), pftDao.findPositionInReference(p.positionInReference), p.tm,
@@ -105,16 +105,20 @@ public class PrimerResource {
     @POST
     @Path("/update")
     @UnitOfWork
-    @RolesAllowed({Roles.RESEARCHER, Roles.ADMIN})
+    @RolesAllowed({Roles.RESEARCHER, Roles.ADMIN, Roles.TECHNICIAN})
     public Optional<Primer> updatePrimer(@Auth User user, @QueryParam("id") long id, PrimerJSON primerJson) {
-        pDao.update(id, primerJson, user);
+        if (user.getRole().equalsIgnoreCase(Roles.TECHNICIAN)) {
+            pDao.updateTechnician(id, primerJson, user);
+        } else {
+            pDao.update(id, primerJson, user);
+        }
         return pDao.findById(id);
     }
 
     @POST
     @Path("/update/orderStatus/{orderStatus}")
     @UnitOfWork
-    @RolesAllowed({Roles.RESEARCHER, Roles.ADMIN})
+    @RolesAllowed({Roles.RESEARCHER, Roles.ADMIN, Roles.TECHNICIAN})
     public Response updatePrimer(@Auth User user, List<Long> ids, @PathParam("orderStatus") String orderStatus) {
         pDao.update(ids, OrderStatus.fromString(orderStatus), user);
         return Response.ok().build();

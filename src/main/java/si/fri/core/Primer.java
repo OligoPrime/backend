@@ -29,7 +29,7 @@ import java.util.Set;
                 ),
                 @NamedQuery(
                         name = "si.fri.core.Primer.findReceived",
-                        query = "SELECT p FROM Primer p WHERE p.orderStatus = 'RECEIVED' AND p.deleted = false"
+                        query = "SELECT p FROM Primer p WHERE p.orderStatus = 'RECEIVED' OR p.orderStatus = 'NONE' AND p.deleted = false"
                 ),
         })
 @SQLDelete(sql = "UPDATE primers SET deleted = true WHERE id = ?", check = ResultCheckStyle.COUNT)
@@ -292,7 +292,7 @@ public class Primer {
         this.threeModification = threeModification;
         this.concentrationOrdered = concentrationOrdered == null ? 0 : concentrationOrdered;
         this.concentrationOrderedUnit = concentrationOrderedUnit;
-        this.checkSpecifityInBlast = checkSpecifityInBlast == null ? false : checkSpecifityInBlast;
+        this.checkSpecifityInBlast = checkSpecifityInBlast != null && checkSpecifityInBlast;
         this.designerName = designerName;
         this.designerPublication = designerPublication;
         this.designerDatabase = designerDatabase;

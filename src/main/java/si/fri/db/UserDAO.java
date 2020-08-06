@@ -81,14 +81,13 @@ public class UserDAO extends AbstractDAO<User> {
         Optional<User> u = getForUsername(username);
         if (u.isPresent()) {
             User user1 = u.get();
-            try (Session session = super.currentSession().getSession()) {
+            try (Session session = super.currentSession().getSessionFactory().withOptions().interceptor(new AuditInterceptor(user, hDao)).openSession()) {
 
                 user1.setRemoved(true);
 
                 session.beginTransaction();
                 session.merge(user1);
                 session.getTransaction().commit();
-                session.close();
             }
         }
     }

@@ -29,7 +29,7 @@ import java.util.Set;
                 ),
                 @NamedQuery(
                         name = "si.fri.core.Primer.findReceived",
-                        query = "SELECT p FROM Primer p WHERE p.orderStatus = 'RECEIVED' OR p.orderStatus = 'NONE' AND p.deleted = false"
+                        query = "SELECT p FROM Primer p WHERE (p.orderStatus = 'RECEIVED' OR p.orderStatus = 'NONE') AND p.deleted = false"
                 ),
         })
 @SQLDelete(sql = "UPDATE primers SET deleted = true WHERE id = ?", check = ResultCheckStyle.COUNT)
@@ -825,6 +825,10 @@ public class Primer {
 
     public boolean isDeleted() {
         return deleted;
+    }
+
+    public boolean isNotDeleted() {
+        return !deleted;
     }
 
     public void setDeleted(boolean deleted) {

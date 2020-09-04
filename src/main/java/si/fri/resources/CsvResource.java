@@ -60,7 +60,7 @@ public class CsvResource {
         CsvToBean<PrimerCSV> csvToBean = new CsvToBeanBuilder(new InputStreamReader(uploadedInputStream))
                 .withType(PrimerCSV.class)
                 .withIgnoreLeadingWhiteSpace(true)
-                .withSeparator(';')
+                .withSeparator(',')
                 .build();
 
         for (PrimerCSV p : csvToBean.parse()) {

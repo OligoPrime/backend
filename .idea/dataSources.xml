@@ -13,5 +13,11 @@
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
       <jdbc-url>jdbc:postgresql://83.212.82.248:5432/bioprime</jdbc-url>
     </data-source>
+    <data-source source="LOCAL" name="bioprime@localhost [2]" uuid="602c59ec-9810-4b8c-96ee-e5cbb2a1e18e">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://localhost:5433/bioprime</jdbc-url>
+    </data-source>
   </component>
 </project>

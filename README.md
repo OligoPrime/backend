@@ -46,7 +46,7 @@ $ docker-compose up -d backend
 $ docker-compose up -d frontend
 ```
 
-To check if backend is running go to http://localhost:8081/healthcheck
+To check if backend is running go to http://localhost:8080/healthcheck
 To check if frontend is running go to http://localhost:80/
 
 Login using credentials `username: admin, password: admin`.

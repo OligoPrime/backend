@@ -97,7 +97,6 @@ public class BackendApplication extends Application<BackendConfiguration> {
 
         final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
-
         SimpleAuthenticator simpleAuthenticator = new UnitOfWorkAwareProxyFactory(hibernate)
                 .create(SimpleAuthenticator.class, new Class<?>[]{UserDAO.class, Key.class}, new Object[]{userDAO, key});
 
@@ -121,7 +120,8 @@ public class BackendApplication extends Application<BackendConfiguration> {
         environment.jersey().register(new CsvResource(primerDAO, primerForeignTablesDAO));
         environment.jersey().register(MultiPartFeature.class);
         environment.jersey().register(new AuthenticationResource(userDAO, key));
-        environment.healthChecks().register("template", new BasicHealthCheck(configuration.getTemplate()));
+        environment.jersey().register(new HealthCheckResource(environment.healthChecks()));
+        environment.healthChecks().register("APIHealthCheck", new BasicHealthCheck());
         environment.jersey().register(new LoggingFeature(Logger.getLogger("si.fri"), Level.INFO, LoggingFeature.Verbosity.PAYLOAD_ANY, 10000));
 
     }

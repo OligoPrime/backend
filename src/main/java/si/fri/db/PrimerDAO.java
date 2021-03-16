@@ -36,7 +36,7 @@ public class PrimerDAO extends AbstractDAO<Primer> {
     }
 
     public List<Primer> findByIds(Set<Long> ids) {
-        return ids.stream().map(super::get).filter(Objects::nonNull).filter(Primer::isNotDeleted).collect(Collectors.toList());
+        return ids.stream().map(id -> super.get(id)).filter(Objects::nonNull).filter(Primer::isNotDeleted).collect(Collectors.toList());
     }
 
     @SuppressWarnings("unchecked")

@@ -1,4 +1,4 @@
-# Installation for BioPrime backend
+# Installation for OligoPrime backend
 
 ## Recommended specifications
  - OS: Ubuntu 20.4 LTS
@@ -62,5 +62,5 @@ How to compile and run the application
 Health Check
 ---
 
-To see your applications health enter url `http://localhost:8081/healthcheck`
+To see your applications health enter url `http://localhost:8080/healthcheck`
 
